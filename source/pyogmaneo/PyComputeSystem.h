@@ -6,9 +6,10 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
+#pragma once
+
 #include <ogmaneo/system/ComputeSystem.h>
 #include <random>
-#include <time.h>
 #include <iostream>
 
 namespace pyogmaneo {
@@ -18,8 +19,6 @@ namespace pyogmaneo {
         std::mt19937 _rng;
 
     public:
-        PyComputeSystem(const std::string &type = "gpu");
-
         PyComputeSystem(const std::string &type = "gpu", unsigned long seed = 1234);
 
         friend class PyComputeProgram;

@@ -10,19 +10,6 @@
 
 using namespace pyogmaneo;
 
-PyComputeSystem::PyComputeSystem(const std::string &type) {
-    _rng.seed(time(nullptr));
-
-    if (type == "all")
-        _cs.create(ogmaneo::ComputeSystem::_all);
-    else if (type == "gpu")
-        _cs.create(ogmaneo::ComputeSystem::_gpu);
-    else if (type == "cpu")
-        _cs.create(ogmaneo::ComputeSystem::_cpu);
-    else
-        std::cerr << "Invalid device type: " << type << std::endl;
-}
-
 PyComputeSystem::PyComputeSystem(const std::string &type, unsigned long seed) {
     _rng.seed(seed);
 

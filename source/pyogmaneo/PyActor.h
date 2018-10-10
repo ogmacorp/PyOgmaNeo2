@@ -6,21 +6,23 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
+#pragma once
+
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Actor.h>
 
 namespace pyogmaneo {
     struct PyAVisibleLayerDesc {
-        std::tuple<int, int, int> _size;
+        std::array<int, 3> _size;
 
         int _radius;
 
         PyAVisibleLayerDesc()
-        : _size(8, 8, 16), _radius(2)
+        : _size({ 8, 8, 16 }), _radius(2)
         {}
 
-        PyAVisibleLayerDesc(std::tuple<int, int, int> size, int radius)
+        PyAVisibleLayerDesc(std::array<int, 3> size, int radius)
         : _size(size), _radius(radius)
         {}
     };
@@ -35,7 +37,7 @@ namespace pyogmaneo {
         float _alpha;
         float _gamma;
 
-        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, std::tuple<int, int, int> hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
+        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3> hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn);
 
@@ -54,10 +56,10 @@ namespace pyogmaneo {
             return buf;
         }
 
-        std::tuple<int, int, int> getHiddenSize() const {
+        std::array<int, 3> getHiddenSize() const {
             cl_int3 size = _a.getHiddenSize();
 
-            return std::make_tuple(size.x, size.y, size.z);
+            return { size.x, size.y, size.z };
         }
     };
 }

@@ -12,13 +12,15 @@
 %}
 %module pyogmaneo
 
-%include "std_pair.i"
+%include "std_array.i"
 %include "std_string.i"
 %include "std_vector.i"
 
 %{
 #include "PyComputeSystem.h"
 #include "PyComputeProgram.h"
+#include "PyIntBuffer.h"
+#include "PyFloatBuffer.h"
 #include "PySparseCoder.h"
 #include "PyPredictor.h"
 #include "PyActor.h"
@@ -39,11 +41,13 @@
 
 %template(StdVeci) std::vector<int>;
 %template(StdVecf) std::vector<float>;
-%template(StdInt3) std::tuple<int, int, int>;
-%template(StdVecInt3) std::vector<std::tuple<int, int, int> >;
+%template(StdInt3) std::array<int, 3>;
+%template(StdVecInt3) std::vector<std::array<int, 3> >;
 
 %include "PyComputeSystem.h"
 %include "PyComputeProgram.h"
+%include "PyIntBuffer.h"
+%include "PyFloatBuffer.h"
 %include "PySparseCoder.h"
 %include "PyPredictor.h"
 %include "PyActor.h"

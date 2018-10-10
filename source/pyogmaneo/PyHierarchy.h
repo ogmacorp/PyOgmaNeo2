@@ -6,6 +6,8 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
+#pragma once
+
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Hierarchy.h>
@@ -16,7 +18,7 @@ namespace pyogmaneo {
     const int _inputTypeAct = 2;
 
     struct PyLayerDesc {
-        std::tuple<int, int, int> _hiddenSize;
+        std::array<int, 3> _hiddenSize;
 
         int _scRadius;
         int _pRadius;
@@ -25,10 +27,10 @@ namespace pyogmaneo {
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize({ 4, 4, 16 }), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(std::tuple<int, int, int> hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        PyLayerDesc(std::array<int, 3> hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
         : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
@@ -40,7 +42,7 @@ namespace pyogmaneo {
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<std::tuple<int, int, int> > &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<std::array<int, 3> > &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &topFeedBack, bool learn = true, float reward = 0.0f);
 

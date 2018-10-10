@@ -6,6 +6,8 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
+#pragma once
+
 #include "PyComputeSystem.h"
 
 namespace pyogmaneo {
@@ -35,5 +37,6 @@ namespace pyogmaneo {
         friend class PyPredictor;
         friend class PyActor;
         friend class PyHierarchy;
+        friend class PyImageEncoder;
     };
 }

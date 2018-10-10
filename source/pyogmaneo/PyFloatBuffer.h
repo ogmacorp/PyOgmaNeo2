@@ -6,6 +6,8 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
+#pragma once
+
 #include "PyComputeSystem.h"
 
 namespace pyogmaneo {

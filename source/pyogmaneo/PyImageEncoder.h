@@ -6,6 +6,8 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
+#pragma once
+
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include "PyFloatBuffer.h"
@@ -13,15 +15,15 @@
 
 namespace pyogmaneo {
     struct PyImVisibleLayerDesc {
-        std::tuple<int, int, int> _size;
+        std::array<int, 3> _size;
 
         int _radius;
 
         PyImVisibleLayerDesc()
-        : _size(8, 8, 16), _radius(2)
+        : _size({ 8, 8, 16 }), _radius(2)
         {}
 
-        PyImVisibleLayerDesc(std::tuple<int, int, int> size, int radius)
+        PyImVisibleLayerDesc(std::array<int, 3> size, int radius)
         : _size(size), _radius(radius)
         {}
     };
@@ -36,14 +38,14 @@ namespace pyogmaneo {
         float _alpha;
         int _explainIters;
 
-        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, std::tuple<int, int, int> hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
+        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3> hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
 
         void activate(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
 
         void learn(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
 
         int getNumVisibleLayers() const {
-            return _sc.getNumVisibleLayers();
+            return _enc.getNumVisibleLayers();
         }
 
         const PyImVisibleLayerDesc &getVisibleLayerDesc(int index) const {
@@ -52,15 +54,15 @@ namespace pyogmaneo {
 
         PyIntBuffer getHiddenCs() const {
             PyIntBuffer buf;
-            buf._buf = _sc.getHiddenCs();
+            buf._buf = _enc.getHiddenCs();
 
             return buf;
         }
 
-        std::tuple<int, int, int> getHiddenSize() const {
-            cl_int3 size = _sc.getHiddenSize();
+        std::array<int, 3> getHiddenSize() const {
+            cl_int3 size = _enc.getHiddenSize();
 
-            return std::make_tuple(size.x, size.y, size.z);
+            return { size.x, size.y, size.z };
         }
     };
 }

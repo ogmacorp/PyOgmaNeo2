@@ -9,7 +9,10 @@
 # CMake version 3.1+ is required to enable C++14 features cleanly
 cmake_minimum_required(VERSION 3.1)
 
-project(PyOgmaNeo)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+project(WrapOgmaNeo)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/")
@@ -37,7 +40,7 @@ message(STATUS "Build pre-encoders: ${BUILD_PREENCODERS}")
 ############################################################################
 # Add the OgmaNeo library
 
-find_package(OGMANEO REQUIRED)
+find_package(OgmaNeo REQUIRED)
 
 include_directories(${OGMANEO_INCLUDE_DIR})
 
@@ -45,8 +48,6 @@ file(GLOB_RECURSE PYOGMANEO_SRC
     "source/pyogmaneo/*.h"
     "source/pyogmaneo/*.cpp"
 )
-
-add_library(PyOgmaNeo ${PYOGMANEO_SRC})
 
 ############################################################################
 # Add the PyOgmaNeo library
@@ -60,7 +61,7 @@ file(GLOB_RECURSE PYOGMANEO_SRC
     "source/pyogmaneo/*.cpp"
 )
 
-add_library(PyOgmaNeo ${PYOGMANEO_SRC})
+add_library(WrapOgmaNeo ${PYOGMANEO_SRC})
 
 ############################################################################
 # Find SWIG and setup building the Python bindings to PyOgmaNeo library
@@ -175,8 +176,8 @@ endif()
 set_source_files_properties(pyogmaneo.i PROPERTIES CPLUSPLUS ON)
 
 swig_add_module(pyogmaneo python pyogmaneo.i)
-swig_link_libraries(pyogmaneo ${PYTHON_LIBRARIES} PyOgmaNeo)
-swig_link_libraries(pyogmaneo ${OGMANEO_LIBRARIES} PyOgmaNeo)
+swig_link_libraries(pyogmaneo ${PYTHON_LIBRARIES} WrapOgmaNeo)
+swig_link_libraries(pyogmaneo ${OGMANEO_LIBRARIES} WrapOgmaNeo)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SWIG_OUTDIR})
 install(TARGETS _pyogmaneo DESTINATION ${CMAKE_SWIG_OUTDIR})
