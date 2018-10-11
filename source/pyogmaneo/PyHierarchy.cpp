@@ -10,11 +10,14 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<std::array<int, 3> > &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+    _inputSizes = inputSizes;
+    _layerDescs = layerDescs;
+    
     std::vector<cl_int3> clInputSizes(inputSizes.size());
     
     for (int i = 0; i < inputSizes.size(); i++)
-        clInputSizes[i] = cl_int3{ inputSizes[i][0], inputSizes[i][1], inputSizes[i][2] };
+        clInputSizes[i] = cl_int3{ inputSizes[i].x, inputSizes[i].y, inputSizes[i].z };
 
     std::vector<ogmaneo::InputType> clInputTypes(inputTypes.size());
 
@@ -35,7 +38,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
     std::vector<ogmaneo::Hierarchy::LayerDesc> clLayerDescs(layerDescs.size());
 
     for (int l = 0; l < layerDescs.size(); l++) {
-        clLayerDescs[l]._hiddenSize = cl_int3{ std::get<0>(layerDescs[l]._hiddenSize), std::get<1>(layerDescs[l]._hiddenSize), std::get<2>(layerDescs[l]._hiddenSize) };
+        clLayerDescs[l]._hiddenSize = cl_int3{ layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z };
         clLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
         clLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         clLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;

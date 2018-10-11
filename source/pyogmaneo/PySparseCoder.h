@@ -8,21 +8,22 @@
 
 #pragma once
 
+#include "PyConstructs.h"
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/SparseCoder.h>
 
 namespace pyogmaneo {
     struct PySCVisibleLayerDesc {
-        std::array<int, 3> _size;
+        PyInt3 _size;
 
         int _radius;
 
         PySCVisibleLayerDesc()
-        : _size({ 8, 8, 16 }), _radius(2)
+        : _size(8, 8, 16), _radius(2)
         {}
 
-        PySCVisibleLayerDesc(std::array<int, 3> size, int radius)
+        PySCVisibleLayerDesc(const PyInt3 &size, int radius)
         : _size(size), _radius(radius)
         {}
     };
@@ -37,7 +38,7 @@ namespace pyogmaneo {
         float _alpha;
         int _explainIters;
 
-        PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3> hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs);
+        PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs);
 
         void activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
 
@@ -52,16 +53,19 @@ namespace pyogmaneo {
         }
 
         PyIntBuffer getHiddenCs() const {
+            cl_int3 size = _sc.getHiddenSize();
+
             PyIntBuffer buf;
+            buf._size = size.x * size.y;
             buf._buf = _sc.getHiddenCs();
 
             return buf;
         }
 
-        std::array<int, 3> getHiddenSize() const {
+        PyInt3 getHiddenSize() const {
             cl_int3 size = _sc.getHiddenSize();
 
-            return { size.x, size.y, size.z };
+            return PyInt3(size.x, size.y, size.z);
         }
     };
 }

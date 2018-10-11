@@ -10,7 +10,7 @@
 
 using namespace pyogmaneo;
 
-PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3> hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs) {
+PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs) {
     _alpha = _a._alpha;
     _gamma = _a._gamma;
 
@@ -19,11 +19,11 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3>
     std::vector<ogmaneo::Actor::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
-        clVisibleLayerDescs[v]._size = cl_int3{ visibleLayerDescs[v]._size[0], visibleLayerDescs[v]._size[1], visibleLayerDescs[v]._size[2] };
+        clVisibleLayerDescs[v]._size = cl_int3{ visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z };
         clVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
-    _a.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize[0], hiddenSize[1], hiddenSize[2] }, clVisibleLayerDescs, cs._rng);
+    _a.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
 }
 
 void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn) {

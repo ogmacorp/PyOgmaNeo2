@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "PyConstructs.h"
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Hierarchy.h>
@@ -18,7 +19,7 @@ namespace pyogmaneo {
     const int _inputTypeAct = 2;
 
     struct PyLayerDesc {
-        std::array<int, 3> _hiddenSize;
+        PyInt3 _hiddenSize;
 
         int _scRadius;
         int _pRadius;
@@ -27,22 +28,23 @@ namespace pyogmaneo {
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize({ 4, 4, 16 }), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(std::array<int, 3> hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
         : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
     class PyHierarchy {
     private:
+        std::vector<PyInt3> _inputSizes;
         std::vector<PyLayerDesc> _layerDescs;
 
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<std::array<int, 3> > &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &topFeedBack, bool learn = true, float reward = 0.0f);
 
@@ -52,6 +54,7 @@ namespace pyogmaneo {
 
         PyIntBuffer getPredictionCs(int i) const {
             PyIntBuffer buf;
+            buf._size = _inputSizes[i].x * _inputSizes[i].y;
             buf._buf = _h.getPredictionCs(i);
 
             return buf;
@@ -59,6 +62,7 @@ namespace pyogmaneo {
 
         PyIntBuffer getActionCs(int i) const {
             PyIntBuffer buf;
+            buf._size = _inputSizes[i].x * _inputSizes[i].y;
             buf._buf = _h.getActionCs(i);
 
             return buf;

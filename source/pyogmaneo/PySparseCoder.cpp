@@ -10,7 +10,7 @@
 
 using namespace pyogmaneo;
 
-PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3> hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs) {
+PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs) {
     _alpha = _sc._alpha;
     _explainIters = _sc._explainIters;
 
@@ -19,11 +19,11 @@ PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, std::a
     std::vector<ogmaneo::SparseCoder::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
-        clVisibleLayerDescs[v]._size = cl_int3{ visibleLayerDescs[v]._size[0], visibleLayerDescs[v]._size[1], visibleLayerDescs[v]._size[2] };
+        clVisibleLayerDescs[v]._size = cl_int3{ visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z };
         clVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
-    _sc.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize[0], hiddenSize[1], hiddenSize[2] }, clVisibleLayerDescs, cs._rng);
+    _sc.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
 }
 
 void PySparseCoder::activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs) {

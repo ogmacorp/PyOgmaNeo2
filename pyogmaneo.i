@@ -17,6 +17,7 @@
 %include "std_vector.i"
 
 %{
+#include "PyConstructs.h"
 #include "PyComputeSystem.h"
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
@@ -41,8 +42,7 @@
 
 %template(StdVeci) std::vector<int>;
 %template(StdVecf) std::vector<float>;
-%template(StdInt3) std::array<int, 3>;
-%template(StdVecInt3) std::vector<std::array<int, 3> >;
+%template(StdVecInt3) std::vector<pyogmaneo::PyInt3>;
 %template(StdVecIntBuffer) std::vector<pyogmaneo::PyIntBuffer>;
 %template(StdVecFloatBuffer) std::vector<pyogmaneo::PyFloatBuffer>;
 %template(StdVecSCVLD) std::vector<pyogmaneo::PySCVisibleLayerDesc>;
@@ -51,6 +51,7 @@
 %template(StdVecImVLD) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
 %template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
 
+%include "PyConstructs.h"
 %include "PyComputeSystem.h"
 %include "PyComputeProgram.h"
 %include "PyIntBuffer.h"

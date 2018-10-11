@@ -8,21 +8,22 @@
 
 #pragma once
 
+#include "PyConstructs.h"
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Predictor.h>
 
 namespace pyogmaneo {
     struct PyPVisibleLayerDesc {
-        std::array<int, 3> _size;
+        PyInt3 _size;
 
         int _radius;
 
         PyPVisibleLayerDesc()
-        : _size({ 8, 8, 16 }), _radius(2)
+        : _size(8, 8, 16), _radius(2)
         {}
 
-        PyPVisibleLayerDesc(std::array<int, 3> size, int radius)
+        PyPVisibleLayerDesc(const PyInt3 &size, int radius)
         : _size(size), _radius(radius)
         {}
     };
@@ -36,7 +37,7 @@ namespace pyogmaneo {
     public:
         float _alpha;
 
-        PyPredictor(PyComputeSystem &cs, PyComputeProgram &prog, std::array<int, 3> hiddenSize, const std::vector<PyPVisibleLayerDesc> &visibleLayerDescs);
+        PyPredictor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyPVisibleLayerDesc> &visibleLayerDescs);
 
         void activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
 
@@ -51,16 +52,19 @@ namespace pyogmaneo {
         }
 
         PyIntBuffer getHiddenCs() const {
+            cl_int3 size = _p.getHiddenSize();
+
             PyIntBuffer buf;
+            buf._size = size.x * size.y;
             buf._buf = _p.getHiddenCs();
 
             return buf;
         }
 
-        std::array<int, 3> getHiddenSize() const {
+        PyInt3 getHiddenSize() const {
             cl_int3 size = _p.getHiddenSize();
 
-            return { size.x, size.y, size.z };
+            return PyInt3(size.x, size.y, size.z);
         }
     };
 }
