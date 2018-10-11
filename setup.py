@@ -38,7 +38,7 @@ class install_subclass(install):
 
     def run(self):
         # Run build_ext first, so that it can generate
-        # the OgmaNeo library and SwiG the neo.i file
+        # the OgmaNeo library and SwiG the .i file
         self.run_command("build_ext")
 
         # Return through the usual super().run
@@ -180,7 +180,7 @@ extension_mod = Extension(
 
 setup(
     name="pyogmaneo",
-    version="1.3.0",
+    version="1.0.0",
     description="Python bindings for the PyOgmaNeo library",
     long_description='https://github.com/ogmacorp/PyOgmaNeo',
     author='Ogma Intelligent Systems Corp',

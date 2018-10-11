@@ -18,7 +18,7 @@ namespace pyogmaneo {
         int _size;
 
     public:
-        PyIntBuffer();
+        PyIntBuffer() {}
 
         PyIntBuffer(PyComputeSystem &cs, int size) {
             create(cs, size);

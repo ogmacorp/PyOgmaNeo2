@@ -43,6 +43,13 @@
 %template(StdVecf) std::vector<float>;
 %template(StdInt3) std::array<int, 3>;
 %template(StdVecInt3) std::vector<std::array<int, 3> >;
+%template(StdVecIntBuffer) std::vector<pyogmaneo::PyIntBuffer>;
+%template(StdVecFloatBuffer) std::vector<pyogmaneo::PyFloatBuffer>;
+%template(StdVecSCVLD) std::vector<pyogmaneo::PySCVisibleLayerDesc>;
+%template(StdVecPVLD) std::vector<pyogmaneo::PyPVisibleLayerDesc>;
+%template(StdVecAVLD) std::vector<pyogmaneo::PyAVisibleLayerDesc>;
+%template(StdVecImVLD) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
+%template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
 
 %include "PyComputeSystem.h"
 %include "PyComputeProgram.h"

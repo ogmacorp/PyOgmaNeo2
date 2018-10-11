@@ -18,7 +18,7 @@ namespace pyogmaneo {
         int _size;
 
     public:
-        PyFloatBuffer();
+        PyFloatBuffer() {}
 
         PyFloatBuffer(PyComputeSystem &cs, int size) {
             create(cs, size);
