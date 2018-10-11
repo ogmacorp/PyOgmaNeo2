@@ -68,25 +68,39 @@ namespace pyogmaneo {
             return buf;
         }
 
-        /*!
-        \brief Whether this layer received on update this timestep
-        */
         bool getUpdate(int l) const {
             return _h.getUpdate(l);
         }
 
-        /*!
-        \brief Get current layer ticks, relative to previous layer
-        */
         int getTicks(int l) const {
             return _h.getTicks(l);
         }
 
-        /*!
-        \brief Get layer ticks per update, relative to previous layer
-        */
         int getTicksPerUpdate(int l) const {
             return _h.getTicksPerUpdate(l);
+        }
+
+        void setSCAlpha(int l, float alpha) {
+            _h.getSCLayer(l)._alpha = alpha;
+        }
+
+        void setSCExplainIters(int l, int explainIters) {
+            _h.getSCLayer(l)._explainIters = explainIters;
+        }
+
+        void setPAlpha(int l, int v, float alpha) {
+            if (_h.getPLayer(l)[v] != nullptr)
+                _h.getPLayer(l)[v]->_alpha = alpha;
+        }
+
+        void setAAlpha(int v, float alpha) {
+            if (_h.getActors()[v] != nullptr)
+                _h.getActors()[v]->_alpha = alpha;
+        }
+
+        void setAGamma(int v, float gamma) {
+            if (_h.getActors()[v] != nullptr)
+                _h.getActors()[v]->_gamma = gamma;
         }
     };
 }

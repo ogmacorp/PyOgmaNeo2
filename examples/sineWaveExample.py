@@ -32,6 +32,9 @@ for i in range(9):
 
 h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePredict ], lds)
 
+for i in range(len(lds)):
+    h.setPAlpha(i, 0, 0.5) # Set predictor alpha to 0.5 for all layers (and the only predictor for the inputs)
+
 ioBuf = pyogmaneo.PyIntBuffer(cs, 1)
 
 fbSize = lds[-1]._hiddenSize.x * lds[-1]._hiddenSize.y
