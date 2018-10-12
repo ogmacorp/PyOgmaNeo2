@@ -27,6 +27,9 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hidd
 }
 
 void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn) {
+    _a._alpha = _alpha;
+    _a._gamma = _gamma;
+
     std::vector<cl::Buffer> clVisibleCs(visibleCs.size());
 
     for (int v = 0; v < visibleCs.size(); v++)
