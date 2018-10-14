@@ -37,6 +37,8 @@ namespace pyogmaneo {
     public:
         float _alpha;
         float _gamma;
+        float _traceDecay;
+        float _tdErrorClip;
 
         PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
 
