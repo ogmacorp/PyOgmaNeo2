@@ -42,6 +42,8 @@ namespace pyogmaneo {
         PyPredictor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
             std::ifstream is(name, std::ios::binary);
             _p.readFromStream(cs._cs, prog._prog, is);
+
+            _alpha = _p._alpha;
         }
         
         void activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
