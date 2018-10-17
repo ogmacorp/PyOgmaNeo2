@@ -12,6 +12,7 @@
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/SparseCoder.h>
+#include <fstream>
 
 namespace pyogmaneo {
     struct PySCVisibleLayerDesc {
@@ -39,10 +40,19 @@ namespace pyogmaneo {
         int _explainIters;
 
         PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs);
+        PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+            std::ifstream is(name, std::ios::binary);
+            _sc.readFromStream(cs._cs, prog._prog, is);
+        }
 
         void activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
 
         void learn(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
+
+        void save(PyComputeSystem &cs, const std::string &name) {
+            std::ofstream os(name, std::ios::binary);
+            _sc.writeToStream(cs._cs, os);
+        }
 
         int getNumVisibleLayers() const {
             return _sc.getNumVisibleLayers();

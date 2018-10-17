@@ -12,6 +12,7 @@
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Actor.h>
+#include <fstream>
 
 namespace pyogmaneo {
     struct PyAVisibleLayerDesc {
@@ -41,8 +42,17 @@ namespace pyogmaneo {
         float _tdErrorClip;
 
         PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
+        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+            std::ifstream is(name, std::ios::binary);
+            _a.readFromStream(cs._cs, prog._prog, is);
+        }
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn);
+
+        void save(PyComputeSystem &cs, const std::string &name) {
+            std::ofstream os(name, std::ios::binary);
+            _a.writeToStream(cs._cs, os);
+        }
 
         int getNumVisibleLayers() const {
             return _a.getNumVisibleLayers();

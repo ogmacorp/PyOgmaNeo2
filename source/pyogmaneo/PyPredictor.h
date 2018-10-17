@@ -12,6 +12,7 @@
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Predictor.h>
+#include <fstream>
 
 namespace pyogmaneo {
     struct PyPVisibleLayerDesc {
@@ -38,10 +39,19 @@ namespace pyogmaneo {
         float _alpha;
 
         PyPredictor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyPVisibleLayerDesc> &visibleLayerDescs);
-
+        PyPredictor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+            std::ifstream is(name, std::ios::binary);
+            _p.readFromStream(cs._cs, prog._prog, is);
+        }
+        
         void activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
 
         void learn(PyComputeSystem &cs, const PyIntBuffer &targetCs);
+
+        void save(PyComputeSystem &cs, const std::string &name) {
+            std::ofstream os(name, std::ios::binary);
+            _p.writeToStream(cs._cs, os);
+        }
 
         int getNumVisibleLayers() const {
             return _p.getNumVisibleLayers();

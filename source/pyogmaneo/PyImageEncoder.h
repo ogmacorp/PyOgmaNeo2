@@ -13,6 +13,7 @@
 #include "PyIntBuffer.h"
 #include "PyFloatBuffer.h"
 #include <ogmaneo/neo/ImageEncoder.h>
+#include <fstream>
 
 namespace pyogmaneo {
     struct PyImVisibleLayerDesc {
@@ -40,10 +41,19 @@ namespace pyogmaneo {
         int _explainIters;
 
         PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
+        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+            std::ifstream is(name, std::ios::binary);
+            _enc.readFromStream(cs._cs, prog._prog, is);
+        }
 
         void activate(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
 
         void learn(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
+
+        void save(PyComputeSystem &cs, const std::string &name) {
+            std::ofstream os(name, std::ios::binary);
+            _enc.writeToStream(cs._cs, os);
+        }
 
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();

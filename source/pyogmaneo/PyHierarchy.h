@@ -12,6 +12,7 @@
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include <ogmaneo/neo/Hierarchy.h>
+#include <fstream>
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
@@ -45,8 +46,17 @@ namespace pyogmaneo {
 
     public:
         PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+            std::ifstream is(name, std::ios::binary);
+            _h.readFromStream(cs._cs, prog._prog, is);
+        }
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &topFeedBack, bool learn = true, float reward = 0.0f);
+
+        void save(PyComputeSystem &cs, const std::string &name) {
+            std::ofstream os(name, std::ios::binary);
+            _h.writeToStream(cs._cs, os);
+        }
 
         int getNumLayers() const {
             return _h.getNumLayers();
