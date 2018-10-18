@@ -26,6 +26,23 @@ PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const 
     _sc.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
 }
 
+PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+    std::ifstream is(name, std::ios::binary);
+    _sc.readFromStream(cs._cs, prog._prog, is);
+
+    _alpha = _sc._alpha;
+    _explainIters = _sc._explainIters;
+
+    _visibleLayerDescs.resize(_sc.getNumVisibleLayers());
+
+    for (int v = 0; v < _visibleLayerDescs.size(); v++) {
+        const ogmaneo::SparseCoder::VisibleLayerDesc &vld = _sc.getVisibleLayerDesc(v); 
+        
+        _visibleLayerDescs[v]._size = PyInt3(vld._size.x, vld._size.y, vld._size.z);
+        _visibleLayerDescs[v]._radius = vld._radius;
+    }
+}
+
 void PySparseCoder::activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs) {
     _sc._explainIters = _explainIters;
 

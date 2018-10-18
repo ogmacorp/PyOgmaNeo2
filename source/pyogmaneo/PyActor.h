@@ -42,15 +42,7 @@ namespace pyogmaneo {
         float _tdErrorClip;
 
         PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
-        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
-            std::ifstream is(name, std::ios::binary);
-            _a.readFromStream(cs._cs, prog._prog, is);
-
-            _alpha = _a._alpha;
-            _gamma = _a._gamma;
-            _traceDecay = _a._traceDecay;
-            _tdErrorClip = _a._tdErrorClip;
-        }
+        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn);
 

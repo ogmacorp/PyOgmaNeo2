@@ -26,6 +26,23 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, cons
     _enc.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
 }
 
+PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+    std::ifstream is(name, std::ios::binary);
+    _enc.readFromStream(cs._cs, prog._prog, is);
+
+    _alpha = _enc._alpha;
+    _explainIters = _enc._explainIters;
+
+    _visibleLayerDescs.resize(_enc.getNumVisibleLayers());
+
+    for (int v = 0; v < _visibleLayerDescs.size(); v++) {
+        const ogmaneo::ImageEncoder::VisibleLayerDesc &vld = _enc.getVisibleLayerDesc(v); 
+        
+        _visibleLayerDescs[v]._size = PyInt3(vld._size.x, vld._size.y, vld._size.z);
+        _visibleLayerDescs[v]._radius = vld._radius;
+    }
+}
+
 void PyImageEncoder::activate(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs) {
     _enc._explainIters = _explainIters;
 

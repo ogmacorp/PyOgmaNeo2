@@ -41,13 +41,7 @@ namespace pyogmaneo {
         int _explainIters;
 
         PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
-        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
-            std::ifstream is(name, std::ios::binary);
-            _enc.readFromStream(cs._cs, prog._prog, is);
-
-            _alpha = _enc._alpha;
-            _explainIters = _enc._explainIters;
-        }
+        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
         void activate(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
 

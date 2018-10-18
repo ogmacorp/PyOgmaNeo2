@@ -40,13 +40,7 @@ namespace pyogmaneo {
         int _explainIters;
 
         PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs);
-        PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
-            std::ifstream is(name, std::ios::binary);
-            _sc.readFromStream(cs._cs, prog._prog, is);
-
-            _alpha = _sc._alpha;
-            _explainIters = _sc._explainIters;
-        }
+        PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
         void activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs);
 

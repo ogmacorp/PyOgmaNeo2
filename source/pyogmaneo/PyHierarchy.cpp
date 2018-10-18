@@ -12,7 +12,6 @@ using namespace pyogmaneo;
 
 PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
     _inputSizes = inputSizes;
-    _layerDescs = layerDescs;
     
     std::vector<cl_int3> clInputSizes(inputSizes.size());
     
@@ -46,6 +45,16 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
     }
 
     _h.createRandom(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
+}
+
+PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+    std::ifstream is(name, std::ios::binary);
+    _h.readFromStream(cs._cs, prog._prog, is);
+
+    _inputSizes.resize(_h.getInputSizes().size());
+
+    for (int i = 0; i < _inputSizes.size(); i++)
+        _inputSizes[i] = PyInt3(_h.getInputSizes()[i].x, _h.getInputSizes()[i].y, _h.getInputSizes()[i].z);
 }
 
 void PyHierarchy::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &topFeedBack, bool learn, float reward) {

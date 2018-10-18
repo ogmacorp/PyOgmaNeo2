@@ -40,16 +40,12 @@ namespace pyogmaneo {
     class PyHierarchy {
     private:
         std::vector<PyInt3> _inputSizes;
-        std::vector<PyLayerDesc> _layerDescs;
 
         ogmaneo::Hierarchy _h;
 
     public:
         PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
-            std::ifstream is(name, std::ios::binary);
-            _h.readFromStream(cs._cs, prog._prog, is);
-        }
+        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &topFeedBack, bool learn = true, float reward = 0.0f);
 

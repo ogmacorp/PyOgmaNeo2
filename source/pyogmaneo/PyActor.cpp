@@ -28,6 +28,25 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hidd
     _a.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
 }
 
+PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+    std::ifstream is(name, std::ios::binary);
+    _a.readFromStream(cs._cs, prog._prog, is);
+
+    _alpha = _a._alpha;
+    _gamma = _a._gamma;
+    _traceDecay = _a._traceDecay;
+    _tdErrorClip = _a._tdErrorClip;
+
+    _visibleLayerDescs.resize(_a.getNumVisibleLayers());
+
+    for (int v = 0; v < _visibleLayerDescs.size(); v++) {
+        const ogmaneo::Actor::VisibleLayerDesc &vld = _a.getVisibleLayerDesc(v); 
+        
+        _visibleLayerDescs[v]._size = PyInt3(vld._size.x, vld._size.y, vld._size.z);
+        _visibleLayerDescs[v]._radius = vld._radius;
+    }
+}
+
 void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn) {
     _a._alpha = _alpha;
     _a._gamma = _gamma;
