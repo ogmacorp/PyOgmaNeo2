@@ -19,7 +19,7 @@ namespace pyogmaneo {
         std::mt19937 _rng;
 
     public:
-        PyComputeSystem(const std::string &type = "gpu", unsigned long seed = 1234);
+        PyComputeSystem(const std::string &type = "gpu", unsigned long seed = 1234, int platformIndex = -1, int deviceIndex = -1);
 
         friend class PyComputeProgram;
         friend class PyIntBuffer;

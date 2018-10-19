@@ -29,14 +29,6 @@ endif()
 
 
 ############################################################################
-# Add OpenCL
-
-find_package(OpenCL REQUIRED)
-
-include_directories(${OpenCL_INCLUDE_DIR})
-
-
-############################################################################
 # Add the OgmaNeo library
 
 find_package(OgmaNeo REQUIRED)
@@ -58,7 +50,7 @@ file(GLOB_RECURSE PYOGMANEO_SRC
 
 add_library(PyOgmaNeo ${PYOGMANEO_SRC})
 
-target_link_libraries(PyOgmaNeo ${OpenCL_LIBRARIES} ${OGMANEO_LIBRARIES})
+target_link_libraries(PyOgmaNeo ${OGMANEO_LIBRARIES})
 
 
 ############################################################################

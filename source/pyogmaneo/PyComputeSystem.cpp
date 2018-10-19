@@ -10,15 +10,15 @@
 
 using namespace pyogmaneo;
 
-PyComputeSystem::PyComputeSystem(const std::string &type, unsigned long seed) {
+PyComputeSystem::PyComputeSystem(const std::string &type, unsigned long seed, int platformIndex, int deviceIndex) {
     _rng.seed(seed);
 
     if (type == "all")
-        _cs.create(ogmaneo::ComputeSystem::_all);
+        _cs.create(ogmaneo::ComputeSystem::_all, platformIndex, deviceIndex);
     else if (type == "gpu")
-        _cs.create(ogmaneo::ComputeSystem::_gpu);
+        _cs.create(ogmaneo::ComputeSystem::_gpu, platformIndex, deviceIndex);
     else if (type == "cpu")
-        _cs.create(ogmaneo::ComputeSystem::_cpu);
+        _cs.create(ogmaneo::ComputeSystem::_cpu, platformIndex, deviceIndex);
     else
         std::cerr << "Invalid device type: " << type << std::endl;
 }
