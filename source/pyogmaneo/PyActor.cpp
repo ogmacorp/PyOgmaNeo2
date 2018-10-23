@@ -21,11 +21,11 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hidd
     std::vector<ogmaneo::Actor::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
-        clVisibleLayerDescs[v]._size = cl_int3{ visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z };
+        clVisibleLayerDescs[v]._size = ogmaneo::Int3(visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z);
         clVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
-    _a.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
+    _a.createRandom(cs._cs, prog._prog, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), clVisibleLayerDescs, cs._rng);
 }
 
 PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
