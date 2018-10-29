@@ -44,7 +44,7 @@ namespace pyogmaneo {
         PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
         PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
-        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn);
+        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, float reward, bool learn);
 
         void save(PyComputeSystem &cs, const std::string &name) {
             std::ofstream os(name, std::ios::binary);
@@ -64,7 +64,7 @@ namespace pyogmaneo {
 
             PyIntBuffer buf;
             buf._size = size.x * size.y;
-            buf._buf = _a.getHiddenCs();
+            buf._buf = _a.getHiddenCs()[ogmaneo::_front];
 
             return buf;
         }
