@@ -38,10 +38,8 @@ namespace pyogmaneo {
     public:
         float _alpha;
         float _gamma;
-        float _traceDecay;
-        float _tdErrorClip;
 
-        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
+        PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, int historyCapacity, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs);
         PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
         void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn);

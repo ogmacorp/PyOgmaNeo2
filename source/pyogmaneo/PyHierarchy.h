@@ -28,8 +28,10 @@ namespace pyogmaneo {
         int _ticksPerUpdate;
         int _temporalHorizon;
 
+        int _historyCapacity;
+
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(32)
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
@@ -107,16 +109,6 @@ namespace pyogmaneo {
         void setAGamma(int v, float gamma) {
             if (_h.getActors()[v] != nullptr)
                 _h.getActors()[v]->_gamma = gamma;
-        }
-
-        void setATraceDecay(int v, float traceDecay) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_traceDecay = traceDecay;
-        }
-
-        void setATDErrorClip(int v, float tdErrorClip) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_tdErrorClip = tdErrorClip;
         }
     };
 }

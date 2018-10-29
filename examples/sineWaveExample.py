@@ -12,10 +12,10 @@ import numpy as np
 import pyogmaneo
 import matplotlib.pyplot as plt
 
-cs = pyogmaneo.PyComputeSystem()
+cs = pyogmaneo.PyComputeSystem("cpu")
 
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
-prog = pyogmaneo.PyComputeProgram(cs, "neoKernels.cl")
+prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
 
 inputColumnSize = 64
 

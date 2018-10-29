@@ -42,6 +42,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
         clLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         clLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         clLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
+        clLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
     }
 
     _h.createRandom(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
