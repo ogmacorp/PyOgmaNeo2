@@ -113,10 +113,5 @@ namespace pyogmaneo {
             if (_h.getActors()[v] != nullptr)
                 _h.getActors()[v]->_traceDecay = traceDecay;
         }
-
-        void setATDErrorClip(int v, float tdErrorClip) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_tdErrorClip = tdErrorClip;
-        }
     };
 }

@@ -14,7 +14,6 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hidd
     _alpha = _a._alpha;
     _gamma = _a._gamma;
     _traceDecay = _a._traceDecay;
-    _tdErrorClip = _a._tdErrorClip;
 
     _visibleLayerDescs = visibleLayerDescs;
 
@@ -35,7 +34,6 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string 
     _alpha = _a._alpha;
     _gamma = _a._gamma;
     _traceDecay = _a._traceDecay;
-    _tdErrorClip = _a._tdErrorClip;
 
     _visibleLayerDescs.resize(_a.getNumVisibleLayers());
 
@@ -51,7 +49,6 @@ void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleC
     _a._alpha = _alpha;
     _a._gamma = _gamma;
     _a._traceDecay = _traceDecay;
-    _a._tdErrorClip = _tdErrorClip;
 
     std::vector<cl::Buffer> clVisibleCs(visibleCs.size());
 
