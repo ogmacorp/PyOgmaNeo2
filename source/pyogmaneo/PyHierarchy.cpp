@@ -64,5 +64,5 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inpu
     for (int i = 0; i < inputCs.size(); i++)
         clInputCs[i] = inputCs[i]._buf;
 
-    _h.step(cs._cs, clInputCs, topFeedBack._buf, learn, reward);
+    _h.step(cs._cs, clInputCs, topFeedBack._buf, cs._rng, learn, reward);
 }

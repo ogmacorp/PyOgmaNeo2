@@ -43,7 +43,7 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string 
     }
 }
 
-void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, const PyIntBuffer &targetCs, float reward, bool learn) {
+void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, float reward, bool learn) {
     _a._alpha = _alpha;
     _a._gamma = _gamma;
 
@@ -52,5 +52,5 @@ void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleC
     for (int v = 0; v < visibleCs.size(); v++)
         clVisibleCs[v] = visibleCs[v]._buf;
 
-    _a.step(cs._cs, clVisibleCs, targetCs._buf, reward, learn);
+    _a.step(cs._cs, clVisibleCs, cs._rng, reward, learn);
 }
