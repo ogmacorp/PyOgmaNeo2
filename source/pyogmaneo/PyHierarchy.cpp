@@ -58,11 +58,11 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
         _inputSizes[i] = PyInt3(_h.getInputSizes()[i].x, _h.getInputSizes()[i].y, _h.getInputSizes()[i].z);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &topFeedBack, bool learn, float reward) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn, float reward) {
     std::vector<cl::Buffer> clInputCs(inputCs.size());
 
     for (int i = 0; i < inputCs.size(); i++)
         clInputCs[i] = inputCs[i]._buf;
 
-    _h.step(cs._cs, clInputCs, topFeedBack._buf, cs._rng, learn, reward);
+    _h.step(cs._cs, clInputCs, cs._rng, learn, reward);
 }
