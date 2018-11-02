@@ -110,5 +110,10 @@ namespace pyogmaneo {
             if (_h.getActors()[v] != nullptr)
                 _h.getActors()[v]->_gamma = gamma;
         }
+
+        void setAEpsilon(int v, float epsilon) {
+            if (_h.getActors()[v] != nullptr)
+                _h.getActors()[v]->_epsilon = epsilon;
+        }
     };
 }
