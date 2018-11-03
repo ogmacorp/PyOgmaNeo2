@@ -102,10 +102,5 @@ namespace pyogmaneo {
             if (_h.getALayer(l)[v] != nullptr)
                 _h.getALayer(l)[v]->_epsilon = epsilon;
         }
-
-        void setATimeScale(int l, int v, float timeScale) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_timeScale = timeScale;
-        }
     };
 }
