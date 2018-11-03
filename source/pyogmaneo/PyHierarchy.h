@@ -23,7 +23,7 @@ namespace pyogmaneo {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _pRadius;
+        int _aRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
@@ -31,11 +31,11 @@ namespace pyogmaneo {
         int _historyCapacity;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(32)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(16)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -58,14 +58,6 @@ namespace pyogmaneo {
 
         int getNumLayers() const {
             return _h.getNumLayers();
-        }
-
-        PyIntBuffer getPredictionCs(int i) const {
-            PyIntBuffer buf;
-            buf._size = _inputSizes[i].x * _inputSizes[i].y;
-            buf._buf = _h.getPredictionCs(i);
-
-            return buf;
         }
 
         PyIntBuffer getActionCs(int i) const {
@@ -96,29 +88,24 @@ namespace pyogmaneo {
             _h.getSCLayer(l)._explainIters = explainIters;
         }
 
-        void setPAlpha(int l, int v, float alpha) {
-            if (_h.getPLayer(l)[v] != nullptr)
-                _h.getPLayer(l)[v]->_alpha = alpha;
+        void setAAlpha(int l, int v, float alpha) {
+            if (_h.getALayer(l)[v] != nullptr)
+                _h.getALayer(l)[v]->_alpha = alpha;
         }
 
-        void setAAlpha(int v, float alpha) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_alpha = alpha;
+        void setAGamma(int l, int v, float gamma) {
+            if (_h.getALayer(l)[v] != nullptr)
+                _h.getALayer(l)[v]->_gamma = gamma;
         }
 
-        void setAGamma(int v, float gamma) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_gamma = gamma;
+        void setAEpsilon(int l, int v, float epsilon) {
+            if (_h.getALayer(l)[v] != nullptr)
+                _h.getALayer(l)[v]->_epsilon = epsilon;
         }
 
-        void setAEpsilon(int v, float epsilon) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_epsilon = epsilon;
-        }
-
-        void setATimeScale(int v, float timeScale) {
-            if (_h.getActors()[v] != nullptr)
-                _h.getActors()[v]->_timeScale = timeScale;
+        void setATimeScale(int l, int v, float timeScale) {
+            if (_h.getALayer(l)[v] != nullptr)
+                _h.getALayer(l)[v]->_timeScale = timeScale;
         }
     };
 }

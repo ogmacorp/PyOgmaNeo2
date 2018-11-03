@@ -39,7 +39,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
     for (int l = 0; l < layerDescs.size(); l++) {
         clLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
         clLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
-        clLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
+        clLayerDescs[l]._aRadius = layerDescs[l]._aRadius;
         clLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         clLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
         clLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
