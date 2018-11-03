@@ -115,5 +115,10 @@ namespace pyogmaneo {
             if (_h.getActors()[v] != nullptr)
                 _h.getActors()[v]->_epsilon = epsilon;
         }
+
+        void setATimeScale(int v, float timeScale) {
+            if (_h.getActors()[v] != nullptr)
+                _h.getActors()[v]->_timeScale = timeScale;
+        }
     };
 }
