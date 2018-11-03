@@ -19,11 +19,11 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, cons
     std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
-        clVisibleLayerDescs[v]._size = ogmaneo::Int3(visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z);
+        clVisibleLayerDescs[v]._size = cl_int3{ visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z };
         clVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
-    _enc.createRandom(cs._cs, prog._prog, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), clVisibleLayerDescs, cs._rng);
+    _enc.createRandom(cs._cs, prog._prog, cl_int3{ hiddenSize.x, hiddenSize.y, hiddenSize.z }, clVisibleLayerDescs, cs._rng);
 }
 
 PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
