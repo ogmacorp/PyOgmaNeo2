@@ -59,7 +59,7 @@ namespace pyogmaneo {
         }
 
         PyIntBuffer getHiddenCs() const {
-            cl_int3 size = _p.getHiddenSize();
+            ogmaneo::Int3 size = _p.getHiddenSize();
 
             PyIntBuffer buf;
             buf._size = size.x * size.y;
@@ -69,7 +69,7 @@ namespace pyogmaneo {
         }
 
         PyInt3 getHiddenSize() const {
-            cl_int3 size = _p.getHiddenSize();
+            ogmaneo::Int3 size = _p.getHiddenSize();
 
             return PyInt3(size.x, size.y, size.z);
         }

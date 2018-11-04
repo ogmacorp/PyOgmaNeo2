@@ -58,7 +58,7 @@ file(GLOB_RECURSE PYOGMANEO_SRC
 
 add_library(PyOgmaNeo ${PYOGMANEO_SRC})
 
-target_link_libraries(PyOgmaNeo ${OpenCL_LIBRARIES} ${OGMANEO_LIBRARIES})
+target_link_libraries(PyOgmaNeo "/usr/lib/libOpenCL.so" ${OGMANEO_LIBRARIES})
 
 
 ############################################################################
