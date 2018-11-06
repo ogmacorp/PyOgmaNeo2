@@ -12,6 +12,7 @@ using namespace pyogmaneo;
 
 PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, int historyCapacity, const std::vector<PyAVisibleLayerDesc> &visibleLayerDescs) {
     _alpha = _a._alpha;
+    _beta = _a._beta;
     _gamma = _a._gamma;
     _epsilon = _a._epsilon;
 
@@ -32,6 +33,7 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string 
     _a.readFromStream(cs._cs, prog._prog, is);
 
     _alpha = _a._alpha;
+    _beta = _a._beta;
     _gamma = _a._gamma;
     _epsilon = _a._epsilon;
 
@@ -47,6 +49,7 @@ PyActor::PyActor(PyComputeSystem &cs, PyComputeProgram &prog, const std::string 
 
 void PyActor::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs, float reward, bool learn) {
     _a._alpha = _alpha;
+    _a._beta = _beta;
     _a._gamma = _gamma;
     _a._epsilon = _epsilon;
 
