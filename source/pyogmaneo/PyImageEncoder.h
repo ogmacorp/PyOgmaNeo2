@@ -46,6 +46,8 @@ namespace pyogmaneo {
 
         void learn(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
 
+        void stepEnd(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
+
         void save(PyComputeSystem &cs, const std::string &name) {
             std::ofstream os(name, std::ios::binary);
             _enc.writeToStream(cs._cs, os);

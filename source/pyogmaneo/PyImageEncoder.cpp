@@ -60,3 +60,12 @@ void PyImageEncoder::learn(PyComputeSystem &cs, const std::vector<PyFloatBuffer>
 
     _enc.learn(cs._cs, clVisibleAs);
 }
+
+void PyImageEncoder::stepEnd(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs) {
+    std::vector<cl::Buffer> clVisibleAs(visibleAs.size());
+
+    for (int v = 0; v < visibleAs.size(); v++)
+        clVisibleAs[v] = visibleAs[v]._buf;
+
+    _enc.stepEnd(cs._cs, clVisibleAs);
+}
