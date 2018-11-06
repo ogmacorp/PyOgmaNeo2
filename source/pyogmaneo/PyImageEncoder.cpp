@@ -12,7 +12,6 @@ using namespace pyogmaneo;
 
 PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs) {
     _alpha = _enc._alpha;
-    _explainIters = _enc._explainIters;
 
     _visibleLayerDescs = visibleLayerDescs;
 
@@ -31,7 +30,6 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, cons
     _enc.readFromStream(cs._cs, prog._prog, is);
 
     _alpha = _enc._alpha;
-    _explainIters = _enc._explainIters;
 
     _visibleLayerDescs.resize(_enc.getNumVisibleLayers());
 
@@ -44,8 +42,6 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, cons
 }
 
 void PyImageEncoder::activate(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs) {
-    _enc._explainIters = _explainIters;
-
     std::vector<cl::Buffer> clVisibleAs(visibleAs.size());
 
     for (int v = 0; v < visibleAs.size(); v++)

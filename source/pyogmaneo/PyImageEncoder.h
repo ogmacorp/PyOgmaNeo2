@@ -38,7 +38,6 @@ namespace pyogmaneo {
 
     public:
         float _alpha;
-        int _explainIters;
 
         PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
         PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
