@@ -32,7 +32,7 @@ namespace pyogmaneo {
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -57,10 +57,10 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        PyIntBuffer getActionCs(int i) const {
+        PyIntBuffer getPredictionCs(int i) const {
             PyIntBuffer buf;
             buf._size = _inputSizes[i].x * _inputSizes[i].y;
-            buf._buf = _h.getActionCs(i);
+            buf._buf = _h.getPredictionCs(i);
 
             return buf;
         }
