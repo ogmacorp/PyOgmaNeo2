@@ -93,11 +93,6 @@ namespace pyogmaneo {
                 _h.getALayer(l)[v]->_alpha = alpha;
         }
 
-        void setABeta(int l, int v, float beta) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_beta = beta;
-        }
-
         void setAGamma(int l, int v, float gamma) {
             if (_h.getALayer(l)[v] != nullptr)
                 _h.getALayer(l)[v]->_gamma = gamma;

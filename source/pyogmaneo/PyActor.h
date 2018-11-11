@@ -37,7 +37,6 @@ namespace pyogmaneo {
 
     public:
         float _alpha;
-        float _beta;
         float _gamma;
         float _epsilon;
 
