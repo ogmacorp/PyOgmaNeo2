@@ -17,25 +17,22 @@
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
     const int _inputTypePredict = 1;
-    const int _inputTypeAct = 2;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _aRadius;
+        int _pRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
-        int _historyCapacity;
-
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(8)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -49,7 +46,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
-        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn = true, float reward = 0.0f);
+        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &feedBackCs, bool learn = true);
 
         void save(PyComputeSystem &cs, const std::string &name) {
             std::ofstream os(name, std::ios::binary);
@@ -88,24 +85,9 @@ namespace pyogmaneo {
             _h.getSCLayer(l)._explainIters = explainIters;
         }
 
-        void setAAlpha(int l, int v, float alpha) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_alpha = alpha;
-        }
-
-        void setABeta(int l, int v, float beta) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_beta = beta;
-        }
-
-        void setAGamma(int l, int v, float gamma) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_gamma = gamma;
-        }
-
-        void setAEpsilon(int l, int v, float epsilon) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_epsilon = epsilon;
+        void setPAlpha(int l, int v, float alpha) {
+            if (_h.getPLayer(l)[v] != nullptr)
+                _h.getPLayer(l)[v]->_alpha = alpha;
         }
     };
 }
