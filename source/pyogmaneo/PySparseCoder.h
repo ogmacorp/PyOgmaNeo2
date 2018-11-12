@@ -37,7 +37,6 @@ namespace pyogmaneo {
 
     public:
         float _alpha;
-        int _explainIters;
 
         PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs);
         PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);

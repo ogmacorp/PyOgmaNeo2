@@ -12,8 +12,6 @@ using namespace pyogmaneo;
 
 PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PySCVisibleLayerDesc> &visibleLayerDescs) {
     _alpha = _sc._alpha;
-    _explainIters = _sc._explainIters;
-
     _visibleLayerDescs = visibleLayerDescs;
 
     std::vector<ogmaneo::SparseCoder::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
@@ -31,7 +29,6 @@ PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const 
     _sc.readFromStream(cs._cs, prog._prog, is);
 
     _alpha = _sc._alpha;
-    _explainIters = _sc._explainIters;
 
     _visibleLayerDescs.resize(_sc.getNumVisibleLayers());
 
@@ -44,8 +41,6 @@ PySparseCoder::PySparseCoder(PyComputeSystem &cs, PyComputeProgram &prog, const 
 }
 
 void PySparseCoder::activate(PyComputeSystem &cs, const std::vector<PyIntBuffer> &visibleCs) {
-    _sc._explainIters = _explainIters;
-
     std::vector<cl::Buffer> clVisibleCs(visibleCs.size());
 
     for (int v = 0; v < visibleCs.size(); v++)
