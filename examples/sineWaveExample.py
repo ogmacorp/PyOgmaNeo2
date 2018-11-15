@@ -23,27 +23,27 @@ bounds = (-1.0, 1.0) # Range of value
 
 lds = []
 
-for i in range(4):
+for i in range(9):
     ld = pyogmaneo.PyLayerDesc()
 
-    ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+    ld._hiddenSize = pyogmaneo.PyInt3(6, 6, 24)
     
     lds.append(ld)
 
 h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePredict ], lds)
 
 for i in range(len(lds)):
-    h.setPAlpha(i, 0, 0.5) # Set predictor alpha to 0.5 for all layers (and the only predictor for the inputs)
+    h.setPAlpha(i, 0, 0.2) # Set predictor alpha for all layers (and the only predictor for the inputs)
 
 ioBuf = pyogmaneo.PyIntBuffer(cs, 1)
 
 # Present the wave sequence
-iters = 500
+iters = 1000
 
 for t in range(iters):
     index = t
 
-    valueToEncode = np.sin(index * 0.02 * 2.0 * np.pi)
+    valueToEncode = np.sin(index * 0.02 * 2.0 * np.pi)# * np.sin(index * 0.05 * 2.0 * np.pi + 0.6) * ((index % 13) / 13.0)
 
     ioBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
 
@@ -60,7 +60,7 @@ trgs = []
 for t in range(300):
     index = t + iters
 
-    valueToEncode = np.sin(index * 0.02 * 2.0 * np.pi)
+    valueToEncode = np.sin(index * 0.02 * 2.0 * np.pi)# * np.sin(index * 0.05 * 2.0 * np.pi + 0.6) * ((index % 13) / 13.0)
 
     ioBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
 
