@@ -46,7 +46,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
 
-        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, const PyIntBuffer &feedBackCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn = true);
 
         void save(PyComputeSystem &cs, const std::string &name) {
             std::ofstream os(name, std::ios::binary);
