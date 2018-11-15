@@ -12,7 +12,7 @@ import numpy as np
 import pyogmaneo
 import matplotlib.pyplot as plt
 
-cs = pyogmaneo.PyComputeSystem("cpu")
+cs = pyogmaneo.PyComputeSystem("gpu")
 
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
 prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
@@ -33,14 +33,9 @@ for i in range(9):
 h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePredict ], lds)
 
 for i in range(len(lds)):
-    h.setPAlpha(i, 0, 0.5) # Set predictor alpha to 0.5 for all layers (and the only predictor for the inputs)
+    h.setPAlpha(i, 0, 0.5) # Set predictor alpha for all layers (and the only predictor for the inputs)
 
 ioBuf = pyogmaneo.PyIntBuffer(cs, 1)
-
-fbSize = lds[-1]._hiddenSize.x * lds[-1]._hiddenSize.y
-
-topFB = pyogmaneo.PyIntBuffer(cs, fbSize)
-topFB.write(cs, fbSize * [ 0 ])
 
 # Present the wave sequence
 iters = 3000
@@ -52,7 +47,7 @@ for t in range(iters):
 
     ioBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
 
-    h.step(cs, [ ioBuf ], topFB, True)
+    h.step(cs, [ ioBuf ], True)
 
     if t % 100 == 0:
         print(t)
@@ -69,7 +64,7 @@ for t in range(300):
 
     ioBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
 
-    h.step(cs, [ h.getPredictionCs(0) ], topFB, False)
+    h.step(cs, [ h.getPredictionCs(0) ], False)
 
     predIndex = h.getPredictionCs(0).read(cs)[0] # First (only in this case) input layer prediction
     
