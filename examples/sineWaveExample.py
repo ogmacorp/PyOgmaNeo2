@@ -17,23 +17,32 @@ cs = pyogmaneo.PyComputeSystem("cpu")
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
 prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
 
+# This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 64
 
-bounds = (-1.0, 1.0) # Range of value
+# The bounds of the scalar we are encoding (low, high)
+bounds = (-1.0, 1.0)
 
+# Define layer descriptors: Parameters of each layer upon creation
 lds = []
 
-for i in range(9):
+for i in range(9): # 9 layers with exponential memory
     ld = pyogmaneo.PyLayerDesc()
 
+    # Set the hidden (encoder) layer size: width x height x columnSize
     ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
     
     lds.append(ld)
 
+# Create the hierarchy: Provided with input layer sizes (a single column in this case), and input types (a single predicted layer)
 h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePredict ], lds)
 
+# After creation, we can set run-time parameters
 for i in range(len(lds)):
-    h.setPAlpha(i, 0, 0.5) # Set predictor alpha to 0.5 for all layers (and the only predictor for the inputs)
+    h.setSCAlpha(i, 0.01) # Set the sparse coding (aka encoder) alpha to 0.01
+    h.setSCExplainIters(i, 4) # Set the number of explaining-away iterations in the sparse coding process to 4
+    h.setPAlpha(i, 0, 0.5) # Set predictor (aka decoder) alpha to 0.5 for all layers (and the only predictor for the inputs)
+    
 
 ioBuf = pyogmaneo.PyIntBuffer(cs, 1)
 
