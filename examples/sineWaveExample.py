@@ -12,71 +12,99 @@ import numpy as np
 import pyogmaneo
 import matplotlib.pyplot as plt
 
-cs = pyogmaneo.PyComputeSystem("gpu")
+# Create the compute system using a device
+cs = pyogmaneo.PyComputeSystem("gpu") # Set device here. Optional overload: device type string, random seed, platform index, device index
 
+# Load the kernels (compute program)
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
 prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
 
+# This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 64
 
-bounds = (-1.0, 1.0) # Range of value
+# The bounds of the scalar we are encoding (low, high)
+bounds = (-1.0, 1.0)
 
+# Define layer descriptors: Parameters of each layer upon creation
 lds = []
 
-for i in range(9):
+for i in range(9): # 9 layers with exponential memory
     ld = pyogmaneo.PyLayerDesc()
 
-    ld._hiddenSize = pyogmaneo.PyInt3(6, 6, 24)
+    # Set the hidden (encoder) layer size: width x height x columnSize
+    ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+
+    ld._scRadius = 2 # Sparse coder radius onto visible layers
+    ld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
+
+    ld._ticksPerUpdate = 2 # How many ticks before a layer updates (compared to previous layer) - clock speed for exponential memory
+    ld._temporalHorizon = 2 # Memory horizon of the layer. Must be greater or equal to ticksPerUpdate, usually equal (minimum required)
     
     lds.append(ld)
 
+# Create the hierarchy: Provided with input layer sizes (a single column in this case), and input types (a single predicted layer)
 h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePredict ], lds)
 
+# After creation, we can set run-time parameters
 for i in range(len(lds)):
-    h.setPAlpha(i, 0, 0.2) # Set predictor alpha for all layers (and the only predictor for the inputs)
+    # Encoder
+    h.setSCAlpha(i, 0.01) # Set the sparse coding (aka encoder) alpha to 0.01
+    h.setSCExplainIters(i, 4) # Set the number of explaining-away iterations in the sparse coding process to 4
 
-ioBuf = pyogmaneo.PyIntBuffer(cs, 1)
+    # Decoder - has additional parameter for visible layer index, must be looped through
 
-# Present the wave sequence
-iters = 1000
+    for v in range(h.getNumVisibleLayers(i)):
+        h.setPAlpha(i, v, 0.5) # Set predictor (aka decoder) alpha to 0.5 for all layers's visible layers
+    
+# Create a buffer to place input into (a single integer, since our input is 1x1 columns, and 1 integer represents the index into a column)
+inBuf = pyogmaneo.PyIntBuffer(cs, 1)
+
+# Present the wave sequence for some timesteps
+iters = 500
 
 for t in range(iters):
-    index = t
+    # The value to encode into the input column
+    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi)
 
-    valueToEncode = np.sin(index * 0.02 * 2.0 * np.pi)# * np.sin(index * 0.05 * 2.0 * np.pi + 0.6) * ((index % 13) / 13.0)
+    # Bin the value into the column and write into the input buffer. We are simply rounding to the nearest integer location to "bin" the scalar into the column
+    inBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
 
-    ioBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
+    # Step the hierarchy given the inputs (just one here)
+    h.step(cs, [ inBuf ], True) # True for enabling learning
 
-    h.step(cs, [ ioBuf ], True)
-
+    # Print progress
     if t % 100 == 0:
         print(t)
 
-# Recall
-ts = []
-vs = []
-trgs = []
+# Recall the sequence
+ts = [] # Time step
+vs = [] # Predicted value
+trgs = [] # True value
 
 for t in range(300):
-    index = t + iters
+    t2 = t + iters # Continue where previous sequence left off
 
-    valueToEncode = np.sin(index * 0.02 * 2.0 * np.pi)# * np.sin(index * 0.05 * 2.0 * np.pi + 0.6) * ((index % 13) / 13.0)
+    # New, continued value for comparison to what the hierarchy predicts
+    valueToEncode = np.sin(t2 * 0.02 * 2.0 * np.pi)
 
-    ioBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
-
+    # Run off of own predictions with learning disabled
     h.step(cs, [ h.getPredictionCs(0) ], False)
 
+    # Retrieve the predicted column index
     predIndex = h.getPredictionCs(0).read(cs)[0] # First (only in this case) input layer prediction
     
-    # Decode value
+    # Decode value (de-bin)
     value = predIndex / float(inputColumnSize - 1) * (bounds[1] - bounds[0]) + bounds[0]
 
+    # Append to plot data
     ts.append(t)
     vs.append(value)
     trgs.append(valueToEncode)
 
+    # Show predicted value
     print(value)
 
+# Show plot
 plt.plot(ts, vs, ts, trgs)
 plt.show()
 

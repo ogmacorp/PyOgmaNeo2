@@ -77,6 +77,10 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
+        int getNumVisibleLayers(int l) {
+            return _h.getPLayer(l).size();
+        }
+
         void setSCAlpha(int l, float alpha) {
             _h.getSCLayer(l)._alpha = alpha;
         }
