@@ -13,7 +13,7 @@ import pyogmaneo
 import matplotlib.pyplot as plt
 
 # Create the compute system using a device
-cs = pyogmaneo.PyComputeSystem("gpu") # Set device here. Optional overload: device type string, random seed, platform index, device index
+cs = pyogmaneo.PyComputeSystem("gpu", 1234, 0) # Set device here. Optional overload: device type string, random seed, platform index, device index
 
 # Load the kernels (compute program)
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
@@ -52,7 +52,6 @@ for i in range(len(lds)):
     h.setSCExplainIters(i, 4) # Set the number of explaining-away iterations in the sparse coding process to 4
 
     # Decoder - has additional parameter for visible layer index, must be looped through
-
     for v in range(h.getNumVisibleLayers(i)):
         h.setPAlpha(i, v, 0.5) # Set predictor (aka decoder) alpha to 0.5 for all layers's visible layers
     
