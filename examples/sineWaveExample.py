@@ -32,7 +32,7 @@ for i in range(9): # 9 layers with exponential memory
     ld = pyogmaneo.PyLayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
-    ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+    ld._hiddenSize = pyogmaneo.PyInt3(8, 8, 16)
 
     ld._scRadius = 2 # Sparse coder radius onto visible layers
     ld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
@@ -53,17 +53,17 @@ for i in range(len(lds)):
 
     # Decoder - has additional parameter for visible layer index, must be looped through
     for v in range(h.getNumVisibleLayers(i)):
-        h.setPAlpha(i, v, 0.5) # Set predictor (aka decoder) alpha to 0.5 for all layers's visible layers
+        h.setPAlpha(i, v, 1.0) # Set predictor (aka decoder) alpha to 0.5 for all layers's visible layers
     
 # Create a buffer to place input into (a single integer, since our input is 1x1 columns, and 1 integer represents the index into a column)
 inBuf = pyogmaneo.PyIntBuffer(cs, 1)
 
 # Present the wave sequence for some timesteps
-iters = 500
+iters = 3000
 
 for t in range(iters):
     # The value to encode into the input column
-    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi)
+    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi) * np.sin(t * 0.035 * 2.0 * np.pi + 0.45)
 
     # Bin the value into the column and write into the input buffer. We are simply rounding to the nearest integer location to "bin" the scalar into the column
     inBuf.write(cs, [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ])
@@ -84,7 +84,7 @@ for t in range(300):
     t2 = t + iters # Continue where previous sequence left off
 
     # New, continued value for comparison to what the hierarchy predicts
-    valueToEncode = np.sin(t2 * 0.02 * 2.0 * np.pi)
+    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi) * np.sin(t * 0.035 * 2.0 * np.pi + 0.45)
 
     # Run off of own predictions with learning disabled
     h.step(cs, [ h.getPredictionCs(0) ], False)
