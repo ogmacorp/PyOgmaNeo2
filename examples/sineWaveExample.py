@@ -48,18 +48,18 @@ h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ],
 # After creation, we can set run-time parameters
 for i in range(len(lds)):
     # Encoder
-    h.setSCAlpha(i, 0.01) # Set the sparse coding (aka encoder) alpha to 0.01
+    h.setSCAlpha(i, 1.0) # Set the sparse coding (aka encoder) alpha to 1.0
     h.setSCExplainIters(i, 4) # Set the number of explaining-away iterations in the sparse coding process to 4
 
     # Decoder - has additional parameter for visible layer index, must be looped through
     for v in range(h.getNumVisibleLayers(i)):
-        h.setPAlpha(i, v, 1.0) # Set predictor (aka decoder) alpha to 0.5 for all layers's visible layers
+        h.setPAlpha(i, v, 1.0) # Set predictor (aka decoder) alpha to 1.0 for all layers's visible layers
     
 # Create a buffer to place input into (a single integer, since our input is 1x1 columns, and 1 integer represents the index into a column)
 inBuf = pyogmaneo.PyIntBuffer(cs, 1)
 
 # Present the wave sequence for some timesteps
-iters = 3000
+iters = 2000
 
 for t in range(iters):
     # The value to encode into the input column
