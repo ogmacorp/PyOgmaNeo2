@@ -46,10 +46,15 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
 }
 
 void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn, float reward) {
+    assert(inputCs.size() == _h.getInputSizes().size());
+
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
 
-    for (int i = 0; i < inputCs.size(); i++)
-        cInputCs[i] = &inputCs[i];
+    for (int i = 0; i < inputCs.size(); i++) {
+        assert(inputCs[i].size() == _h.getInputSizes()[i].x * _h.getInputSizes()[i].y);
 
+        cInputCs[i] = &inputCs[i];
+    }
+    
     _h.step(cs._cs, cInputCs, learn, reward);
 }
