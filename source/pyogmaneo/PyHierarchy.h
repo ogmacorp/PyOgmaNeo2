@@ -9,8 +9,7 @@
 #pragma once
 
 #include "PyConstructs.h"
-#include "PyComputeProgram.h"
-#include "PyIntBuffer.h"
+#include "PyComputeSystem.h"
 #include <ogmaneo/neo/Hierarchy.h>
 #include <fstream>
 
@@ -46,26 +45,16 @@ namespace pyogmaneo {
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
+        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
 
-        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn = true, float reward = 0.0f);
-
-        void save(PyComputeSystem &cs, const std::string &name) {
-            std::ofstream os(name, std::ios::binary);
-            _h.writeToStream(cs._cs, os);
-        }
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true, float reward = 0.0f);
 
         int getNumLayers() const {
             return _h.getNumLayers();
         }
 
-        PyIntBuffer getActionCs(int i) const {
-            PyIntBuffer buf;
-            buf._size = _inputSizes[i].x * _inputSizes[i].y;
-            buf._buf = _h.getActionCs(i);
-
-            return buf;
+        const std::vector<int> &getActionCs(int i) const {
+            return _h.getActionCs(i);
         }
 
         bool getUpdate(int l) const {

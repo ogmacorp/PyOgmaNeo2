@@ -19,14 +19,7 @@
 %{
 #include "PyConstructs.h"
 #include "PyComputeSystem.h"
-#include "PyComputeProgram.h"
-#include "PyIntBuffer.h"
-#include "PyFloatBuffer.h"
-#include "PySparseCoder.h"
-#include "PyPredictor.h"
-#include "PyActor.h"
 #include "PyHierarchy.h"
-#include "PyImageEncoder.h"
 %}
 
 // Handle STL exceptions
@@ -41,23 +34,12 @@
 }
 
 %template(StdVeci) std::vector<int>;
+%template(StdVec2Di) std::vector<std::vector<int> >;
 %template(StdVecf) std::vector<float>;
+%template(StdVec2Df) std::vector<std::vector<float> >;
 %template(StdVecInt3) std::vector<pyogmaneo::PyInt3>;
-%template(StdVecIntBuffer) std::vector<pyogmaneo::PyIntBuffer>;
-%template(StdVecFloatBuffer) std::vector<pyogmaneo::PyFloatBuffer>;
-%template(StdVecSCVLD) std::vector<pyogmaneo::PySCVisibleLayerDesc>;
-%template(StdVecPVLD) std::vector<pyogmaneo::PyPVisibleLayerDesc>;
-%template(StdVecAVLD) std::vector<pyogmaneo::PyAVisibleLayerDesc>;
-%template(StdVecImVLD) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
 %template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
 
 %include "PyConstructs.h"
 %include "PyComputeSystem.h"
-%include "PyComputeProgram.h"
-%include "PyIntBuffer.h"
-%include "PyFloatBuffer.h"
-%include "PySparseCoder.h"
-%include "PyPredictor.h"
-%include "PyActor.h"
 %include "PyHierarchy.h"
-%include "PyImageEncoder.h"
