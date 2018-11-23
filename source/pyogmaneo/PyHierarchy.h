@@ -15,8 +15,7 @@
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypePredict = 1;
-    const int _inputTypeAct = 2;
+    const int _inputTypeAct = 1;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
