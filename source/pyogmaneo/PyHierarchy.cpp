@@ -25,8 +25,8 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         case _inputTypeNone:
             cInputTypes[i] = ogmaneo::_none;
             break;
-        case _inputTypeAct:
-            cInputTypes[i] = ogmaneo::_act;
+        case _inputTypePred:
+            cInputTypes[i] = ogmaneo::_predict;
             break;
         }
     }
@@ -36,7 +36,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
     for (int l = 0; l < layerDescs.size(); l++) {
         cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
         cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
-        cLayerDescs[l]._aRadius = layerDescs[l]._aRadius;
+        cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
         cLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
@@ -45,7 +45,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
     _h.createRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn, float reward) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &goalCs, bool learn) {
     assert(inputCs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
@@ -56,5 +56,5 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, learn, reward);
+    _h.step(cs._cs, cInputCs, &goalCs, learn);
 }

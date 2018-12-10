@@ -15,13 +15,13 @@
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypeAct = 1;
+    const int _inputTypePred = 1;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _aRadius;
+        int _pRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
@@ -29,11 +29,11 @@ namespace pyogmaneo {
         int _historyCapacity;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(64)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(64)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -46,7 +46,7 @@ namespace pyogmaneo {
     public:
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true, float reward = 0.0f);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &goalCs, bool learn = true);
 
         int getNumLayers() const {
             return _h.getNumLayers();
@@ -69,7 +69,7 @@ namespace pyogmaneo {
         }
 
         int getNumVisibleLayers(int l) {
-            return _h.getALayer(l).size();
+            return _h.getPLayer(l).size();
         }
 
         void setSCAlpha(int l, float alpha) {
@@ -80,19 +80,19 @@ namespace pyogmaneo {
             _h.getSCLayer(l)._explainIters = explainIters;
         }
 
-        void setAAlpha(int l, int v, float alpha) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_alpha = alpha;
+        void setPAlpha(int l, int v, float alpha) {
+            if (_h.getPLayer(l)[v] != nullptr)
+                _h.getPLayer(l)[v]->_alpha = alpha;
         }
 
-        void setAGamma(int l, int v, float gamma) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_gamma = gamma;
+        void setPGamma(int l, int v, float gamma) {
+            if (_h.getPLayer(l)[v] != nullptr)
+                _h.getPLayer(l)[v]->_gamma = gamma;
         }
 
-        void setAHistoryIters(int l, int v, int historyIters) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_historyIters = historyIters;
+        void setPHistoryIters(int l, int v, int historyIters) {
+            if (_h.getPLayer(l)[v] != nullptr)
+                _h.getPLayer(l)[v]->_historyIters = historyIters;
         }
     };
 }
