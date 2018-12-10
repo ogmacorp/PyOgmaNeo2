@@ -52,8 +52,8 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getActionCs(int i) const {
-            return _h.getActionCs(i);
+        const std::vector<int> &getPredictionCs(int i) const {
+            return _h.getPredictionCs(i);
         }
 
         bool getUpdate(int l) const {
