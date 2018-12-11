@@ -88,15 +88,5 @@ namespace pyogmaneo {
             if (_h.getPLayer(l)[v] != nullptr)
                 _h.getPLayer(l)[v]->_alpha = alpha;
         }
-
-        void setPGamma(int l, int v, float gamma) {
-            if (_h.getPLayer(l)[v] != nullptr)
-                _h.getPLayer(l)[v]->_gamma = gamma;
-        }
-
-        void setPHistoryIters(int l, int v, int historyIters) {
-            if (_h.getPLayer(l)[v] != nullptr)
-                _h.getPLayer(l)[v]->_historyIters = historyIters;
-        }
     };
 }
