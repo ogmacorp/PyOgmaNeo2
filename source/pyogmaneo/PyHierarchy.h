@@ -90,6 +90,11 @@ namespace pyogmaneo {
                 _h.getALayer(l)[v]->_gamma = gamma;
         }
 
+        void setAEpsilon(int l, int v, float epsilon) {
+            if (_h.getALayer(l)[v] != nullptr)
+                _h.getALayer(l)[v]->_epsilon = epsilon;
+        }
+
         void setAHistoryIters(int l, int v, int historyIters) {
             if (_h.getALayer(l)[v] != nullptr)
                 _h.getALayer(l)[v]->_historyIters = historyIters;
