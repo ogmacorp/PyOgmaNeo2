@@ -76,6 +76,10 @@ namespace pyogmaneo {
             _h.getSCLayer(l)._alpha = alpha;
         }
 
+        void setSCExplainIters(int l, int explainIters) {
+            _h.getSCLayer(l)._explainIters = explainIters;
+        }
+
         void setAAlpha(int l, int v, float alpha) {
             if (_h.getALayer(l)[v] != nullptr)
                 _h.getALayer(l)[v]->_alpha = alpha;
