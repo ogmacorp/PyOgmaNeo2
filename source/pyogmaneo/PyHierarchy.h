@@ -81,7 +81,7 @@ namespace pyogmaneo {
                 _h.getALayer(l)[v]->_alpha = alpha;
         }
 
-        void setABeta(int l, int v, float alpha) {
+        void setABeta(int l, int v, float beta) {
             if (_h.getALayer(l)[v] != nullptr)
                 _h.getALayer(l)[v]->_beta = beta;
         }
@@ -91,9 +91,9 @@ namespace pyogmaneo {
                 _h.getALayer(l)[v]->_gamma = gamma;
         }
 
-        void setAFixRate(int l, int v, float fixRate) {
+        void setAFixedRate(int l, int v, float fixedRate) {
             if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_fixRate = fixRate;
+                _h.getALayer(l)[v]->_fixedRate = fixedRate;
         }
     };
 }
