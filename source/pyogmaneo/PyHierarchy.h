@@ -15,7 +15,8 @@
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypeAct = 1;
+    const int _inputTypePredict = 1;
+    const int _inputTypeAct = 2;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
@@ -52,8 +53,8 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getActionCs(int i) const {
-            return _h.getActionCs(i);
+        const std::vector<int> &getPredictionCs(int i) const {
+            return _h.getPredictionCs(i);
         }
 
         bool getUpdate(int l) const {
@@ -76,19 +77,24 @@ namespace pyogmaneo {
             _h.getSCLayer(l)._alpha = alpha;
         }
 
-        void setAAlpha(int l, int v, float alpha) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_alpha = alpha;
+        void setPAlpha(int l, int v, float alpha) {
+            if (_h.getPLayer(l)[v] != nullptr)
+                _h.getPLayer(l)[v]->_alpha = alpha;
         }
 
-        void setABeta(int l, int v, float beta) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_beta = beta;
+        void setAAlpha(int v, float alpha) {
+            if (_h.getALayers()[v] != nullptr)
+                _h.getALayers()[v]->_alpha = alpha;
         }
 
-        void setAGamma(int l, int v, float gamma) {
-            if (_h.getALayer(l)[v] != nullptr)
-                _h.getALayer(l)[v]->_gamma = gamma;
+        void setABeta(int v, float beta) {
+            if (_h.getALayers()[v] != nullptr)
+                _h.getALayers()[v]->_beta = beta;
+        }
+
+        void setAGamma(int v, float gamma) {
+            if (_h.getALayers()[v] != nullptr)
+                _h.getALayers()[v]->_gamma = gamma;
         }
     };
 }
