@@ -22,9 +22,6 @@
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
 #include "PyFloatBuffer.h"
-#include "PySparseCoder.h"
-#include "PyPredictor.h"
-#include "PyActor.h"
 #include "PyHierarchy.h"
 #include "PyImageEncoder.h"
 %}
@@ -45,9 +42,6 @@
 %template(StdVecInt3) std::vector<pyogmaneo::PyInt3>;
 %template(StdVecIntBuffer) std::vector<pyogmaneo::PyIntBuffer>;
 %template(StdVecFloatBuffer) std::vector<pyogmaneo::PyFloatBuffer>;
-%template(StdVecSCVLD) std::vector<pyogmaneo::PySCVisibleLayerDesc>;
-%template(StdVecPVLD) std::vector<pyogmaneo::PyPVisibleLayerDesc>;
-%template(StdVecAVLD) std::vector<pyogmaneo::PyAVisibleLayerDesc>;
 %template(StdVecImVLD) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
 %template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
 
@@ -56,8 +50,5 @@
 %include "PyComputeProgram.h"
 %include "PyIntBuffer.h"
 %include "PyFloatBuffer.h"
-%include "PySparseCoder.h"
-%include "PyPredictor.h"
-%include "PyActor.h"
 %include "PyHierarchy.h"
 %include "PyImageEncoder.h"
