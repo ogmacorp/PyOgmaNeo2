@@ -45,7 +45,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
     _h.createRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &goalCs, bool learn) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn) {
     assert(inputCs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
@@ -56,5 +56,5 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, &goalCs, learn);
+    _h.step(cs._cs, cInputCs, learn);
 }
