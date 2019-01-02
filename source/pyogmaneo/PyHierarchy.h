@@ -81,17 +81,36 @@ namespace pyogmaneo {
             return _h.getPLayer(l).size();
         }
 
+        bool visibleLayerExists(int l, int v) {
+            return _h.getPLayer(l)[v] != nullptr;
+        }
+
         void setSCAlpha(int l, float alpha) {
             _h.getSCLayer(l)._alpha = alpha;
+        }
+
+        float getSCAlpha(int l) const {
+            return _h.getSCLayer(l)._alpha;
         }
 
         void setSCExplainIters(int l, int explainIters) {
             _h.getSCLayer(l)._explainIters = explainIters;
         }
 
+        int getSCExplainIters(int l) const {
+            return _h.getSCLayer(l)._explainIters;
+        }
+
         void setPAlpha(int l, int v, float alpha) {
-            if (_h.getPLayer(l)[v] != nullptr)
-                _h.getPLayer(l)[v]->_alpha = alpha;
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            _h.getPLayer(l)[v]->_alpha = alpha;
+        }
+
+        float getPAlpha(int l, int v) const {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            return _h.getPLayer(l)[v]->_alpha;
         }
     };
 }
