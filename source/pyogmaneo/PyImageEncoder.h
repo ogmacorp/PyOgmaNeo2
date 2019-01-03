@@ -37,7 +37,7 @@ namespace pyogmaneo {
     public:
         PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
 
-        void activate(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled);
 
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();

@@ -23,12 +23,12 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
     _enc.createRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
 }
 
-void PyImageEncoder::activate(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations) {
+void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled) {
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
     for (int i = 0; i < visibleActivations.size(); i++) {
         cVisibleActivations[i] = &visibleActivations[i];
     }
 
-    _enc.activate(cs._cs, cVisibleActivations);
+    _enc.step(cs._cs, cVisibleActivations, learnEnabled);
 }
