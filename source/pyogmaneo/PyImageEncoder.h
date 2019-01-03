@@ -30,21 +30,18 @@ namespace pyogmaneo {
 
     class PyImageEncoder {
     private:
-        std::vector<PyImVisibleLayerDesc> _visibleLayerDescs;
-
         ogmaneo::ImageEncoder _enc;
 
     public:
         PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
+        PyImageEncoder(const std::string &fileName);
 
         void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled);
 
+        void save(const std::string &fileName) const;
+
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();
-        }
-
-        const PyImVisibleLayerDesc &getVisibleLayerDesc(int index) const {
-            return _visibleLayerDescs[index];
         }
 
         std::vector<int> getHiddenCs() const {

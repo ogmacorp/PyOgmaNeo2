@@ -11,8 +11,6 @@
 using namespace pyogmaneo;
 
 PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs) {
-    _visibleLayerDescs = visibleLayerDescs;
-
     std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> cVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
@@ -23,6 +21,12 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
     _enc.createRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
 }
 
+PyImageEncoder::PyImageEncoder(const std::string &fileName) {
+    std::ifstream is(fileName);
+    
+    _enc.readFromStream(is);
+}
+
 void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled) {
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
@@ -31,4 +35,10 @@ void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<flo
     }
 
     _enc.step(cs._cs, cVisibleActivations, learnEnabled);
+}
+
+void PyImageEncoder::save(const std::string &fileName) const {
+    std::ofstream os(fileName);
+
+    _enc.writeToStream(os);
 }

@@ -39,14 +39,15 @@ namespace pyogmaneo {
 
     class PyHierarchy {
     private:
-        std::vector<PyInt3> _inputSizes;
-
         ogmaneo::Hierarchy _h;
 
     public:
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(const std::string &fileName);
 
         void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
+
+        void save(const std::string &fileName) const;
 
         int getNumLayers() const {
             return _h.getNumLayers();
