@@ -10,7 +10,7 @@
 
 #include "PyConstructs.h"
 #include "PyComputeSystem.h"
-#include <ogmaneo/neo/ImageEncoder.h>
+#include <ogmaneo/ImageEncoder.h>
 #include <fstream>
 
 namespace pyogmaneo {

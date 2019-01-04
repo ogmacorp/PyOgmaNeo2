@@ -10,7 +10,7 @@
 
 #include "PyConstructs.h"
 #include "PyComputeSystem.h"
-#include <ogmaneo/neo/Hierarchy.h>
+#include <ogmaneo/Hierarchy.h>
 #include <fstream>
 
 namespace pyogmaneo {
