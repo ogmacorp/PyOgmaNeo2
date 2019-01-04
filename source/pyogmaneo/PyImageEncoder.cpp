@@ -37,6 +37,10 @@ void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<flo
     _enc.step(cs._cs, cVisibleActivations, learnEnabled);
 }
 
+void PyImageEncoder::reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs) {
+    _enc.reconstruct(cs._cs, &hiddenCs);
+}
+
 void PyImageEncoder::save(const std::string &fileName) const {
     std::ofstream os(fileName);
 
