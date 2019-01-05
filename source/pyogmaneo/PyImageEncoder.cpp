@@ -22,7 +22,7 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
 }
 
 PyImageEncoder::PyImageEncoder(const std::string &fileName) {
-    std::ifstream is(fileName);
+    std::ifstream is(fileName, std::ios::binary);
     
     _enc.readFromStream(is);
 }
@@ -42,7 +42,7 @@ void PyImageEncoder::reconstruct(PyComputeSystem &cs, const std::vector<int> &hi
 }
 
 void PyImageEncoder::save(const std::string &fileName) const {
-    std::ofstream os(fileName);
+    std::ofstream os(fileName, std::ios::binary);
 
     _enc.writeToStream(os);
 }

@@ -44,7 +44,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
 }
 
 PyHierarchy::PyHierarchy(const std::string &fileName) {
-    std::ifstream is(fileName);
+    std::ifstream is(fileName, std::ios::binary);
     
     _h.readFromStream(is);
 }
@@ -64,7 +64,7 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
 }
 
 void PyHierarchy::save(const std::string &fileName) const {
-    std::ofstream os(fileName);
+    std::ofstream os(fileName, std::ios::binary);
 
     _h.writeToStream(os);
 }
