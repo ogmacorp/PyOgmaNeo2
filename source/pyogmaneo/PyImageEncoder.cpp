@@ -19,15 +19,21 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
     }
 
     _enc.createRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
+
+    _alpha = _enc._alpha;
 }
 
 PyImageEncoder::PyImageEncoder(const std::string &fileName) {
     std::ifstream is(fileName, std::ios::binary);
     
     _enc.readFromStream(is);
+
+    _alpha = _enc._alpha;
 }
 
 void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled) {
+    _enc._alpha = _alpha;
+    
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
     for (int i = 0; i < visibleActivations.size(); i++) {
