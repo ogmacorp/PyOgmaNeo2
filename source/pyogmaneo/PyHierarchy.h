@@ -15,23 +15,25 @@
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypePred = 1;
+    const int _inputTypeAct = 1;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _pRadius;
+        int _aRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
+        int _historyCapacity;
+
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(8)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon, int historyCapacity)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon), _historyCapacity(historyCapacity)
         {}
     };
 
@@ -43,7 +45,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, float reward, bool learnEnabled = true);
 
         void save(const std::string &fileName) const;
 
@@ -51,8 +53,8 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getPredictionCs(int i) const {
-            return _h.getPredictionCs(i);
+        const std::vector<int> &getActionCs(int i) const {
+            return _h.getActionCs(i);
         }
 
         bool getUpdate(int l) const {
@@ -72,11 +74,11 @@ namespace pyogmaneo {
         }
 
         int getNumVisibleLayers(int l) {
-            return _h.getPLayer(l).size();
+            return _h.getALayer(l).size();
         }
 
         bool visibleLayerExists(int l, int v) {
-            return _h.getPLayer(l)[v] != nullptr;
+            return _h.getALayer(l)[v] != nullptr;
         }
 
         void setSCAlpha(int l, float alpha) {
@@ -95,16 +97,40 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._explainIters;
         }
 
-        void setPAlpha(int l, int v, float alpha) {
-            assert(_h.getPLayer(l)[v] != nullptr);
+        void setAAlpha(int l, int v, float alpha) {
+            assert(_h.getALayer(l)[v] != nullptr);
             
-            _h.getPLayer(l)[v]->_alpha = alpha;
+            _h.getALayer(l)[v]->_alpha = alpha;
         }
 
-        float getPAlpha(int l, int v) const {
-            assert(_h.getPLayer(l)[v] != nullptr);
+        float getAAlpha(int l, int v) const {
+            assert(_h.getALayer(l)[v] != nullptr);
             
-            return _h.getPLayer(l)[v]->_alpha;
+            return _h.getALayer(l)[v]->_alpha;
+        }
+
+        void setABeta(int l, int v, float beta) {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            _h.getALayer(l)[v]->_beta = beta;
+        }
+
+        float getABeta(int l, int v) const {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            return _h.getALayer(l)[v]->_beta;
+        }
+
+        void setAGamma(int l, int v, float gamma) {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            _h.getALayer(l)[v]->_gamma = gamma;
+        }
+
+        float getAGamma(int l, int v) const {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            return _h.getALayer(l)[v]->_gamma;
         }
     };
 }
