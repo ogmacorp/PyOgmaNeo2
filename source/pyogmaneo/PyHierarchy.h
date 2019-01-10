@@ -109,18 +109,6 @@ namespace pyogmaneo {
             return _h.getALayer(l)[v]->_alpha;
         }
 
-        void setABeta(int l, int v, float beta) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_beta = beta;
-        }
-
-        float getABeta(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_beta;
-        }
-
         void setAGamma(int l, int v, float gamma) {
             assert(_h.getALayer(l)[v] != nullptr);
             
@@ -131,6 +119,18 @@ namespace pyogmaneo {
             assert(_h.getALayer(l)[v] != nullptr);
             
             return _h.getALayer(l)[v]->_gamma;
+        }
+
+        void setAHistoryIters(int l, int v, int historyIters) {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            _h.getALayer(l)[v]->_historyIters = historyIters;
+        }
+
+        int getAHistoryIters(int l, int v) const {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            return _h.getALayer(l)[v]->_historyIters;
         }
     };
 }
