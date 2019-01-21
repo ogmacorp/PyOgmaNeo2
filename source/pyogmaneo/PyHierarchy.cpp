@@ -39,7 +39,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
 
-    _h.createRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
+    _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
 }
 
 PyHierarchy::PyHierarchy(const std::string &fileName) {
