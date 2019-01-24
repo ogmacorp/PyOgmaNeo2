@@ -18,7 +18,7 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
         cVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
-    _enc.createRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
+    _enc.initRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
 
     _alpha = _enc._alpha;
 }
