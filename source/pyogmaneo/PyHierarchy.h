@@ -89,14 +89,6 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCBeta(int l, float beta) {
-            _h.getSCLayer(l)._beta = beta;
-        }
-
-        float getSCBeta(int l) const {
-            return _h.getSCLayer(l)._beta;
-        }
-
         void setSCGamma(int l, float gamma) {
             _h.getSCLayer(l)._gamma = gamma;
         }
@@ -123,18 +115,6 @@ namespace pyogmaneo {
             assert(_h.getALayer(l)[v] != nullptr);
             
             return _h.getALayer(l)[v]->_alpha;
-        }
-
-        void setABeta(int l, int v, float beta) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_beta = beta;
-        }
-
-        float getABeta(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_beta;
         }
 
         void setAGamma(int l, int v, float gamma) {
