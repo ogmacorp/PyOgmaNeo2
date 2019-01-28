@@ -29,7 +29,7 @@ namespace pyogmaneo {
         int _historyCapacity;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(16)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(32)
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon, int historyCapacity)
@@ -123,18 +123,6 @@ namespace pyogmaneo {
             assert(_h.getALayer(l)[v] != nullptr);
             
             return _h.getALayer(l)[v]->_epsilon;
-        }
-
-        void setAHistoryIters(int l, int v, int historyIters) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_historyIters = historyIters;
-        }
-
-        int getAHistoryIters(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_historyIters;
         }
     };
 }
