@@ -73,14 +73,6 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
-        int getNumVisibleLayers(int l) {
-            return _h.getALayer(l).size();
-        }
-
-        bool visibleLayerExists(int l, int v) {
-            return _h.getALayer(l)[v] != nullptr;
-        }
-
         void setSCAlpha(int l, float alpha) {
             _h.getSCLayer(l)._alpha = alpha;
         }
@@ -89,56 +81,36 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCGamma(int l, float gamma) {
-            _h.getSCLayer(l)._gamma = gamma;
+        void setBeta(float beta) {
+            _h._beta = beta;
         }
 
-        float getSCGamma(int l) const {
-            return _h.getSCLayer(l)._gamma;
+        float getBeta() const {
+            return _h._beta;
         }
 
-        void setSCEpsilon(int l, float epsilon) {
-            _h.getSCLayer(l)._epsilon = epsilon;
+        void setGamma(float gamma) {
+            _h._gamma = gamma;
         }
 
-        float getSCEpsilon(int l) const {
-            return _h.getSCLayer(l)._epsilon;
+        float getGamma() const {
+            return _h._gamma;
         }
 
-        void setAAlpha(int l, int v, float alpha) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_alpha = alpha;
+        void setMaxHistorySamples(int maxHistorySamples) {
+            _h._maxHistorySamples = maxHistorySamples;
         }
 
-        float getAAlpha(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_alpha;
+        int setMaxHistorySamples() const {
+            return _h._maxHistorySamples;
         }
 
-        void setAGamma(int l, int v, float gamma) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_gamma = gamma;
+        void setHistoryIters(int historyIters) {
+            _h._historyIters = historyIters;
         }
 
-        float getAGamma(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_gamma;
-        }
-
-        void setAEpsilon(int l, int v, float epsilon) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_epsilon = epsilon;
-        }
-
-        float getAEpsilon(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_epsilon;
+        int getHistoryIters() const {
+            return _h._historyIters;
         }
     };
 }
