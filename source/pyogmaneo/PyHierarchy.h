@@ -21,7 +21,7 @@ namespace pyogmaneo {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _aRadius;
+        int _rRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
@@ -29,11 +29,11 @@ namespace pyogmaneo {
         int _historyCapacity;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(8)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _rRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon, int historyCapacity)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon), _historyCapacity(historyCapacity)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int rRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _rRadius(rRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
