@@ -9,14 +9,13 @@
 #pragma once
 
 #include "PyConstructs.h"
-#include "PyComputeProgram.h"
-#include "PyIntBuffer.h"
-#include <ogmaneo/neo/Hierarchy.h>
+#include "PyComputeSystem.h"
+#include <ogmaneo/Hierarchy.h>
 #include <fstream>
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypePredict = 1;
+    const int _inputTypePred = 1;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
@@ -38,35 +37,30 @@ namespace pyogmaneo {
 
     class PyHierarchy {
     private:
-        std::vector<PyInt3> _inputSizes;
-
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
-        PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
+        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
 
-        void save(PyComputeSystem &cs, const std::string &name) {
-            std::ofstream os(name, std::ios::binary);
-            _h.writeToStream(cs._cs, os);
-        }
+        void save(const std::string &fileName) const;
 
         int getNumLayers() const {
             return _h.getNumLayers();
         }
 
-        PyIntBuffer getPredictionCs(int i) const {
-            PyIntBuffer buf;
-            buf._size = _inputSizes[i].x * _inputSizes[i].y;
-            buf._buf = _h.getPredictionCs(i);
-
-            return buf;
+        const std::vector<int> &getPredictionCs(int i) const {
+            return _h.getPredictionCs(i);
         }
 
         bool getUpdate(int l) const {
             return _h.getUpdate(l);
+        }
+
+        const std::vector<int> &getHiddenCs(int l) {
+            return _h.getSCLayer(l).getHiddenCs();
         }
 
         int getTicks(int l) const {
@@ -91,14 +85,6 @@ namespace pyogmaneo {
 
         float getSCAlpha(int l) const {
             return _h.getSCLayer(l)._alpha;
-        }
-
-        void setSCExplainIters(int l, int explainIters) {
-            _h.getSCLayer(l)._explainIters = explainIters;
-        }
-
-        int getSCExplainIters(int l) const {
-            return _h.getSCLayer(l)._explainIters;
         }
 
         void setPAlpha(int l, int v, float alpha) {

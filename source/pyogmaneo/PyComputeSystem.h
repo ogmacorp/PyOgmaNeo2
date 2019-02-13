@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <ogmaneo/system/ComputeSystem.h>
+#include <ogmaneo/ComputeSystem.h>
 #include <random>
 #include <iostream>
 
@@ -16,18 +16,10 @@ namespace pyogmaneo {
     class PyComputeSystem {
     private:
         ogmaneo::ComputeSystem _cs;
-        std::mt19937 _rng;
 
     public:
-        PyComputeSystem(const std::string &type = "gpu", unsigned long seed = 1234, int platformIndex = -1, int deviceIndex = -1);
+        PyComputeSystem(size_t numWorkers, unsigned long seed = 1234);
 
-        friend class PyComputeProgram;
-        friend class PyIntBuffer;
-        friend class PyFloatBuffer;
-
-        friend class PySparseCoder;
-        friend class PyPredictor;
-        friend class PyActor;
         friend class PyHierarchy;
         friend class PyImageEncoder;
     };

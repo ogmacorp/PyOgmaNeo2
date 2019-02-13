@@ -10,55 +10,60 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
-    _inputSizes = inputSizes;
-    
-    std::vector<ogmaneo::Int3> clInputSizes(inputSizes.size());
-    
-    for (int i = 0; i < inputSizes.size(); i++)
-        clInputSizes[i] = ogmaneo::Int3(inputSizes[i].x, inputSizes[i].y, inputSizes[i].z);
+PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+    std::vector<ogmaneo::Int3> cInputSizes(inputSizes.size());
 
-    std::vector<ogmaneo::InputType> clInputTypes(inputTypes.size());
+    for (int i = 0; i < inputSizes.size(); i++)
+        cInputSizes[i] = ogmaneo::Int3(inputSizes[i].x, inputSizes[i].y, inputSizes[i].z);
+    
+    std::vector<ogmaneo::InputType> cInputTypes(inputTypes.size());
 
     for (int i = 0; i < inputTypes.size(); i++) {
         switch(inputTypes[i]) {
         case _inputTypeNone:
-            clInputTypes[i] = ogmaneo::_none;
+            cInputTypes[i] = ogmaneo::_none;
             break;
-        case _inputTypePredict:
-            clInputTypes[i] = ogmaneo::_predict;
+        case _inputTypePred:
+            cInputTypes[i] = ogmaneo::_predict;
             break;
         }
     }
 
-    std::vector<ogmaneo::Hierarchy::LayerDesc> clLayerDescs(layerDescs.size());
+    std::vector<ogmaneo::Hierarchy::LayerDesc> cLayerDescs(layerDescs.size());
 
     for (int l = 0; l < layerDescs.size(); l++) {
-        clLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
-        clLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
-        clLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
-        clLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
-        clLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
+        cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
+        cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
+        cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
+        cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
+        cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
 
-    _h.createRandom(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
+    _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
 }
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
-    std::ifstream is(name, std::ios::binary);
-    _h.readFromStream(cs._cs, prog._prog, is);
-
-    _inputSizes.resize(_h.getInputSizes().size());
-
-    for (int i = 0; i < _inputSizes.size(); i++)
-        _inputSizes[i] = PyInt3(_h.getInputSizes()[i].x, _h.getInputSizes()[i].y, _h.getInputSizes()[i].z);
+PyHierarchy::PyHierarchy(const std::string &fileName) {
+    std::ifstream is(fileName, std::ios::binary);
+    
+    _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn) {
-    std::vector<cl::Buffer> clInputCs(inputCs.size());
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn) {
+    assert(inputCs.size() == _h.getInputSizes().size());
 
-    for (int i = 0; i < inputCs.size(); i++)
-        clInputCs[i] = inputCs[i]._buf;
+    std::vector<const std::vector<int>*> cInputCs(inputCs.size());
 
-    _h.step(cs._cs, clInputCs, learn);
+    for (int i = 0; i < inputCs.size(); i++) {
+        assert(inputCs[i].size() == _h.getInputSizes()[i].x * _h.getInputSizes()[i].y);
+
+        cInputCs[i] = &inputCs[i];
+    }
+    
+    _h.step(cs._cs, cInputCs, learn);
+}
+
+void PyHierarchy::save(const std::string &fileName) const {
+    std::ofstream os(fileName, std::ios::binary);
+
+    _h.writeToStream(os);
 }

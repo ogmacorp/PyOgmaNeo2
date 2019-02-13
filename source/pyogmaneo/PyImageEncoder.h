@@ -9,10 +9,8 @@
 #pragma once
 
 #include "PyConstructs.h"
-#include "PyComputeProgram.h"
-#include "PyIntBuffer.h"
-#include "PyFloatBuffer.h"
-#include <ogmaneo/neo/ImageEncoder.h>
+#include "PyComputeSystem.h"
+#include <ogmaneo/ImageEncoder.h>
 #include <fstream>
 
 namespace pyogmaneo {
@@ -32,43 +30,30 @@ namespace pyogmaneo {
 
     class PyImageEncoder {
     private:
-        std::vector<PyImVisibleLayerDesc> _visibleLayerDescs;
-
         ogmaneo::ImageEncoder _enc;
 
     public:
         float _alpha;
 
-        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
-        PyImageEncoder(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name);
+        PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
+        PyImageEncoder(const std::string &fileName);
 
-        void activate(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled);
 
-        void learn(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
-
-        void stepEnd(PyComputeSystem &cs, const std::vector<PyFloatBuffer> &visibleAs);
-
-        void save(PyComputeSystem &cs, const std::string &name) {
-            std::ofstream os(name, std::ios::binary);
-            _enc.writeToStream(cs._cs, os);
-        }
+        void reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs);
+        
+        void save(const std::string &fileName) const;
 
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();
         }
 
-        const PyImVisibleLayerDesc &getVisibleLayerDesc(int index) const {
-            return _visibleLayerDescs[index];
+        const std::vector<float> &getVisibleReconstruction(int vli) const {
+            return _enc.getVisibleLayer(vli)._visibleActivations;
         }
 
-        PyIntBuffer getHiddenCs() const {
-            ogmaneo::Int3 size = _enc.getHiddenSize();
-
-            PyIntBuffer buf;
-            buf._size = size.x * size.y;
-            buf._buf = _enc.getHiddenCs();
-
-            return buf;
+        std::vector<int> getHiddenCs() const {
+            return _enc.getHiddenCs();
         }
 
         PyInt3 getHiddenSize() const {
