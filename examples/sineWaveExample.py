@@ -13,7 +13,7 @@ import pyogmaneo
 import matplotlib.pyplot as plt
 
 # Create the compute system using a device
-cs = pyogmaneo.PyComputeSystem(16)
+cs = pyogmaneo.PyComputeSystem(4)
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 32
@@ -24,11 +24,11 @@ bounds = (-1.0, 1.0)
 # Define layer descriptors: Parameters of each layer upon creation
 lds = []
 
-for i in range(9): # 9 layers with exponential memory
+for i in range(5): # 5 layers with exponential memory
     ld = pyogmaneo.PyLayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
-    ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+    ld._hiddenSize = pyogmaneo.PyInt3(5, 5, 16)
 
     ld._scRadius = 2 # Sparse coder radius onto visible layers
     ld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
@@ -48,10 +48,10 @@ for i in range(len(lds)):
 
     for j in range(h.getNumVisibleLayers(i)):
         if h.visibleLayerExists(i, j):
-            h.setPAlpha(i, j, 1.0)
+            h.setPAlpha(i, j, 0.5)
 
 # Present the wave sequence for some timesteps
-iters = 1500
+iters = 3000
 
 for t in range(iters):
     # The value to encode into the input column

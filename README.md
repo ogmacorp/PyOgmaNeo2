@@ -37,7 +37,9 @@ The following example can be used to build the Python package:
 or create a wheel file for installation via pip:
 
 > python3 setup.py bdist_wheel  
-> pip3 install dist/*.whl --user  
+> pip3 install dist/*.whl --user
+
+Installation may fail if an old build directory still exists from a previous build. Make sure to remove such directories before rebuilding.
 
 ## Importing and Setup
 
