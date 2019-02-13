@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 
 # CMake version 3.1+ is required to enable C++14 features cleanly
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(PyOgmaNeo)
 
@@ -84,7 +84,7 @@ endif()
 
 set_source_files_properties(pyogmaneo.i PROPERTIES CPLUSPLUS ON)
 
-swig_add_library(pyogmaneo LANGUAGE Python SOURCES pyogmaneo.i)
+swig_add_module(pyogmaneo python pyogmaneo.i)
 
 swig_link_libraries(pyogmaneo PyOgmaNeo ${PYTHON_LIBRARIES})
 

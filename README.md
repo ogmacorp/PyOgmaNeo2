@@ -14,26 +14,13 @@
 
 Welcome to the [Ogma](https://ogmacorp.com) PyOgmaNeo2 library, which contains Python bindings to the [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2) library.
 
-Note that there are two libraries implementing SPH: [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2), and an embedded (CPU only) version [EOgmaNeo](https://github.com/ogmacorp/EOgmaNeo).
-
-There is also a [deprecated version](https://github.com/ogmacorp/OgmaNeo) of OgmaNeo2 that contains an outdated implementation of SPH. Please use OgmaNeo2 (which this repository provides Python bindings for) or EOgmaNeo if possible.
+There is a [deprecated version](https://github.com/ogmacorp/OgmaNeo) of OgmaNeo2 that contains an outdated implementation of SPH. Please use OgmaNeo2 (which this repository provides Python bindings for) if possible.
 
 ## Requirements
 
-An install of [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2) is required before installing the bindings.
+An install of [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2) is required before installing the bindings. Make sure to build with `-DBUILD_SHARED_LIBS=On`.
 
 Additionally this binding requires an installation of [SWIG](http://www.swig.org/) v3+
-
-These bindings have been tested using:
-
-| Distribution | Operating System (Compiler) |
-| --- | ---:|
-| Python 2.7 | Linux (GCC 4.8+) |
-| Python 2.7 | Mac OSX |
-| Anaconda Python 2.7 3.4 & 3.5 | Linux (GCC 4.8+) |
-| Anaconda Python 3.5 | Windows (MSVC 2015) |
-
-Further information on Python compatible Windows compilers can be found [here](https://wiki.python.org/moin/WindowsCompilers).
 
 #### [SWIG](http://www.swig.org/)
 
