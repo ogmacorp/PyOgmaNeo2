@@ -97,14 +97,6 @@ namespace pyogmaneo {
             return _h._gamma;
         }
 
-        void setEpsilon(float epsilon) {
-            _h._epsilon = epsilon;
-        }
-
-        float getEpsilon() const {
-            return _h._epsilon;
-        }
-
         void setMaxHistorySamples(int maxHistorySamples) {
             _h._maxHistorySamples = maxHistorySamples;
         }
