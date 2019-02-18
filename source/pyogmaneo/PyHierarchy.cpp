@@ -10,24 +10,16 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<PyInt3> &actionSizes, const std::vector<PyLayerDesc> &layerDescs) {
     std::vector<ogmaneo::Int3> cInputSizes(inputSizes.size());
 
     for (int i = 0; i < inputSizes.size(); i++)
         cInputSizes[i] = ogmaneo::Int3(inputSizes[i].x, inputSizes[i].y, inputSizes[i].z);
-    
-    std::vector<ogmaneo::InputType> cInputTypes(inputTypes.size());
 
-    for (int i = 0; i < inputTypes.size(); i++) {
-        switch(inputTypes[i]) {
-        case _inputTypeNone:
-            cInputTypes[i] = ogmaneo::_none;
-            break;
-        case _inputTypeAct:
-            cInputTypes[i] = ogmaneo::_act;
-            break;
-        }
-    }
+    std::vector<ogmaneo::Int3> cActionSizes(actionSizes.size());
+
+    for (int i = 0; i < actionSizes.size(); i++)
+        cActionSizes[i] = ogmaneo::Int3(actionSizes[i].x, actionSizes[i].y, actionSizes[i].z);
 
     std::vector<ogmaneo::Hierarchy::LayerDesc> cLayerDescs(layerDescs.size());
 
@@ -39,7 +31,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
 
-    _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
+    _h.initRandom(cs._cs, cInputSizes, cActionSizes, cLayerDescs);
 }
 
 PyHierarchy::PyHierarchy(const std::string &fileName) {

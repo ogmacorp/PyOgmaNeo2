@@ -42,7 +42,7 @@ namespace pyogmaneo {
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<PyInt3> &actionSizes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
         void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, float reward, bool learnEnabled = true);
@@ -95,6 +95,14 @@ namespace pyogmaneo {
 
         float getGamma() const {
             return _h._gamma;
+        }
+
+        void setEpsilon(float epsilon) {
+            _h._epsilon = epsilon;
+        }
+
+        float getEpsilon() const {
+            return _h._epsilon;
         }
 
         void setMaxHistorySamples(int maxHistorySamples) {
