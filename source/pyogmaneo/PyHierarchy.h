@@ -65,6 +65,12 @@ namespace pyogmaneo {
             return _h.getSCLayer(l).getHiddenCs();
         }
 
+        PyInt3 getHiddenSize(int l) {
+            ogmaneo::Int3 size = _h.getSCLayer(l).getHiddenSize();
+
+            return { size.x, size.y, size.z };
+        }
+
         int getTicks(int l) const {
             return _h.getTicks(l);
         }
