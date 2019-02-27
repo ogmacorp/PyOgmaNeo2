@@ -88,7 +88,7 @@ namespace pyogmaneo {
             _h.getSCLayer(l)._beta = beta;
         }
 
-        float getSCBeta(int l) const {
+        float getBeta(int l) const {
             return _h.getSCLayer(l)._beta;
         }
 
