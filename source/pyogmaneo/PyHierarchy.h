@@ -60,6 +60,10 @@ namespace pyogmaneo {
             return _h.getSCLayer(l).getHiddenStates();
         }
 
+        const std::vector<float> &getHiddenBlurs(int l) {
+            return _h.getSCLayer(l).getHiddenBlurs();
+        }
+
         int getTicks(int l) const {
             return _h.getTicks(l);
         }
