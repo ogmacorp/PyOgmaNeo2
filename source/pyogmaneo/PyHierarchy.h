@@ -14,11 +14,8 @@
 #include <fstream>
 
 namespace pyogmaneo {
-    const int _inputTypeNone = 0;
-    const int _inputTypePred = 1;
-
     struct PyLayerDesc {
-        PyInt3 _hiddenSize;
+        PyInt2 _hiddenSize;
 
         int _scRadius;
         int _pRadius;
@@ -27,10 +24,10 @@ namespace pyogmaneo {
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4), _scRadius(4), _pRadius(4), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        PyLayerDesc(const PyInt2 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
         : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
@@ -40,10 +37,10 @@ namespace pyogmaneo {
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
+        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt2> &inputSizes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputCs, bool learn = true);
 
         void save(const std::string &fileName) const;
 
@@ -51,16 +48,16 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getPredictionCs(int i) const {
-            return _h.getPredictionCs(i);
+        const std::vector<float> &getPredictions(int i) const {
+            return _h.getPredictions(i);
         }
 
         bool getUpdate(int l) const {
             return _h.getUpdate(l);
         }
 
-        const std::vector<int> &getHiddenCs(int l) {
-            return _h.getSCLayer(l).getHiddenCs();
+        const std::vector<float> &getHiddenStates(int l) {
+            return _h.getSCLayer(l).getHiddenStates();
         }
 
         int getTicks(int l) const {
@@ -71,48 +68,36 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
-        int getNumVisibleLayers(int l) {
-            return _h.getPLayer(l).size();
-        }
-
-        bool visibleLayerExists(int l, int v) {
-            return _h.getPLayer(l)[v] != nullptr;
-        }
-
-        void setSCAlpha(int l, float alpha) {
+        void setAlpha(int l, float alpha) {
             _h.getSCLayer(l)._alpha = alpha;
         }
 
-        float getSCAlpha(int l) const {
+        float getAlpha(int l) const {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCGamma(int l, float gamma) {
-            _h.getSCLayer(l)._gamma = gamma;
+        void setBeta(int l, float beta) {
+            _h.getSCLayer(l)._beta = beta;
         }
 
-        float getSCGamma(int l) const {
-            return _h.getSCLayer(l)._gamma;
+        float getSCBeta(int l) const {
+            return _h.getSCLayer(l)._beta;
         }
 
-        void setSCCutoff(int l, float cutoff) {
-            _h.getSCLayer(l)._cutoff = cutoff;
+        void setInhibitRadius(int l, int inhibitRadius) {
+            _h.getSCLayer(l)._inhibitRadius = inhibitRadius;
         }
 
-        float getSCCutoff(int l) const {
-            return _h.getSCLayer(l)._cutoff;
+        float getInhibitRadius(int l) const {
+            return _h.getSCLayer(l)._inhibitRadius;
         }
 
-        void setPAlpha(int l, int v, float alpha) {
-            assert(_h.getPLayer(l)[v] != nullptr);
-            
-            _h.getPLayer(l)[v]->_alpha = alpha;
+        void setBlurRadius(int l, int blurRadius) {
+            _h.getSCLayer(l)._blurRadius = blurRadius;
         }
 
-        float getPAlpha(int l, int v) const {
-            assert(_h.getPLayer(l)[v] != nullptr);
-            
-            return _h.getPLayer(l)[v]->_alpha;
+        float getBlurRadius(int l) const {
+            return _h.getSCLayer(l)._blurRadius;
         }
     };
 }

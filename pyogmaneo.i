@@ -20,7 +20,6 @@
 #include "PyConstructs.h"
 #include "PyComputeSystem.h"
 #include "PyHierarchy.h"
-#include "PyImageEncoder.h"
 %}
 
 // Handle STL exceptions
@@ -38,11 +37,9 @@
 %template(StdVec2Di) std::vector<std::vector<int> >;
 %template(StdVecf) std::vector<float>;
 %template(StdVec2Df) std::vector<std::vector<float> >;
-%template(StdVecInt3) std::vector<pyogmaneo::PyInt3>;
+%template(StdVecInt2) std::vector<pyogmaneo::PyInt2>;
 %template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
-%template(StdVecImVLD) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
 
 %include "PyConstructs.h"
 %include "PyComputeSystem.h"
 %include "PyHierarchy.h"
-%include "PyImageEncoder.h"
