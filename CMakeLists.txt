@@ -18,8 +18,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/")
 
 if(NOT CMAKE_BUILD_TYPE)
-    message("CMAKE_BUILD_TYPE not set, setting it to Release")
-    set(CMAKE_BUILD_TYPE Release)
+    message("CMAKE_BUILD_TYPE not set, setting it to Debug")
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
