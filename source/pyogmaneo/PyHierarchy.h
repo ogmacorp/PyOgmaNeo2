@@ -61,6 +61,12 @@ namespace pyogmaneo {
             return _h.getUpdate(l);
         }
 
+        PyInt3 getHiddenSize(int l) {
+            ogmaneo::Int3 size = _h.getSCLayer(l).getHiddenSize();
+
+            return { size.x, size.y, size.z };
+        }
+
         const std::vector<int> &getHiddenCs(int l) {
             return _h.getSCLayer(l).getHiddenCs();
         }
