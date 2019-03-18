@@ -103,6 +103,14 @@ namespace pyogmaneo {
             return _h._gamma;
         }
 
+        void setClip(float clip) {
+            _h._clip = clip;
+        }
+
+        float getClip() const {
+            return _h._clip;
+        }
+
         void setMaxHistorySamples(int maxHistorySamples) {
             _h._maxHistorySamples = maxHistorySamples;
         }
