@@ -15,31 +15,17 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
 
     for (int i = 0; i < inputSizes.size(); i++)
         cInputSizes[i] = ogmaneo::Int3(inputSizes[i].x, inputSizes[i].y, inputSizes[i].z);
-    
-    std::vector<ogmaneo::InputType> cInputTypes(inputTypes.size());
-
-    for (int i = 0; i < inputTypes.size(); i++) {
-        switch(inputTypes[i]) {
-        case _inputTypeNone:
-            cInputTypes[i] = ogmaneo::_none;
-            break;
-        case _inputTypePred:
-            cInputTypes[i] = ogmaneo::_predict;
-            break;
-        }
-    }
 
     std::vector<ogmaneo::Hierarchy::LayerDesc> cLayerDescs(layerDescs.size());
 
     for (int l = 0; l < layerDescs.size(); l++) {
         cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
         cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
-        cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
 
-    _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
+    _h.initRandom(cs._cs, cInputSizes, cLayerDescs);
 }
 
 PyHierarchy::PyHierarchy(const std::string &fileName) {

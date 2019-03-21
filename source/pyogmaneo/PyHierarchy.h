@@ -14,24 +14,20 @@
 #include <fstream>
 
 namespace pyogmaneo {
-    const int _inputTypeNone = 0;
-    const int _inputTypePred = 1;
-
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _pRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -71,14 +67,6 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
-        int getNumVisibleLayers(int l) {
-            return _h.getPLayer(l).size();
-        }
-
-        bool visibleLayerExists(int l, int v) {
-            return _h.getPLayer(l)[v] != nullptr;
-        }
-
         void setSCAlpha(int l, float alpha) {
             _h.getSCLayer(l)._alpha = alpha;
         }
@@ -93,18 +81,6 @@ namespace pyogmaneo {
 
         float getSCBeta(int l) const {
             return _h.getSCLayer(l)._beta;
-        }
-
-        void setPAlpha(int l, int v, float alpha) {
-            assert(_h.getPLayer(l)[v] != nullptr);
-            
-            _h.getPLayer(l)[v]->_alpha = alpha;
-        }
-
-        float getPAlpha(int l, int v) const {
-            assert(_h.getPLayer(l)[v] != nullptr);
-            
-            return _h.getPLayer(l)[v]->_alpha;
         }
     };
 }
