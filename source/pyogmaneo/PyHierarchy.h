@@ -17,17 +17,17 @@ namespace pyogmaneo {
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
-        int _scRadius;
+        int _pRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -56,7 +56,7 @@ namespace pyogmaneo {
         }
 
         const std::vector<int> &getHiddenCs(int l) {
-            return _h.getSCLayer(l).getHiddenCs();
+            return _h.getPLayer(l).getHiddenCs();
         }
 
         int getTicks(int l) const {
@@ -67,20 +67,28 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
-        void setSCAlpha(int l, float alpha) {
-            _h.getSCLayer(l)._alpha = alpha;
+        void setPAlpha(int l, float alpha) {
+            _h.getPLayer(l)._alpha = alpha;
         }
 
-        float getSCAlpha(int l) const {
-            return _h.getSCLayer(l)._alpha;
+        float getPAlpha(int l) const {
+            return _h.getPLayer(l)._alpha;
         }
 
-        void setSCBeta(int l, float beta) {
-            _h.getSCLayer(l)._beta = beta;
+        void setPBeta(int l, float beta) {
+            _h.getPLayer(l)._beta = beta;
         }
 
-        float getSCBeta(int l) const {
-            return _h.getSCLayer(l)._beta;
+        float getPBeta(int l) const {
+            return _h.getPLayer(l)._beta;
+        }
+
+        void setPGamma(int l, float gamma) {
+            _h.getPLayer(l)._gamma = gamma;
+        }
+
+        float getPGamma(int l) const {
+            return _h.getPLayer(l)._gamma;
         }
     };
 }
