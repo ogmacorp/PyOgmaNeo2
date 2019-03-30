@@ -95,22 +95,6 @@ namespace pyogmaneo {
             return _h._gamma;
         }
 
-        void setClipActivation(float clipActivation) {
-            _h._clipActivation = clipActivation;
-        }
-
-        float getClipActivation() const {
-            return _h._clipActivation;
-        }
-
-        void setClipError(float clipError) {
-            _h._clipError = clipError;
-        }
-
-        float getClipError() const {
-            return _h._clipError;
-        }
-
         void setMaxHistorySamples(int maxHistorySamples) {
             _h._maxHistorySamples = maxHistorySamples;
         }
