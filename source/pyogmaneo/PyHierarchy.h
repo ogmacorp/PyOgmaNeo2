@@ -118,5 +118,17 @@ namespace pyogmaneo {
             
             return _h.getALayer(l)[v]->_gamma;
         }
+
+        void setAEpsilon(int l, int v, float epsilon) {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            _h.getALayer(l)[v]->_epsilon = epsilon;
+        }
+
+        float getAEpsilon(int l, int v) const {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            return _h.getALayer(l)[v]->_epsilon;
+        }
     };
 }
