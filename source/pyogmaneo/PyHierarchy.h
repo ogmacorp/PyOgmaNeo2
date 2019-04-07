@@ -87,12 +87,12 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCBeta(int l, float beta) {
-            _h.getSCLayer(l)._beta = beta;
+        void setSCRefractoryTicks(int l, int refractoryTicks) {
+            _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
         }
 
-        float getSCBeta(int l) const {
-            return _h.getSCLayer(l)._beta;
+        int getSCRefractoryTicks(int l) const {
+            return _h.getSCLayer(l)._refractoryTicks;
         }
 
         void setPAlpha(int l, int v, float alpha) {
