@@ -78,10 +78,10 @@ for t in range(300):
     valueToEncode = np.sin(t2 * 0.1 * 2.0 * np.pi) * np.sin(t2 * 0.08 * 2.0 * np.pi + 0.45)# * np.sin(t2 * 0.02 * 2.0 * np.pi) * np.sin(t2 * 0.035 * 2.0 * np.pi + 0.45)
 
     # Run off of own predictions with learning disabled
-    h.step(cs, [ h.getPredictionCs(0) ], state, False)
+    h.step(cs, [ state.getPredictionCs(0) ], state, False)
 
     # Retrieve the predicted column index
-    predIndex = h.getPredictionCs(0)[0] # First (only in this case) input layer prediction
+    predIndex = state.getPredictionCs(0)[0] # First (only in this case) input layer prediction
     
     # Decode value (de-bin)
     value = predIndex / float(inputColumnSize - 1) * (bounds[1] - bounds[0]) + bounds[0]

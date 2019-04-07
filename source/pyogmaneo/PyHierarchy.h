@@ -42,8 +42,18 @@ namespace pyogmaneo {
         ogmaneo::State _state;
 
     public:
+        PyState(const PyState &other) {
+            *this = other;
+        }
+
         PyState(const PyHierarchy &h);
         PyState(const std::string &fileName);
+
+        const PyState &operator=(const PyState &other) {
+            _state = other._state;
+
+            return *this;
+        }
 
         void save(const std::string &fileName) const;
 
@@ -53,6 +63,14 @@ namespace pyogmaneo {
 
         int getTick(int l) const {
             return _state.getTick(l);
+        }
+
+        const std::vector<int> &getPredictionCs(int i) const {
+            return _state.getPredictionCs(i);
+        }
+
+        PyState clone() const {
+            return PyState(*this);
         }
 
         friend class PyHierarchy;
@@ -72,10 +90,6 @@ namespace pyogmaneo {
 
         int getNumLayers() const {
             return _h.getNumLayers();
-        }
-
-        const std::vector<int> &getPredictionCs(int i) const {
-            return _h.getPredictionCs(i);
         }
 
         const std::vector<int> &getHiddenCs(int l) {

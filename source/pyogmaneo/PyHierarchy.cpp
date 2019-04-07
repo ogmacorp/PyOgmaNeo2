@@ -64,7 +64,7 @@ PyHierarchy::PyHierarchy(const std::string &fileName) {
     _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs,PyState &state, bool learnEnabled) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, PyState &state, bool learnEnabled) {
     assert(inputCs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
