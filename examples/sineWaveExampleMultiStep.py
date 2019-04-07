@@ -60,7 +60,7 @@ iters = 5000
 
 for t in range(iters):
     # The value to encode into the input column
-    valueToEncode = np.sin(t * 0.1 * 2.0 * np.pi)# * np.sin(t * 0.08 * 2.0 * np.pi + 0.45)# * np.sin(t * 0.02 * 2.0 * np.pi) * np.sin(t * 0.035 * 2.0 * np.pi + 0.45)
+    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi) * np.sin(t * 0.035 * 2.0 * np.pi + 0.45)
 
     # Step the hierarchy given the inputs (just one here)
     h.step(cs, [ [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ] ], state, True) # True for enabling learning
@@ -80,7 +80,7 @@ for t in range(300):
     t2 = t + iters # Continue where previous sequence left off
 
     # New, continued value for comparison to what the hierarchy predicts
-    valueToEncode = np.sin(t2 * 0.1 * 2.0 * np.pi)# * np.sin(t2 * 0.08 * 2.0 * np.pi + 0.45)# * np.sin(t2 * 0.02 * 2.0 * np.pi) * np.sin(t2 * 0.035 * 2.0 * np.pi + 0.45)
+    valueToEncode = np.sin(t2 * 0.02 * 2.0 * np.pi) * np.sin(t2 * 0.035 * 2.0 * np.pi + 0.45)
 
     # Run off of own predictions with learning disabled
     h.step(cs, [ predictionState ], state, False)
