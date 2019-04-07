@@ -35,6 +35,29 @@ namespace pyogmaneo {
         {}
     };
 
+    class PyHierarchy;
+
+    class PyState {
+    private:
+        ogmaneo::State _state;
+
+    public:
+        PyState(const PyHierarchy &h);
+        PyState(const std::string &fileName);
+
+        void save(const std::string &fileName) const;
+
+        bool getUpdate(int l) const {
+            return _state.getUpdate(l);
+        }
+
+        int getTick(int l) const {
+            return _state.getTick(l);
+        }
+
+        friend class PyHierarchy;
+    };
+
     class PyHierarchy {
     private:
         ogmaneo::Hierarchy _h;
@@ -43,7 +66,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, PyState &state, bool learnEnabled = true);
 
         void save(const std::string &fileName) const;
 
@@ -55,16 +78,8 @@ namespace pyogmaneo {
             return _h.getPredictionCs(i);
         }
 
-        bool getUpdate(int l) const {
-            return _h.getUpdate(l);
-        }
-
         const std::vector<int> &getHiddenCs(int l) {
             return _h.getSCLayer(l).getHiddenCs();
-        }
-
-        int getTicks(int l) const {
-            return _h.getTicks(l);
         }
 
         int getTicksPerUpdate(int l) const {

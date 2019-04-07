@@ -10,6 +10,18 @@
 
 using namespace pyogmaneo;
 
+PyState::PyState(const std::string &fileName) {
+    std::ifstream is(fileName, std::ios::binary);
+    
+    _state.readFromStream(is);
+}
+
+void PyState::save(const std::string &fileName) const {
+    std::ofstream os(fileName, std::ios::binary);
+
+    _state.writeToStream(os);
+}
+
 PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
     std::vector<ogmaneo::Int3> cInputSizes(inputSizes.size());
 
@@ -48,7 +60,7 @@ PyHierarchy::PyHierarchy(const std::string &fileName) {
     _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs,PyState &state, bool learnEnabled) {
     assert(inputCs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
@@ -59,7 +71,7 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, learn);
+    _h.step(cs._cs, cInputCs, state._state, learnEnabled);
 }
 
 void PyHierarchy::save(const std::string &fileName) const {
