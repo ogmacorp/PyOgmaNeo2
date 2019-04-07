@@ -121,5 +121,7 @@ namespace pyogmaneo {
             
             return _h.getPLayer(l)[v]->_alpha;
         }
+
+        friend class PyState;
     };
 }

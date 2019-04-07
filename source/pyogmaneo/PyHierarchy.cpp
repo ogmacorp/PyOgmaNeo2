@@ -10,6 +10,10 @@
 
 using namespace pyogmaneo;
 
+PyState::PyState(const PyHierarchy &h) {
+    _state.initZero(h._h);
+}
+
 PyState::PyState(const std::string &fileName) {
     std::ifstream is(fileName, std::ios::binary);
     
