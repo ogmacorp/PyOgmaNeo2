@@ -103,13 +103,13 @@ namespace pyogmaneo {
         //     return _h.getSCLayer(l)._beta;
         // }
 
-        void setSCRefractoryTicks(int l, int refractoryTicks) {
-            _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
-        }
+        // void setSCRefractoryTicks(int l, int refractoryTicks) {
+        //     _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
+        // }
 
-        int getSCRefractoryTicks(int l) const {
-            return _h.getSCLayer(l)._refractoryTicks;
-        }
+        // int getSCRefractoryTicks(int l) const {
+        //     return _h.getSCLayer(l)._refractoryTicks;
+        // }
 
         void setAAlpha(int l, int v, float alpha) {
             assert(_h.getALayer(l)[v] != nullptr);
@@ -122,6 +122,18 @@ namespace pyogmaneo {
             
             return _h.getALayer(l)[v]->_alpha;
         }
+
+        // void setABeta(int l, int v, float beta) {
+        //     assert(_h.getALayer(l)[v] != nullptr);
+            
+        //     _h.getALayer(l)[v]->_beta = beta;
+        // }
+
+        // float getABeta(int l, int v) const {
+        //     assert(_h.getALayer(l)[v] != nullptr);
+            
+        //     return _h.getALayer(l)[v]->_beta;
+        // }
 
         void setAGamma(int l, int v, float gamma) {
             assert(_h.getALayer(l)[v] != nullptr);
@@ -146,5 +158,17 @@ namespace pyogmaneo {
             
             return _h.getALayer(l)[v]->_epsilon;
         }
+
+        // void setARefractoryTicks(int l, int v, int refractoryTicks) {
+        //     assert(_h.getALayer(l)[v] != nullptr);
+            
+        //     _h.getALayer(l)[v]->_refractoryTicks = refractoryTicks;
+        // }
+
+        // int getARefractoryTicks(int l, int v) const {
+        //     assert(_h.getALayer(l)[v] != nullptr);
+            
+        //     return _h.getALayer(l)[v]->_refractoryTicks;
+        // }
     };
 }
