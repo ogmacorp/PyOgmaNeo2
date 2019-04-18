@@ -116,14 +116,6 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCRefractoryTicks(int l, int refractoryTicks) {
-            _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
-        }
-
-        int getSCRefractoryTicks(int l) const {
-            return _h.getSCLayer(l)._refractoryTicks;
-        }
-
         void setPAlpha(int l, int v, float alpha) {
             assert(_h.getPLayer(l)[v] != nullptr);
             
