@@ -79,22 +79,6 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
         
-        void setSCMaxHistorySamples(int l, int maxHistorySamples) {
-            _h.getSCLayer(l)._maxHistorySamples = maxHistorySamples;
-        }
-
-        int getSCMaxHistorySamples(int l) const {
-            return _h.getSCLayer(l)._maxHistorySamples;
-        }
-
-        void setSCHistoryIters(int l, int historyIters) {
-            _h.getSCLayer(l)._historyIters = historyIters;
-        }
-
-        int getSCHistoryIters(int l) const {
-            return _h.getSCLayer(l)._historyIters;
-        }
-        
         void setAlpha(float alpha) {
             _h._alpha = alpha;
         }
