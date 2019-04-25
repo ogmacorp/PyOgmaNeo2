@@ -111,6 +111,22 @@ public:
         return _h.getUpdate(l);
     }
 
+    PyIntBuffer getHiddenCs(
+        int l
+    ) {
+        PyIntBuffer buf;
+        buf._size = _h.getSCLayer(l).getHiddenSize().x * _h.getSCLayer(l).getHiddenSize().y;
+        buf._buf = _h.getSCLayer(l).getHiddenCs();
+
+        return buf;
+    }
+
+    PyInt3 getHiddenSize(
+        int l
+    ) {
+        return PyInt3(_h.getSCLayer(l).getHiddenSize().x, _h.getSCLayer(l).getHiddenSize().y, _h.getSCLayer(l).getHiddenSize().z);
+    }
+
     int getTicks(
         int l
     ) const {
