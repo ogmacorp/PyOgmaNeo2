@@ -149,18 +149,18 @@ public:
         return _h.getSCLayer(l)._alpha;
     }
 
-    // void setSCExplainIters(
-    //     int l,
-    //     int explainIters
-    // ) {
-    //     _h.getSCLayer(l)._explainIters = explainIters;
-    // }
+    void setSCRefractoryTicks(
+        int l,
+        int refractoryTicks
+    ) {
+        _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
+    }
 
-    // int getSCExplainIters(
-    //     int l
-    // ) const {
-    //     return _h.getSCLayer(l)._explainIters;
-    // }
+    int getSCRefractoryTicks(
+        int l
+    ) const {
+        return _h.getSCLayer(l)._refractoryTicks;
+    }
 
     void setAAlpha(
         int l,
