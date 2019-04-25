@@ -9,17 +9,17 @@
 #pragma once
 
 namespace pyogmaneo {
-    class PyInt3 {
-    private:
-    public:
-        int x, y, z;
+class PyInt3 {
+private:
+public:
+    int x, y, z;
 
-        PyInt3() 
-        : x(0), y(0), z(0)
-        {}
+    PyInt3() 
+    : x(0), y(0), z(0)
+    {}
 
-        PyInt3(int X, int Y, int Z)
-        : x(X), y(Y), z(Z)
-        {}
-    };
-}
+    PyInt3(int X, int Y, int Z)
+    : x(X), y(Y), z(Z)
+    {}
+};
+} // namespace pyogmaneo

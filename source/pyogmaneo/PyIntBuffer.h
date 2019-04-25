@@ -11,32 +11,43 @@
 #include "PyComputeSystem.h"
 
 namespace pyogmaneo {
-    class PyIntBuffer {
-    private:
-        cl::Buffer _buf;
+class PyIntBuffer {
+private:
+    cl::Buffer _buf;
 
-        int _size;
+    int _size;
 
-    public:
-        PyIntBuffer() {}
+public:
+    PyIntBuffer() {}
 
-        PyIntBuffer(PyComputeSystem &cs, int size) {
-            create(cs, size);
-        }
+    PyIntBuffer(
+        PyComputeSystem &cs,
+        int size
+    ) {
+        create(cs, size);
+    }
 
-        void create(PyComputeSystem &cs, int size);
+    void create(
+        PyComputeSystem &cs,
+        int size
+    );
 
-        void write(PyComputeSystem &cs, const std::vector<int> &data);
-        std::vector<int> read(PyComputeSystem &cs) const;
+    void write(
+        PyComputeSystem &cs,
+        const std::vector<int> &data
+    );
 
-        int getSize() const {
-            return _size;
-        }
+    std::vector<int> read(
+        PyComputeSystem &cs
+    ) const;
 
-        friend class PySparseCoder;
-        friend class PyPredictor;
-        friend class PyActor;
-        friend class PyHierarchy;
-        friend class PyImageEncoder;
-    };
-}
+    int getSize() const {
+        return _size;
+    }
+
+    friend class PySparseCoder;
+    friend class PyPredictor;
+    friend class PyActor;
+    friend class PyHierarchy;
+};
+} // namespace pyogmaneo

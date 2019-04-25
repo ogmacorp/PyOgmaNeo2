@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -10,7 +10,13 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+PyHierarchy::PyHierarchy(
+    PyComputeSystem &cs,
+    PyComputeProgram &prog,
+    const std::vector<PyInt3> &inputSizes,
+    const std::vector<int> &inputTypes,
+    const std::vector<PyLayerDesc> &layerDescs
+) {
     _inputSizes = inputSizes;
     
     std::vector<ogmaneo::Int3> clInputSizes(inputSizes.size());
@@ -45,7 +51,11 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
     _h.createRandom(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
 }
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std::string &name) {
+PyHierarchy::PyHierarchy(
+    PyComputeSystem &cs,
+    PyComputeProgram &prog,
+    const std::string &name
+) {
     std::ifstream is(name, std::ios::binary);
     _h.readFromStream(cs._cs, prog._prog, is);
 
@@ -55,7 +65,12 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, PyComputeProgram &prog, const std:
         _inputSizes[i] = PyInt3(_h.getInputSizes()[i].x, _h.getInputSizes()[i].y, _h.getInputSizes()[i].z);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<PyIntBuffer> &inputCs, bool learn, float reward) {
+void PyHierarchy::step(
+    PyComputeSystem &cs,
+    const std::vector<PyIntBuffer> &inputCs,
+    bool learn,
+    float reward
+) {
     std::vector<cl::Buffer> clInputCs(inputCs.size());
 
     for (int i = 0; i < inputCs.size(); i++)
