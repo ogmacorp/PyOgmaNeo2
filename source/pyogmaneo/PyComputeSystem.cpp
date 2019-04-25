@@ -19,11 +19,11 @@ PyComputeSystem::PyComputeSystem(
     _rng.seed(seed);
 
     if (type == "all")
-        _cs.create(ogmaneo::ComputeSystem::_all, platformIndex, deviceIndex);
+        _cs.init(ogmaneo::ComputeSystem::_all, platformIndex, deviceIndex);
     else if (type == "gpu")
-        _cs.create(ogmaneo::ComputeSystem::_gpu, platformIndex, deviceIndex);
+        _cs.init(ogmaneo::ComputeSystem::_gpu, platformIndex, deviceIndex);
     else if (type == "cpu")
-        _cs.create(ogmaneo::ComputeSystem::_cpu, platformIndex, deviceIndex);
+        _cs.init(ogmaneo::ComputeSystem::_cpu, platformIndex, deviceIndex);
     else
         std::cerr << "Invalid device type: " << type << std::endl;
 }

@@ -48,7 +48,7 @@ PyHierarchy::PyHierarchy(
         clLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
     }
 
-    _h.createRandom(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
+    _h.init(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
 }
 
 PyHierarchy::PyHierarchy(
@@ -68,13 +68,13 @@ PyHierarchy::PyHierarchy(
 void PyHierarchy::step(
     PyComputeSystem &cs,
     const std::vector<PyIntBuffer> &inputCs,
-    bool learn,
-    float reward
+    float reward,
+    bool learn
 ) {
     std::vector<cl::Buffer> clInputCs(inputCs.size());
 
     for (int i = 0; i < inputCs.size(); i++)
         clInputCs[i] = inputCs[i]._buf;
 
-    _h.step(cs._cs, clInputCs, cs._rng, learn, reward);
+    _h.step(cs._cs, clInputCs, cs._rng, reward, learn);
 }
