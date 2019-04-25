@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <ogmaneo/system/ComputeProgram.h>
+#include <ogmaneo/ComputeProgram.h>
 #include "PyComputeSystem.h"
 
 namespace pyogmaneo {

@@ -11,7 +11,7 @@
 #include "PyConstructs.h"
 #include "PyComputeProgram.h"
 #include "PyIntBuffer.h"
-#include <ogmaneo/neo/Hierarchy.h>
+#include <ogmaneo/Hierarchy.h>
 #include <fstream>
 
 namespace pyogmaneo {
@@ -126,14 +126,14 @@ public:
     int getNumVisibleLayers(
         int l
     ) {
-        return _h.getALayer(l).size();
+        return _h.getALayers(l).size();
     }
 
     bool visibleLayerExists(
         int l,
         int v
     ) {
-        return _h.getALayer(l)[v] != nullptr;
+        return _h.getALayers(l)[v] != nullptr;
     }
 
     void setSCAlpha(
@@ -167,18 +167,18 @@ public:
         int v,
         float alpha
     ) {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayer(l)[v]->_alpha = alpha;
+        _h.getALayers(l)[v]->_alpha = alpha;
     }
 
     float getAAlpha(
         int l,
         int v
     ) const {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayer(l)[v]->_alpha;
+        return _h.getALayers(l)[v]->_alpha;
     }
 
     void setABeta(
@@ -186,18 +186,18 @@ public:
         int v,
         float beta
     ) {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayer(l)[v]->_beta = beta;
+        _h.getALayers(l)[v]->_beta = beta;
     }
 
     float getABeta(
         int l,
         int v
     ) const {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayer(l)[v]->_beta;
+        return _h.getALayers(l)[v]->_beta;
     }
 
     void setAGamma(
@@ -205,18 +205,18 @@ public:
         int v,
         float gamma
     ) {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayer(l)[v]->_gamma = gamma;
+        _h.getALayers(l)[v]->_gamma = gamma;
     }
 
     float getAGamma(
         int l,
         int v
     ) const {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayer(l)[v]->_gamma;
+        return _h.getALayers(l)[v]->_gamma;
     }
 
     void setAEpsilon(
@@ -224,18 +224,18 @@ public:
         int v,
         float epsilon
     ) {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayer(l)[v]->_epsilon = epsilon;
+        _h.getALayers(l)[v]->_epsilon = epsilon;
     }
 
     float getAEpsilon(
         int l,
         int v
     ) const {
-        assert(_h.getALayer(l)[v] != nullptr);
+        assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayer(l)[v]->_epsilon;
+        return _h.getALayers(l)[v]->_epsilon;
     }
 };
 } // namespace pyogmaneo

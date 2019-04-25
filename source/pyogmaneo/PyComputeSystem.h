@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <ogmaneo/system/ComputeSystem.h>
+#include <ogmaneo/ComputeSystem.h>
 #include <random>
 #include <iostream>
 
