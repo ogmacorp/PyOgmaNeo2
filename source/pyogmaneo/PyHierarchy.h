@@ -165,19 +165,6 @@ public:
         return _h.getSCLayer(l)._alpha;
     }
 
-    void setSCRefractoryTicks(
-        int l,
-        int refractoryTicks
-    ) {
-        _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
-    }
-
-    int getSCRefractoryTicks(
-        int l
-    ) const {
-        return _h.getSCLayer(l)._refractoryTicks;
-    }
-
     void setAAlpha(
         int l,
         int v,
