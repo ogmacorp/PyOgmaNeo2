@@ -23,6 +23,7 @@
 #include "PyIntBuffer.h"
 #include "PyFloatBuffer.h"
 #include "PyHierarchy.h"
+#include "PyImageEncoder.h"
 %}
 
 // Handle STL exceptions
@@ -43,9 +44,12 @@
 %template(StdVecFloatBuffer) std::vector<pyogmaneo::PyFloatBuffer>;
 %template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
 
+%template(StdVecImVisibleLayerDesc) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
+
 %include "PyConstructs.h"
 %include "PyComputeSystem.h"
 %include "PyComputeProgram.h"
 %include "PyIntBuffer.h"
 %include "PyFloatBuffer.h"
 %include "PyHierarchy.h"
+%include "PyImageEncoder.h"

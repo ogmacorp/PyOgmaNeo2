@@ -34,5 +34,7 @@ public:
     friend class PyPredictor;
     friend class PyActor;
     friend class PyHierarchy;
+
+    friend class PyImageEncoder;
 };
 } // namespace pyogmaneo
