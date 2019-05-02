@@ -35,8 +35,7 @@ struct PyLayerDesc {
     _scRadius(2),
     _aRadius(2),
     _ticksPerUpdate(2),
-    _temporalHorizon(2),
-    _historyCapacity(16)
+    _temporalHorizon(2)
     {}
 
     PyLayerDesc(
@@ -51,8 +50,7 @@ struct PyLayerDesc {
     _scRadius(scRadius),
     _aRadius(aRadius),
     _ticksPerUpdate(ticksPerUpdate),
-    _temporalHorizon(temporalHorizon),
-    _historyCapacity(historyCapacity)
+    _temporalHorizon(temporalHorizon)
     {}
 };
 
@@ -182,25 +180,6 @@ public:
         assert(_h.getALayers(l)[v] != nullptr);
         
         return _h.getALayers(l)[v]->_alpha;
-    }
-
-    void setABeta(
-        int l,
-        int v,
-        float beta
-    ) {
-        assert(_h.getALayers(l)[v] != nullptr);
-        
-        _h.getALayers(l)[v]->_beta = beta;
-    }
-
-    float getABeta(
-        int l,
-        int v
-    ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
-        
-        return _h.getALayers(l)[v]->_beta;
     }
 
     void setAGamma(

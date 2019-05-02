@@ -45,7 +45,6 @@ PyHierarchy::PyHierarchy(
         clLayerDescs[l]._aRadius = layerDescs[l]._aRadius;
         clLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         clLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
-        clLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
     }
 
     _h.init(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
