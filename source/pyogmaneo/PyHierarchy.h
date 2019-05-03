@@ -182,24 +182,24 @@ public:
         return _h.getALayers(l)[v]->_alpha;
     }
 
-    void setABeta(
-        int l,
-        int v,
-        float beta
-    ) {
-        assert(_h.getALayers(l)[v] != nullptr);
+    // void setABeta(
+    //     int l,
+    //     int v,
+    //     float beta
+    // ) {
+    //     assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayers(l)[v]->_beta = beta;
-    }
+    //     _h.getALayers(l)[v]->_beta = beta;
+    // }
 
-    float getABeta(
-        int l,
-        int v
-    ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
+    // float getABeta(
+    //     int l,
+    //     int v
+    // ) const {
+    //     assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayers(l)[v]->_beta;
-    }
+    //     return _h.getALayers(l)[v]->_beta;
+    // }
 
     void setAGamma(
         int l,
