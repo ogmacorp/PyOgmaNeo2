@@ -10,7 +10,7 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<PyLayerDesc> &layerDescs) {
     std::vector<ogmaneo::Int3> cInputSizes(inputSizes.size());
 
     for (int i = 0; i < inputSizes.size(); i++)
