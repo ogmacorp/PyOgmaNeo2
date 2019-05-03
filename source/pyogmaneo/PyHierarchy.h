@@ -182,6 +182,25 @@ public:
         return _h.getALayers(l)[v]->_alpha;
     }
 
+    void setABeta(
+        int l,
+        int v,
+        float beta
+    ) {
+        assert(_h.getALayers(l)[v] != nullptr);
+        
+        _h.getALayers(l)[v]->_beta = beta;
+    }
+
+    float getABeta(
+        int l,
+        int v
+    ) const {
+        assert(_h.getALayers(l)[v] != nullptr);
+        
+        return _h.getALayers(l)[v]->_beta;
+    }
+
     void setAGamma(
         int l,
         int v,
@@ -201,23 +220,23 @@ public:
         return _h.getALayers(l)[v]->_gamma;
     }
 
-    void setAEpsilon(
-        int l,
-        int v,
-        float epsilon
-    ) {
-        assert(_h.getALayers(l)[v] != nullptr);
+    // void setAEpsilon(
+    //     int l,
+    //     int v,
+    //     float epsilon
+    // ) {
+    //     assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayers(l)[v]->_epsilon = epsilon;
-    }
+    //     _h.getALayers(l)[v]->_epsilon = epsilon;
+    // }
 
-    float getAEpsilon(
-        int l,
-        int v
-    ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
+    // float getAEpsilon(
+    //     int l,
+    //     int v
+    // ) const {
+    //     assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayers(l)[v]->_epsilon;
-    }
+    //     return _h.getALayers(l)[v]->_epsilon;
+    // }
 };
 } // namespace pyogmaneo
