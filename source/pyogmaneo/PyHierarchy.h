@@ -83,12 +83,12 @@ namespace pyogmaneo {
             return _h.getPLayer(l)._beta;
         }
 
-        void setPGamma(int l, float gamma) {
-            _h.getPLayer(l)._gamma = gamma;
-        }
+        // void setPGamma(int l, float gamma) {
+        //     _h.getPLayer(l)._gamma = gamma;
+        // }
 
-        float getPGamma(int l) const {
-            return _h.getPLayer(l)._gamma;
-        }
+        // float getPGamma(int l) const {
+        //     return _h.getPLayer(l)._gamma;
+        // }
     };
 }
