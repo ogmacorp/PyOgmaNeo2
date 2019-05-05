@@ -107,13 +107,5 @@ namespace pyogmaneo {
         float getBlurRadius(int l) const {
             return _h.getSCLayer(l)._blurRadius;
         }
-
-        void setRefractoryTime(int l, int refractoryTime) {
-            _h.getSCLayer(l)._refractoryTime = refractoryTime;
-        }
-
-        int getRefractoryTime(int l) const {
-            return _h.getSCLayer(l)._refractoryTime;
-        }
     };
 }
