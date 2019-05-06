@@ -21,8 +21,8 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt2> &inputSi
 
     for (int l = 0; l < layerDescs.size(); l++) {
         cLayerDescs[l]._hiddenSize = ogmaneo::Int2(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y);
-        cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
-        cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
+        cLayerDescs[l]._mRadius = layerDescs[l]._mRadius;
+        cLayerDescs[l]._cRadius = layerDescs[l]._cRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
@@ -36,7 +36,7 @@ PyHierarchy::PyHierarchy(const std::string &fileName) {
     _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputs, bool learn) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputs, const std::vector<float> &topFeedBackStates, bool learn) {
     assert(inputs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<float>*> cInputs(inputs.size());
@@ -47,7 +47,7 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<float>
         cInputs[i] = &inputs[i];
     }
     
-    _h.step(cs._cs, cInputs, learn);
+    _h.step(cs._cs, cInputs, &topFeedBackStates, learn);
 }
 
 void PyHierarchy::save(const std::string &fileName) const {

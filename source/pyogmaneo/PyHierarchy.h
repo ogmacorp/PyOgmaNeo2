@@ -17,18 +17,18 @@ namespace pyogmaneo {
     struct PyLayerDesc {
         PyInt2 _hiddenSize;
 
-        int _scRadius;
-        int _pRadius;
+        int _mRadius;
+        int _cRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4), _scRadius(4), _pRadius(4), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4), _mRadius(4), _cRadius(4), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt2 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt2 &hiddenSize, int mRadius, int cRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _mRadius(mRadius), _cRadius(cRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -40,7 +40,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt2> &inputSizes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputCs, const std::vector<float> &topFeedBackStates, bool learn = true);
 
         void save(const std::string &fileName) const;
 
@@ -57,15 +57,15 @@ namespace pyogmaneo {
         }
 
         const std::vector<float> &getHiddenStates(int l) {
-            return _h.getSCLayer(l).getHiddenStates();
+            return _h.getLayer(l).getHiddenStates();
         }
 
         const std::vector<float> &getHiddenBlurs(int l) {
-            return _h.getSCLayer(l).getHiddenBlurs();
+            return _h.getLayer(l).getHiddenBlurs();
         }
 
         const std::vector<float> &getHiddenPredictions(int l) {
-            return _h.getSCLayer(l).getHiddenPredictions();
+            return _h.getLayer(l).getHiddenPredictions();
         }
 
         int getTicks(int l) const {
@@ -77,35 +77,51 @@ namespace pyogmaneo {
         }
 
         void setAlpha(int l, float alpha) {
-            _h.getSCLayer(l)._alpha = alpha;
+            _h.getLayer(l)._alpha = alpha;
         }
 
         float getAlpha(int l) const {
-            return _h.getSCLayer(l)._alpha;
+            return _h.getLayer(l)._alpha;
         }
 
-        void setBeta(int l, float beta) {
-            _h.getSCLayer(l)._beta = beta;
+        void setGamma(int l, float gamma) {
+            _h.getLayer(l)._gamma = gamma;
         }
 
-        float getBeta(int l) const {
-            return _h.getSCLayer(l)._beta;
+        float getGamma(int l) const {
+            return _h.getLayer(l)._gamma;
         }
 
         void setInhibitRadius(int l, int inhibitRadius) {
-            _h.getSCLayer(l)._inhibitRadius = inhibitRadius;
+            _h.getLayer(l)._inhibitRadius = inhibitRadius;
         }
 
         int getInhibitRadius(int l) const {
-            return _h.getSCLayer(l)._inhibitRadius;
+            return _h.getLayer(l)._inhibitRadius;
         }
 
         void setBlurRadius(int l, int blurRadius) {
-            _h.getSCLayer(l)._blurRadius = blurRadius;
+            _h.getLayer(l)._blurRadius = blurRadius;
         }
 
-        float getBlurRadius(int l) const {
-            return _h.getSCLayer(l)._blurRadius;
+        int getBlurRadius(int l) const {
+            return _h.getLayer(l)._blurRadius;
+        }
+
+        void setPlanRadius(int l, int planRadius) {
+            _h.getLayer(l)._planRadius = planRadius;
+        }
+
+        int getPlanRadius(int l) const {
+            return _h.getLayer(l)._planRadius;
+        }
+
+        void setPlanIters(int l, int planIters) {
+            _h.getLayer(l)._planIters = planIters;
+        }
+
+        int getPlanIters(int l) const {
+            return _h.getLayer(l)._planIters;
         }
     };
 }
