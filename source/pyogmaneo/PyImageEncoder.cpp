@@ -55,6 +55,8 @@ void PyImageEncoder::step(
     const std::vector<PyFloatBuffer> &visibleActivations,
     bool learnEnabled
 ) {
+    _enc._alpha = _alpha;
+    
     std::vector<cl::Buffer> clVisibleActivations(visibleActivations.size());
 
     for (int v = 0; v < visibleActivations.size(); v++)
