@@ -24,7 +24,7 @@ bounds = (-1.0, 1.0)
 # Define layer descriptors: Parameters of each layer upon creation
 lds = []
 
-for i in range(5): # 5 layers with exponential memory
+for i in range(9): # 5 layers with exponential memory
     ld = pyogmaneo.PyLayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
