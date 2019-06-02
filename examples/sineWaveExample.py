@@ -13,7 +13,7 @@ import pyogmaneo
 import matplotlib.pyplot as plt
 
 # Create the compute system using a device
-cs = pyogmaneo.PyComputeSystem(4)
+cs = pyogmaneo.PyComputeSystem(16)
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 32
@@ -48,10 +48,10 @@ for i in range(len(lds)):
 
     for j in range(h.getNumVisibleLayers(i)):
         if h.visibleLayerExists(i, j):
-            h.setPAlpha(i, j, 0.5)
+            h.setPAlpha(i, j, 1.0)
 
 # Present the wave sequence for some timesteps
-iters = 3000
+iters = 5000
 
 for t in range(iters):
     # The value to encode into the input column
