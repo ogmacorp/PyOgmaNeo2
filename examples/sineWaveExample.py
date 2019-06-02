@@ -24,17 +24,18 @@ bounds = (-1.0, 1.0)
 # Define layer descriptors: Parameters of each layer upon creation
 lds = []
 
-for i in range(9): # 5 layers with exponential memory
+for i in range(5): # 5 layers with exponential memory
     ld = pyogmaneo.PyLayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
-    ld._hiddenSize = pyogmaneo.PyInt3(5, 5, 16)
+    ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
 
-    ld._scRadius = 2 # Sparse coder radius onto visible layers
+    ld._ffRadius = 2 # Sparse coder radius onto visible layers
+    ld._fbRadius = 2 # 
     ld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
 
     ld._ticksPerUpdate = 2 # How many ticks before a layer updates (compared to previous layer) - clock speed for exponential memory
-    ld._temporalHorizon = 2 # Memory horizon of the layer. Must be greater or equal to ticksPerUpdate, usually equal (minimum required)
+    ld._temporalHorizon = 4 # Memory horizon of the layer. Must be greater or equal to ticksPerUpdate, usually equal (minimum required)
 
     lds.append(ld)
 
@@ -44,21 +45,17 @@ h = pyogmaneo.PyHierarchy(cs, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyo
 # After creation, we can set run-time parameters
 for i in range(len(lds)):
     # Encoder alpha
-    h.setSCAlpha(i, 0.1)
-
-    for j in range(h.getNumVisibleLayers(i)):
-        if h.visibleLayerExists(i, j):
-            h.setPAlpha(i, j, 1.0)
+    h.setSCAlpha(i, 0.2)
 
 # Present the wave sequence for some timesteps
 iters = 5000
 
 for t in range(iters):
     # The value to encode into the input column
-    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi) * np.sin(t * 0.035 * 2.0 * np.pi + 0.45)
+    valueToEncode = np.sin(t * 0.02 * 2.0 * np.pi)# * np.sin(t * 0.035 * 2.0 * np.pi + 0.45)
 
     # Step the hierarchy given the inputs (just one here)
-    h.step(cs, [ [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ] ], True) # True for enabling learning
+    h.step(cs, [ [ int((valueToEncode - bounds[0]) / (bounds[1] - bounds[0]) * (inputColumnSize - 1) + 0.5) ] ], [], True) # True for enabling learning
 
     # Print progress
     if t % 100 == 0:
@@ -73,10 +70,10 @@ for t in range(300):
     t2 = t + iters # Continue where previous sequence left off
 
     # New, continued value for comparison to what the hierarchy predicts
-    valueToEncode = np.sin(t2 * 0.02 * 2.0 * np.pi) * np.sin(t2 * 0.035 * 2.0 * np.pi + 0.45)
+    valueToEncode = np.sin(t2 * 0.02 * 2.0 * np.pi)# * np.sin(t2 * 0.035 * 2.0 * np.pi + 0.45)
 
     # Run off of own predictions with learning disabled
-    h.step(cs, [ h.getPredictionCs(0) ], False)
+    h.step(cs, [ h.getPredictionCs(0) ], [], False)
 
     # Retrieve the predicted column index
     predIndex = h.getPredictionCs(0)[0] # First (only in this case) input layer prediction

@@ -60,7 +60,7 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, &topFeedBackCs, learnEnabled);
+    _h.step(cs._cs, cInputCs, topFeedBackCs.empty() ? nullptr : &topFeedBackCs, learnEnabled);
 }
 
 void PyHierarchy::save(const std::string &fileName) const {
