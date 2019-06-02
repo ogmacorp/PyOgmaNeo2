@@ -20,18 +20,19 @@ namespace pyogmaneo {
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
-        int _scRadius;
+        int _ffRadius;
+        int _fbRadius;
         int _pRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _ffRadius(2), _fbRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int ffRadius, int fbRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _ffRadius(ffRadius), _fbRadius(fbRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -43,7 +44,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &topFeedBackCs, bool learnEnabled = true);
 
         void save(const std::string &fileName) const;
 
@@ -71,32 +72,12 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
-        int getNumVisibleLayers(int l) {
-            return _h.getPLayer(l).size();
-        }
-
-        bool visibleLayerExists(int l, int v) {
-            return _h.getPLayer(l)[v] != nullptr;
-        }
-
         void setSCAlpha(int l, float alpha) {
             _h.getSCLayer(l)._alpha = alpha;
         }
 
         float getSCAlpha(int l) const {
             return _h.getSCLayer(l)._alpha;
-        }
-
-        void setPAlpha(int l, int v, float alpha) {
-            assert(_h.getPLayer(l)[v] != nullptr);
-            
-            _h.getPLayer(l)[v]->_alpha = alpha;
-        }
-
-        float getPAlpha(int l, int v) const {
-            assert(_h.getPLayer(l)[v] != nullptr);
-            
-            return _h.getPLayer(l)[v]->_alpha;
         }
     };
 }
