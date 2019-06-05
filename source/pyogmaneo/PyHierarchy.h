@@ -87,6 +87,14 @@ namespace pyogmaneo {
             return _h._alpha;
         }
 
+        void setBeta(float beta) {
+            _h._beta = beta;
+        }
+
+        float getBeta() const {
+            return _h._beta;
+        }
+
         void setGamma(float gamma) {
             _h._gamma = gamma;
         }
