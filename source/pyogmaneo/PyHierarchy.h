@@ -63,6 +63,10 @@ namespace pyogmaneo {
             return _h.getSCLayer(l).getHiddenCs();
         }
 
+        PyInt3 getHiddenSize(int l) {
+            return { _h.getSCLayer(l).getHiddenSize().x, _h.getSCLayer(l).getHiddenSize().y, _h.getSCLayer(l).getHiddenSize().z };
+        }
+
         int getTicks(int l) const {
             return _h.getTicks(l);
         }
@@ -87,13 +91,13 @@ namespace pyogmaneo {
             return _h._alpha;
         }
 
-        void setBeta(float beta) {
-            _h._beta = beta;
-        }
+        // void setBeta(float beta) {
+        //     _h._beta = beta;
+        // }
 
-        float getBeta() const {
-            return _h._beta;
-        }
+        // float getBeta() const {
+        //     return _h._beta;
+        // }
 
         void setGamma(float gamma) {
             _h._gamma = gamma;
@@ -103,13 +107,13 @@ namespace pyogmaneo {
             return _h._gamma;
         }
 
-        // void setClip(float clip) {
-        //     _h._clip = clip;
-        // }
+        void setClip(float clip) {
+            _h._clip = clip;
+        }
 
-        // float getClip() const {
-        //     return _h._clip;
-        // }
+        float getClip() const {
+            return _h._clip;
+        }
 
         void setMaxHistorySamples(int maxHistorySamples) {
             _h._maxHistorySamples = maxHistorySamples;
