@@ -28,7 +28,7 @@ namespace pyogmaneo {
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _rRadius(2), _ticksPerUpdate(1), _temporalHorizon(1)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _rRadius(-1), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int rRadius, int ticksPerUpdate, int temporalHorizon)
