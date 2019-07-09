@@ -119,6 +119,18 @@ namespace pyogmaneo {
             return _h.getALayer(l)[v]->_gamma;
         }
 
+        void setASteps(int l, int v, int steps) {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            _h.getALayer(l)[v]->_steps = steps;
+        }
+
+        int getASteps(int l, int v) const {
+            assert(_h.getALayer(l)[v] != nullptr);
+            
+            return _h.getALayer(l)[v]->_steps;
+        }
+
         void setAHistoryIters(int l, int v, int historyIters) {
             assert(_h.getALayer(l)[v] != nullptr);
             
