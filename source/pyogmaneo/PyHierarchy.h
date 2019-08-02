@@ -83,14 +83,6 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
         
-        // void setSCRefractoryTicks(int l, int refractoryTicks) {
-        //     _h.getSCLayer(l)._refractoryTicks = refractoryTicks;
-        // }
-
-        // int getSCRefractoryTicks(int l) const {
-        //     return _h.getSCLayer(l)._refractoryTicks;
-        // }
-        
         void setAlpha(float alpha) {
             _h._alpha = alpha;
         }
@@ -98,14 +90,6 @@ namespace pyogmaneo {
         float getAlpha() const {
             return _h._alpha;
         }
-
-        // void setBeta(float beta) {
-        //     _h._beta = beta;
-        // }
-
-        // float getBeta() const {
-        //     return _h._beta;
-        // }
 
         void setGamma(float gamma) {
             _h._gamma = gamma;
