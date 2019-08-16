@@ -115,6 +115,14 @@ namespace pyogmaneo {
         //     return _h._clip;
         // }
 
+        void setLeak(float leak) {
+            _h._leak = leak;
+        }
+
+        float getLeak() const {
+            return _h._leak;
+        }
+
         void setMaxHistorySamples(int maxHistorySamples) {
             _h._maxHistorySamples = maxHistorySamples;
         }
