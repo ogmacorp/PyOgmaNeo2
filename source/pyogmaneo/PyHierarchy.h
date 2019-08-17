@@ -107,13 +107,13 @@ namespace pyogmaneo {
             return _h._gamma;
         }
 
-        // void setClip(float clip) {
-        //     _h._clip = clip;
-        // }
+        void setClip(float clip) {
+            _h._clip = clip;
+        }
 
-        // float getClip() const {
-        //     return _h._clip;
-        // }
+        float getClip() const {
+            return _h._clip;
+        }
 
         // void setLeak(float leak) {
         //     _h._leak = leak;
