@@ -10,7 +10,7 @@
 
 using namespace pyogmaneo;
 
-PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs) {
+PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, int lateralRadius, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs) {
     std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> cVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
@@ -18,7 +18,7 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
         cVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
-    _enc.initRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
+    _enc.initRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), lateralRadius, cVisibleLayerDescs);
 
     _alpha = _enc._alpha;
     _beta = _enc._beta;
@@ -47,10 +47,6 @@ void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<flo
     }
 
     _enc.step(cs._cs, cVisibleActivations, learnEnabled);
-}
-
-void PyImageEncoder::reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs) {
-    _enc.reconstruct(cs._cs, &hiddenCs);
 }
 
 void PyImageEncoder::save(const std::string &fileName) const {
