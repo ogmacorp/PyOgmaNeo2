@@ -91,13 +91,13 @@ namespace pyogmaneo {
             return _h._alpha;
         }
 
-        void setBeta(float beta) {
-            _h._beta = beta;
-        }
+        // void setBeta(float beta) {
+        //     _h._beta = beta;
+        // }
 
-        float getBeta() const {
-            return _h._beta;
-        }
+        // float getBeta() const {
+        //     return _h._beta;
+        // }
 
         void setGamma(float gamma) {
             _h._gamma = gamma;
@@ -107,13 +107,13 @@ namespace pyogmaneo {
             return _h._gamma;
         }
 
-        void setClip(float clip) {
-            _h._clip = clip;
-        }
+        // void setClip(float clip) {
+        //     _h._clip = clip;
+        // }
 
-        float getClip() const {
-            return _h._clip;
-        }
+        // float getClip() const {
+        //     return _h._clip;
+        // }
 
         // void setLeak(float leak) {
         //     _h._leak = leak;
