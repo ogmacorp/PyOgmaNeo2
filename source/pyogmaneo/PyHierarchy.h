@@ -119,17 +119,17 @@ namespace pyogmaneo {
             return _h.getALayer(l)[v]->_gamma;
         }
 
-        void setAClip(int l, int v, float clip) {
-            assert(_h.getALayer(l)[v] != nullptr);
+        // void setAClip(int l, int v, float clip) {
+        //     assert(_h.getALayer(l)[v] != nullptr);
             
-            _h.getALayer(l)[v]->_clip = clip;
-        }
+        //     _h.getALayer(l)[v]->_clip = clip;
+        // }
 
-        float getAClip(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
+        // float getAClip(int l, int v) const {
+        //     assert(_h.getALayer(l)[v] != nullptr);
             
-            return _h.getALayer(l)[v]->_clip;
-        }
+        //     return _h.getALayer(l)[v]->_clip;
+        // }
 
         void setASteps(int l, int v, int steps) {
             assert(_h.getALayer(l)[v] != nullptr);
