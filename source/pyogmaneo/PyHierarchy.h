@@ -22,7 +22,6 @@ namespace pyogmaneo {
 
         int _scRadius;
         int _aRadius;
-        int _lRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
@@ -30,11 +29,11 @@ namespace pyogmaneo {
         int _historyCapacity;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _lRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(16)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(64)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int lRadius, int ticksPerUpdate, int temporalHorizon, int historyCapacity)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _lRadius(lRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon), _historyCapacity(historyCapacity)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int ticksPerUpdate, int temporalHorizon, int historyCapacity)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon), _historyCapacity(historyCapacity)
         {}
     };
 
@@ -96,23 +95,23 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCBeta(int l, float beta) {
-            _h.getSCLayer(l)._beta = beta;
-        }
+        // void setSCBeta(int l, float beta) {
+        //     _h.getSCLayer(l)._beta = beta;
+        // }
 
-        float getSCBeta(int l) const {
-            return _h.getSCLayer(l)._beta;
-        }
+        // float getSCBeta(int l) const {
+        //     return _h.getSCLayer(l)._beta;
+        // }
 
-        void setSCExplainIters(int l, int explainIters) {
-            _h.getSCLayer(l)._explainIters = explainIters;
-        }
+        // void setSCExplainIters(int l, int explainIters) {
+        //     _h.getSCLayer(l)._explainIters = explainIters;
+        // }
 
-        int getSCExplainIters(int l) const {
-            return _h.getSCLayer(l)._explainIters;
-        }
+        // int getSCExplainIters(int l) const {
+        //     return _h.getSCLayer(l)._explainIters;
+        // }
 
-                void setAAlpha(int l, int v, float alpha) {
+        void setAAlpha(int l, int v, float alpha) {
             assert(_h.getALayer(l)[v] != nullptr);
             
             _h.getALayer(l)[v]->_alpha = alpha;
