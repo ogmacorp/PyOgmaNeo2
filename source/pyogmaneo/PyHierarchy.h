@@ -20,18 +20,23 @@ namespace pyogmaneo {
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
-        int _scRadius;
-        int _pRadius;
+        int _rfRadius; // Revervior forward radius
+        int _rrRadius; // Reservior recurrent radius
+        int _pRadius; // Predictor radius
 
-        int _ticksPerUpdate;
-        int _temporalHorizon;
+        float _rfScale;
+        float _rfDropRatio;
+        float _rrScale;
+        float _rrDropRatio;
+
+        float _pDropRatio;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(1.0f), _rfDropRatio(0.5f), _rrScale(1.0f), _rrDropRatio(0.5f), _pDropRatio(0.5f)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int rfRadius, int rrRadius, int pRadius, float rfScale, float rfDropRatio, float rrScale, float rrDropRatio, float pDropRatio)
+        : _hiddenSize(hiddenSize), _rfRadius(rfRadius), _rrRadius(rrRadius), _pRadius(pRadius), _rfScale(rfScale), _rfDropRatio(rfDropRatio), _rrScale(rrScale), _rrDropRatio(rrDropRatio), _pDropRatio(pDropRatio)
         {}
     };
 
@@ -43,7 +48,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &topFeedBackCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputStates, const std::vector<float> &goalStates, bool learn = true);
 
         void save(const std::string &fileName) const;
 
@@ -51,40 +56,8 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getPredictionCs(int i) const {
-            return _h.getPredictionCs(i);
-        }
-
-        bool getUpdate(int l) const {
-            return _h.getUpdate(l);
-        }
-
-        const std::vector<int> &getHiddenCs(int l) {
-            return _h.getSCLayer(l).getHiddenCs();
-        }
-
-        int getTicks(int l) const {
-            return _h.getTicks(l);
-        }
-
-        int getTicksPerUpdate(int l) const {
-            return _h.getTicksPerUpdate(l);
-        }
-
-        int getNumVisibleLayers(int l) {
-            return _h.getPLayer(l).size();
-        }
-
-        bool visibleLayerExists(int l, int v) {
-            return _h.getPLayer(l)[v] != nullptr;
-        }
-
-        void setSCAlpha(int l, float alpha) {
-            _h.getSCLayer(l)._alpha = alpha;
-        }
-
-        float getSCAlpha(int l) const {
-            return _h.getSCLayer(l)._alpha;
+        const std::vector<float> &getPredictionStates(int i) const {
+            return _h.getPredictionStates(i);
         }
 
         void setPAlpha(int l, int v, float alpha) {

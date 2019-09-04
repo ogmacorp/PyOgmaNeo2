@@ -33,10 +33,14 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
 
     for (int l = 0; l < layerDescs.size(); l++) {
         cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
-        cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
+        cLayerDescs[l]._rfRadius = layerDescs[l]._rfRadius;
+        cLayerDescs[l]._rrRadius = layerDescs[l]._rrRadius;
         cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
-        cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
-        cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
+        cLayerDescs[l]._rfScale = layerDescs[l]._rfScale;
+        cLayerDescs[l]._rfDropRatio = layerDescs[l]._rfDropRatio;
+        cLayerDescs[l]._rrScale = layerDescs[l]._rrScale;
+        cLayerDescs[l]._rrDropRatio = layerDescs[l]._rrDropRatio;
+        cLayerDescs[l]._pDropRatio = layerDescs[l]._pDropRatio;
     }
 
     _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
@@ -48,18 +52,18 @@ PyHierarchy::PyHierarchy(const std::string &fileName) {
     _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &topFeedBackCs, bool learn) {
-    assert(inputCs.size() == _h.getInputSizes().size());
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &inputStates, const std::vector<float> &goalStates, bool learn) {
+    assert(inputStates.size() == _h.getInputSizes().size());
 
-    std::vector<const std::vector<int>*> cInputCs(inputCs.size());
+    std::vector<const std::vector<float>*> cInputStates(inputStates.size());
 
-    for (int i = 0; i < inputCs.size(); i++) {
-        assert(inputCs[i].size() == _h.getInputSizes()[i].x * _h.getInputSizes()[i].y);
+    for (int i = 0; i < inputStates.size(); i++) {
+        assert(inputStates[i].size() == _h.getInputSizes()[i].x * _h.getInputSizes()[i].y);
 
-        cInputCs[i] = &inputCs[i];
+        cInputStates[i] = &inputStates[i];
     }
     
-    _h.step(cs._cs, cInputCs, &topFeedBackCs, learn);
+    _h.step(cs._cs, cInputStates, &goalStates, learn);
 }
 
 void PyHierarchy::save(const std::string &fileName) const {
