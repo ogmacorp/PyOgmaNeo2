@@ -30,14 +30,15 @@ namespace pyogmaneo {
         float _rrDropRatio;
         float _rbScale;
 
+        float _pScale;
         float _pDropRatio;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(4.0f), _rfDropRatio(0.0f), _rrScale(2.0f), _rrDropRatio(0.5f), _rbScale(2.0f), _pDropRatio(0.0f)
+        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(4.0f), _rfDropRatio(0.0f), _rrScale(2.0f), _rrDropRatio(0.5f), _rbScale(2.0f), _pScale(4.0f), _pDropRatio(0.0f)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int rfRadius, int rrRadius, int pRadius, float rfScale, float rfDropRatio, float rrScale, float rrDropRatio, float rbScale, float pDropRatio)
-        : _hiddenSize(hiddenSize), _rfRadius(rfRadius), _rrRadius(rrRadius), _pRadius(pRadius), _rfScale(rfScale), _rfDropRatio(rfDropRatio), _rrScale(rrScale), _rrDropRatio(rrDropRatio), _rbScale(rbScale), _pDropRatio(pDropRatio)
+        PyLayerDesc(const PyInt3 &hiddenSize, int rfRadius, int rrRadius, int pRadius, float rfScale, float rfDropRatio, float rrScale, float rrDropRatio, float rbScale, float pScale, float pDropRatio)
+        : _hiddenSize(hiddenSize), _rfRadius(rfRadius), _rrRadius(rrRadius), _pRadius(pRadius), _rfScale(rfScale), _rfDropRatio(rfDropRatio), _rrScale(rrScale), _rrDropRatio(rrDropRatio), _rbScale(rbScale), _pScale(pScale), _pDropRatio(pDropRatio)
         {}
     };
 
