@@ -40,6 +40,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._rfDropRatio = layerDescs[l]._rfDropRatio;
         cLayerDescs[l]._rrScale = layerDescs[l]._rrScale;
         cLayerDescs[l]._rrDropRatio = layerDescs[l]._rrDropRatio;
+        cLayerDescs[l]._rbScale = layerDescs[l]._rbScale;
         cLayerDescs[l]._pDropRatio = layerDescs[l]._pDropRatio;
     }
 
