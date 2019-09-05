@@ -34,7 +34,7 @@ namespace pyogmaneo {
         float _pDropRatio;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(4.0f), _rfDropRatio(0.0f), _rrScale(2.0f), _rrDropRatio(0.5f), _rbScale(2.0f), _pScale(4.0f), _pDropRatio(0.0f)
+        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(16.0f), _rfDropRatio(0.0f), _rrScale(8.0f), _rrDropRatio(0.5f), _rbScale(1.0f), _pScale(16.0f), _pDropRatio(0.0f)
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int rfRadius, int rrRadius, int pRadius, float rfScale, float rfDropRatio, float rrScale, float rrDropRatio, float rbScale, float pScale, float pDropRatio)
