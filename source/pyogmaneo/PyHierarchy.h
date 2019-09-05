@@ -57,6 +57,10 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
+        const std::vector<float> &getHiddenStates(int i) const {
+            return _h.getRLayer(i),getHiddenStates();
+        }
+
         const std::vector<float> &getPredictionStates(int i) const {
             return _h.getPredictionStates(i);
         }
