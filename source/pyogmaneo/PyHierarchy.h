@@ -23,17 +23,16 @@ namespace pyogmaneo {
         int _scRadius;
         int _pRadius;
         int _lRadius;
-        int _rRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _lRadius(2), _rRadius(-1), _ticksPerUpdate(2), _temporalHorizon(2)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _lRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int lRadius, int rRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _lRadius(lRadius), _rRadius(rRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int lRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _lRadius(lRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -45,7 +44,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &topFeedBackCs, bool learn = true);
 
         void save(const std::string &fileName) const;
 

@@ -36,7 +36,6 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
         cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         cLayerDescs[l]._lRadius = layerDescs[l]._lRadius;
-        cLayerDescs[l]._rRadius = layerDescs[l]._rRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
@@ -50,7 +49,7 @@ PyHierarchy::PyHierarchy(const std::string &fileName) {
     _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learn) {
+void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, const std::vector<int> &topFeedBackCs, bool learn) {
     assert(inputCs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
@@ -61,7 +60,7 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, learn);
+    _h.step(cs._cs, cInputCs, &topFeedBackCs, learn);
 }
 
 void PyHierarchy::save(const std::string &fileName) const {
