@@ -66,6 +66,14 @@ namespace pyogmaneo {
             return _h.getPredictionStates(i);
         }
 
+        // void setRRegulate(int l, float regulate) {
+        //     _h.getRLayer(l)._regulate = regulate;
+        // }
+
+        // float getRRegulate(int l) const {
+        //     return _h.getRLayer(l)._regulate;
+        // }
+
         void setPAlpha(int l, int v, float alpha) {
             assert(_h.getPLayer(l)[v] != nullptr);
             
