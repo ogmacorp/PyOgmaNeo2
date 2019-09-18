@@ -42,10 +42,16 @@ namespace pyogmaneo {
 
         void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled);
 
+        void reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs);
+
         void save(const std::string &fileName) const;
 
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();
+        }
+
+        const std::vector<float> &getReconstruction(int i) const {
+            return _enc.getVisibleLayer(i)._reconActivations;
         }
 
         std::vector<int> getHiddenCs() const {
