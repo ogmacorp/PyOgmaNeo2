@@ -15,26 +15,24 @@
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypeAct = 1;
+    const int _inputTypePred = 1;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
 
         int _scRadius;
-        int _aRadius;
+        int _pRadius;
         int _lRadius;
 
         int _ticksPerUpdate;
         int _temporalHorizon;
 
-        int _historyCapacity;
-
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _scRadius(2), _aRadius(2), _lRadius(2), _ticksPerUpdate(2), _temporalHorizon(2), _historyCapacity(32)
+        : _hiddenSize(4, 4, 16), _scRadius(2), _pRadius(2), _lRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int aRadius, int lRadius, int ticksPerUpdate, int temporalHorizon, int historyCapacity)
-        : _hiddenSize(hiddenSize), _scRadius(scRadius), _aRadius(aRadius), _lRadius(lRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon), _historyCapacity(historyCapacity)
+        PyLayerDesc(const PyInt3 &hiddenSize, int scRadius, int pRadius, int lRadius, int ticksPerUpdate, int temporalHorizon)
+        : _hiddenSize(hiddenSize), _scRadius(scRadius), _pRadius(pRadius), _lRadius(lRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
         {}
     };
 
@@ -46,7 +44,7 @@ namespace pyogmaneo {
         PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
         PyHierarchy(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, float reward, bool learnEnabled = true);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learnEnabled = true);
 
         void save(const std::string &fileName) const;
 
@@ -54,8 +52,8 @@ namespace pyogmaneo {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getActionCs(int i) const {
-            return _h.getActionCs(i);
+        const std::vector<int> &getPredictionCs(int i) const {
+            return _h.getPredictionCs(i);
         }
 
         bool getUpdate(int l) const {
@@ -81,11 +79,11 @@ namespace pyogmaneo {
         }
 
         int getNumVisibleLayers(int l) {
-            return _h.getALayer(l).size();
+            return _h.getPLayer(l).size();
         }
 
         bool visibleLayerExists(int l, int v) {
-            return _h.getALayer(l)[v] != nullptr;
+            return _h.getPLayer(l)[v] != nullptr;
         }
 
         void setSCAlpha(int l, float alpha) {
@@ -112,40 +110,16 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._explainIters;
         }
 
-        void setAAlpha(int l, int v, float alpha) {
-            assert(_h.getALayer(l)[v] != nullptr);
+        void setPAlpha(int l, int v, float alpha) {
+            assert(_h.getPLayer(l)[v] != nullptr);
             
-            _h.getALayer(l)[v]->_alpha = alpha;
+            _h.getPLayer(l)[v]->_alpha = alpha;
         }
 
-        float getAAlpha(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
+        float getPAlpha(int l, int v) const {
+            assert(_h.getPLayer(l)[v] != nullptr);
             
-            return _h.getALayer(l)[v]->_alpha;
+            return _h.getPLayer(l)[v]->_alpha;
         }
-
-        void setAGamma(int l, int v, float gamma) {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            _h.getALayer(l)[v]->_gamma = gamma;
-        }
-
-        float getAGamma(int l, int v) const {
-            assert(_h.getALayer(l)[v] != nullptr);
-            
-            return _h.getALayer(l)[v]->_gamma;
-        }
-
-        // void setAEpsilon(int l, int v, float epsilon) {
-        //     assert(_h.getALayer(l)[v] != nullptr);
-            
-        //     _h.getALayer(l)[v]->_epsilon = epsilon;
-        // }
-
-        // float getAEpsilon(int l, int v) const {
-        //     assert(_h.getALayer(l)[v] != nullptr);
-            
-        //     return _h.getALayer(l)[v]->_epsilon;
-        // }
     };
 }
