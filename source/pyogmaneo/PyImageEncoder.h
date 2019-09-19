@@ -33,8 +33,6 @@ namespace pyogmaneo {
         ogmaneo::ImageEncoder _enc;
 
     public:
-        float _alpha;
-        float _beta;
         int _explainIters;
 
         PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, int lRadius, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
