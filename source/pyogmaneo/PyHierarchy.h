@@ -48,6 +48,8 @@ namespace pyogmaneo {
 
         void save(const std::string &fileName) const;
 
+        void getSCReceptiveField(int l, int i, const PyInt3 &hiddenPosition, std::vector<float> &field, PyInt3 &size) const;
+
         int getNumLayers() const {
             return _h.getNumLayers();
         }
@@ -78,22 +80,6 @@ namespace pyogmaneo {
 
         bool visibleLayerExists(int l, int v) {
             return _h.getPLayer(l)[v] != nullptr;
-        }
-
-        void setSCAlpha(int l, float alpha) {
-            _h.getSCLayer(l)._alpha = alpha;
-        }
-
-        float getSCAlpha(int l) const {
-            return _h.getSCLayer(l)._alpha;
-        }
-
-        void setSCBeta(int l, float beta) {
-            _h.getSCLayer(l)._beta = beta;
-        }
-
-        float getSCBeta(int l) const {
-            return _h.getSCLayer(l)._beta;
         }
 
         void setSCExplainIters(int l, int explainIters) {

@@ -68,3 +68,57 @@ void PyHierarchy::save(const std::string &fileName) const {
 
     _h.writeToStream(os);
 }
+
+void PyHierarchy::getSCReceptiveField(int l, int i, const PyInt3 &hiddenPosition, std::vector<float> &field, PyInt3 &size) const {
+    // Determine bounds
+    ogmaneo::Int3 minPos(999999, 999999, 999999);
+    ogmaneo::Int3 maxPos(0, 0, 0);
+
+    const ogmaneo::SparseMatrix sm = _h.getSCLayer(l).getWeights(i);
+
+    int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), _h.getSCLayer(l).getHiddenSize());
+    int nextIndex = row + 1;
+	
+	for (int j = sm._rowRanges[row]; j < sm._rowRanges[nextIndex]; j++) {
+        int index = sm._columnIndices[j];
+
+        int inZ = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+
+        int inY = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+
+        int inX = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.x;
+
+		minPos.x = std::min(minPos.x, inX);
+		minPos.y = std::min(minPos.y, inY);
+		minPos.z = std::min(minPos.z, inZ);
+
+        maxPos.x = std::max(maxPos.x, inX + 1);
+		maxPos.y = std::max(maxPos.y, inY + 1);
+		maxPos.z = std::max(maxPos.z, inZ + 1);
+    }
+
+    size.x = maxPos.x - minPos.x;
+    size.y = maxPos.y - minPos.y;
+    size.z = maxPos.z - minPos.z;
+
+    int totalSize = size.x * size.y * size.z;
+
+    field.clear();
+    field.resize(totalSize, 0.0f);
+
+    for (int j = sm._rowRanges[row]; j < sm._rowRanges[nextIndex]; j++) {
+        int index = sm._columnIndices[j];
+
+        int inZ = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+
+        int inY = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+
+        int inX = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.x;
+
+		field[ogmaneo::address3(ogmaneo::Int3(inX - minPos.x, inY - minPos.y, inZ - minPos.z), ogmaneo::Int3(size.x, size.y, size.z))] = sm._nonZeroValues[j];
+    }
+}
