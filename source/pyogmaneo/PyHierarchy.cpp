@@ -36,6 +36,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
         cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         cLayerDescs[l]._lRadius = layerDescs[l]._lRadius;
+        cLayerDescs[l]._rRadius = layerDescs[l]._rRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
