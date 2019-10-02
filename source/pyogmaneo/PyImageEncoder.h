@@ -33,23 +33,15 @@ namespace pyogmaneo {
         ogmaneo::ImageEncoder _enc;
 
     public:
-        float _alpha;
-
         PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
         PyImageEncoder(const std::string &fileName);
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActs, bool learnEnabled);
-
-        void reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs);
+        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActs);
 
         void save(const std::string &fileName) const;
 
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();
-        }
-
-        const std::vector<float> &getVisibleActs(int index) const {
-            return _enc.getVisibleLayer(index)._visibleActs;
         }
 
         std::vector<int> getHiddenCs() const {
