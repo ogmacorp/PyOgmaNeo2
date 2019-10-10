@@ -35,7 +35,6 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
         cLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
         cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
-        cLayerDescs[l]._lRadius = layerDescs[l]._lRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
     }
