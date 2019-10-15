@@ -222,25 +222,6 @@ public:
         return _h.getALayers(l)[v]->_gamma;
     }
 
-    void setADelta(
-        int l,
-        int v,
-        float delta
-    ) {
-        assert(_h.getALayers(l)[v] != nullptr);
-        
-        _h.getALayers(l)[v]->_delta = delta;
-    }
-
-    float getADelta(
-        int l,
-        int v
-    ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
-        
-        return _h.getALayers(l)[v]->_delta;
-    }
-
     // void setAEpsilon(
     //     int l,
     //     int v,
