@@ -16,8 +16,6 @@ PyImageEncoder::PyImageEncoder(
     const PyInt3 &hiddenSize,
     const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs
 ) {
-    _alpha = _enc._alpha;
-
     _visibleLayerDescs = visibleLayerDescs;
 
     std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
@@ -38,8 +36,6 @@ PyImageEncoder::PyImageEncoder(
     std::ifstream is(name, std::ios::binary);
     _enc.readFromStream(cs._cs, prog._prog, is);
 
-    _alpha = _enc._alpha;
-
     _visibleLayerDescs.resize(_enc.getNumVisibleLayers());
 
     for (int v = 0; v < _visibleLayerDescs.size(); v++) {
@@ -52,15 +48,12 @@ PyImageEncoder::PyImageEncoder(
 
 void PyImageEncoder::step(
     PyComputeSystem &cs,
-    const std::vector<PyFloatBuffer> &visibleActivations,
-    bool learnEnabled
+    const std::vector<PyFloatBuffer> &visibleActivations
 ) {
-    _enc._alpha = _alpha;
-    
     std::vector<cl::Buffer> clVisibleActivations(visibleActivations.size());
 
     for (int v = 0; v < visibleActivations.size(); v++)
         clVisibleActivations[v] = visibleActivations[v]._buf;
 
-    _enc.step(cs._cs, clVisibleActivations, learnEnabled);
+    _enc.step(cs._cs, clVisibleActivations);
 }
