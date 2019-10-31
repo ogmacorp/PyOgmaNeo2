@@ -66,14 +66,6 @@ namespace pyogmaneo {
             return _h.getPredictionStates(i);
         }
 
-        // void setRRegulate(int l, float regulate) {
-        //     _h.getRLayer(l)._regulate = regulate;
-        // }
-
-        // float getRRegulate(int l) const {
-        //     return _h.getRLayer(l)._regulate;
-        // }
-
         void setPAlpha(int l, int v, float alpha) {
             assert(_h.getPLayer(l)[v] != nullptr);
             
@@ -84,6 +76,42 @@ namespace pyogmaneo {
             assert(_h.getPLayer(l)[v] != nullptr);
             
             return _h.getPLayer(l)[v]->_alpha;
+        }
+
+        void setPGamma(int l, int v, float gamma) {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            _h.getPLayer(l)[v]->_gamma = gamma;
+        }
+
+        float getPGamma(int l, int v) const {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            return _h.getPLayer(l)[v]->_gamma;
+        }
+
+        void setPMaxHistorySamples(int l, int v, int maxHistorySamples) {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            _h.getPLayer(l)[v]->_maxHistorySamples = maxHistorySamples;
+        }
+
+        int getPMaxHistorySamples(int l, int v) const {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            return _h.getPLayer(l)[v]->_maxHistorySamples;
+        }
+
+        void setPHistoryIters(int l, int v, int historyIters) {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            _h.getPLayer(l)[v]->_historyIters = historyIters;
+        }
+
+        int getPHistoryIters(int l, int v) const {
+            assert(_h.getPLayer(l)[v] != nullptr);
+            
+            return _h.getPLayer(l)[v]->_historyIters;
         }
     };
 }
