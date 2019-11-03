@@ -39,9 +39,8 @@ void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<flo
     
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
-    for (int i = 0; i < visibleActivations.size(); i++) {
+    for (int i = 0; i < visibleActivations.size(); i++)
         cVisibleActivations[i] = &visibleActivations[i];
-    }
 
     _enc.step(cs._cs, cVisibleActivations, learnEnabled);
 }
