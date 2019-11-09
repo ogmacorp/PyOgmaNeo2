@@ -222,23 +222,23 @@ public:
         return _h.getALayers(l)[v]->_gamma;
     }
 
-    void setAEpsilon(
-        int l,
-        int v,
-        float epsilon
-    ) {
-        assert(_h.getALayers(l)[v] != nullptr);
+    // void setAEpsilon(
+    //     int l,
+    //     int v,
+    //     float epsilon
+    // ) {
+    //     assert(_h.getALayers(l)[v] != nullptr);
         
-        _h.getALayers(l)[v]->_epsilon = epsilon;
-    }
+    //     _h.getALayers(l)[v]->_epsilon = epsilon;
+    // }
 
-    float getAEpsilon(
-        int l,
-        int v
-    ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
+    // float getAEpsilon(
+    //     int l,
+    //     int v
+    // ) const {
+    //     assert(_h.getALayers(l)[v] != nullptr);
         
-        return _h.getALayers(l)[v]->_epsilon;
-    }
+    //     return _h.getALayers(l)[v]->_epsilon;
+    // }
 };
 } // namespace pyogmaneo
