@@ -34,7 +34,7 @@ namespace pyogmaneo {
         float _pDropRatio;
 
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(16.0f), _rfDropRatio(0.0f), _rrScale(8.0f), _rrDropRatio(0.5f), _rbScale(1.0f), _pScale(16.0f), _pDropRatio(0.0f)
+        : _hiddenSize(4, 4, 16), _rfRadius(2), _rrRadius(2), _pRadius(2), _rfScale(1.0f), _rfDropRatio(0.0f), _rrScale(1.0f), _rrDropRatio(0.5f), _rbScale(1.0f), _pScale(1.0f), _pDropRatio(0.0f)
         {}
 
         PyLayerDesc(const PyInt3 &hiddenSize, int rfRadius, int rrRadius, int pRadius, float rfScale, float rfDropRatio, float rrScale, float rrDropRatio, float rbScale, float pScale, float pDropRatio)
@@ -64,6 +64,14 @@ namespace pyogmaneo {
 
         const std::vector<float> &getPredictionStates(int i) const {
             return _h.getPredictionStates(i);
+        }
+
+        void setRAlpha(int l, float alpha) {
+            _h.getRLayer(l)._alpha = alpha;
+        }
+
+        float getRAlpha(int l) const {
+            return _h.getRLayer(l)._alpha;
         }
 
         void setPAlpha(int l, int v, float alpha) {
