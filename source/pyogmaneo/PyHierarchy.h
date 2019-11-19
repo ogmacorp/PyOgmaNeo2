@@ -66,14 +66,6 @@ namespace pyogmaneo {
             return _h.getPredictionStates(i);
         }
 
-        void setRAlpha(int l, float alpha) {
-            _h.getRLayer(l)._alpha = alpha;
-        }
-
-        float getRAlpha(int l) const {
-            return _h.getRLayer(l)._alpha;
-        }
-
         void setPAlpha(int l, int v, float alpha) {
             assert(_h.getPLayer(l)[v] != nullptr);
             
