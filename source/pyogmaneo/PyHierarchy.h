@@ -234,6 +234,23 @@ public:
         return _h.getALayers()[a]->_alpha;
     }
 
+    void setABeta(
+        int a,
+        float beta
+    ) {
+        assert(_h.getALayers()[a] != nullptr);
+        
+        _h.getALayers()[a]->_beta = beta;
+    }
+
+    float getABeta(
+        int a
+    ) const {
+        assert(_h.getALayers()[a] != nullptr);
+        
+        return _h.getALayers()[a]->_beta;
+    }
+
     void setAGamma(
         int a,
         float gamma
