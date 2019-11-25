@@ -42,7 +42,7 @@
 %template(StdVecInt3) std::vector<pyogmaneo::PyInt3>;
 %template(StdVecIntBuffer) std::vector<pyogmaneo::PyIntBuffer>;
 %template(StdVecFloatBuffer) std::vector<pyogmaneo::PyFloatBuffer>;
-%template(StdVecLayerDesc) std::vector<pyogmaneo::PyLayerDesc>;
+%template(StdVecHigherLayerDesc) std::vector<pyogmaneo::PyHigherLayerDesc>;
 
 %template(StdVecImVisibleLayerDesc) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
 

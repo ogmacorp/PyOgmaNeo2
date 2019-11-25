@@ -15,7 +15,8 @@ PyHierarchy::PyHierarchy(
     PyComputeProgram &prog,
     const std::vector<PyInt3> &inputSizes,
     const std::vector<int> &inputTypes,
-    const std::vector<PyLayerDesc> &layerDescs
+    const PyFirstLayerDesc &firstLayerDesc,
+    const std::vector<PyHigherLayerDesc> &higherLayerDescs
 ) {
     _inputSizes = inputSizes;
     
@@ -37,18 +38,25 @@ PyHierarchy::PyHierarchy(
         }
     }
 
-    std::vector<ogmaneo::Hierarchy::LayerDesc> clLayerDescs(layerDescs.size());
+    ogmaneo::Hierarchy::FirstLayerDesc clFirstLayerDesc;
 
-    for (int l = 0; l < layerDescs.size(); l++) {
-        clLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
-        clLayerDescs[l]._scRadius = layerDescs[l]._scRadius;
-        clLayerDescs[l]._aRadius = layerDescs[l]._aRadius;
-        clLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
-        clLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
-        clLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
+    clFirstLayerDesc._hiddenSize = ogmaneo::Int3(firstLayerDesc._hiddenSize.x, firstLayerDesc._hiddenSize.y, firstLayerDesc._hiddenSize.z);
+    clFirstLayerDesc._scRadius = firstLayerDesc._scRadius;
+    clFirstLayerDesc._aRadius = firstLayerDesc._aRadius;
+    clFirstLayerDesc._temporalHorizon = firstLayerDesc._temporalHorizon;
+    clFirstLayerDesc._historyCapacity = firstLayerDesc._historyCapacity;
+
+    std::vector<ogmaneo::Hierarchy::HigherLayerDesc> clHigherLayerDescs(higherLayerDescs.size());
+
+    for (int l = 0; l < higherLayerDescs.size(); l++) {
+        clHigherLayerDescs[l]._hiddenSize = ogmaneo::Int3(higherLayerDescs[l]._hiddenSize.x, higherLayerDescs[l]._hiddenSize.y, higherLayerDescs[l]._hiddenSize.z);
+        clHigherLayerDescs[l]._scRadius = higherLayerDescs[l]._scRadius;
+        clHigherLayerDescs[l]._pRadius = higherLayerDescs[l]._pRadius;
+        clHigherLayerDescs[l]._temporalHorizon = higherLayerDescs[l]._temporalHorizon;
+        clHigherLayerDescs[l]._ticksPerUpdate = higherLayerDescs[l]._ticksPerUpdate;
     }
 
-    _h.init(cs._cs, prog._prog, clInputSizes, clInputTypes, clLayerDescs, cs._rng);
+    _h.init(cs._cs, prog._prog, clInputSizes, clInputTypes, clFirstLayerDesc, clHigherLayerDescs, cs._rng);
 }
 
 PyHierarchy::PyHierarchy(
