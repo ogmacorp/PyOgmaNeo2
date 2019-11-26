@@ -245,5 +245,22 @@ public:
         
         return _h.getALayers()[a]->_gamma;
     }
+
+    void setATraceDecay(
+        int a,
+        float traceDecay
+    ) {
+        assert(_h.getALayers()[a] != nullptr);
+        
+        _h.getALayers()[a]->_traceDecay = traceDecay;
+    }
+
+    float getATraceDecay(
+        int a
+    ) const {
+        assert(_h.getALayers()[a] != nullptr);
+        
+        return _h.getALayers()[a]->_traceDecay;
+    }
 };
 } // namespace pyogmaneo
