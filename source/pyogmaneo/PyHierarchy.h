@@ -26,30 +26,25 @@ struct PyFirstLayerDesc {
 
     int _temporalHorizon;
 
-    int _historyCapacity;
-
     PyFirstLayerDesc()
     :
     _hiddenSize(4, 4, 16),
     _scRadius(2),
     _aRadius(2),
-    _temporalHorizon(2),
-    _historyCapacity(16)
+    _temporalHorizon(2)
     {}
 
     PyFirstLayerDesc(
         const PyInt3 &hiddenSize,
         int scRadius,
         int aRadius,
-        int temporalHorizon,
-        int historyCapacity
+        int temporalHorizon
     )
     :
     _hiddenSize(hiddenSize),
     _scRadius(scRadius),
     _aRadius(aRadius),
-    _temporalHorizon(temporalHorizon),
-    _historyCapacity(historyCapacity)
+    _temporalHorizon(temporalHorizon)
     {}
 };
 

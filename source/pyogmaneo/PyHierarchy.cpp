@@ -44,7 +44,6 @@ PyHierarchy::PyHierarchy(
     clFirstLayerDesc._scRadius = firstLayerDesc._scRadius;
     clFirstLayerDesc._aRadius = firstLayerDesc._aRadius;
     clFirstLayerDesc._temporalHorizon = firstLayerDesc._temporalHorizon;
-    clFirstLayerDesc._historyCapacity = firstLayerDesc._historyCapacity;
 
     std::vector<ogmaneo::Hierarchy::HigherLayerDesc> clHigherLayerDescs(higherLayerDescs.size());
 
