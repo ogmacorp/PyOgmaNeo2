@@ -41,7 +41,7 @@ PyHierarchy::PyHierarchy(
     ogmaneo::Hierarchy::FirstLayerDesc clFirstLayerDesc;
 
     clFirstLayerDesc._hiddenSize = ogmaneo::Int3(firstLayerDesc._hiddenSize.x, firstLayerDesc._hiddenSize.y, firstLayerDesc._hiddenSize.z);
-    clFirstLayerDesc._scRadius = firstLayerDesc._scRadius;
+    clFirstLayerDesc._ffRadius = firstLayerDesc._ffRadius;
     clFirstLayerDesc._aRadius = firstLayerDesc._aRadius;
     clFirstLayerDesc._temporalHorizon = firstLayerDesc._temporalHorizon;
     clFirstLayerDesc._historyCapacity = firstLayerDesc._historyCapacity;
@@ -50,7 +50,7 @@ PyHierarchy::PyHierarchy(
 
     for (int l = 0; l < higherLayerDescs.size(); l++) {
         clHigherLayerDescs[l]._hiddenSize = ogmaneo::Int3(higherLayerDescs[l]._hiddenSize.x, higherLayerDescs[l]._hiddenSize.y, higherLayerDescs[l]._hiddenSize.z);
-        clHigherLayerDescs[l]._scRadius = higherLayerDescs[l]._scRadius;
+        clHigherLayerDescs[l]._ffRadius = higherLayerDescs[l]._ffRadius;
         clHigherLayerDescs[l]._pRadius = higherLayerDescs[l]._pRadius;
         clHigherLayerDescs[l]._temporalHorizon = higherLayerDescs[l]._temporalHorizon;
         clHigherLayerDescs[l]._ticksPerUpdate = higherLayerDescs[l]._ticksPerUpdate;
