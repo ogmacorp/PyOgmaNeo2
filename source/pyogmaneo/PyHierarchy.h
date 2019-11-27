@@ -75,7 +75,7 @@ struct PyHigherLayerDesc {
     )
     :
     _hiddenSize(hiddenSize),
-    _ffadius(ffcRadius),
+    _ffRadius(ffRadius),
     _pRadius(pRadius),
     _ticksPerUpdate(ticksPerUpdate),
     _temporalHorizon(temporalHorizon)
