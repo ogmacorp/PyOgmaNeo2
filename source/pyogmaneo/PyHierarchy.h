@@ -21,7 +21,7 @@ const int _inputTypeAct = 1;
 struct PyFirstLayerDesc {
     PyInt3 _hiddenSize;
 
-    int _scRadius;
+    int _ffRadius;
     int _aRadius;
 
     int _temporalHorizon;
@@ -29,20 +29,20 @@ struct PyFirstLayerDesc {
     PyFirstLayerDesc()
     :
     _hiddenSize(4, 4, 16),
-    _scRadius(2),
+    _ffRadius(2),
     _aRadius(2),
     _temporalHorizon(2)
     {}
 
     PyFirstLayerDesc(
         const PyInt3 &hiddenSize,
-        int scRadius,
+        int ffRadius,
         int aRadius,
         int temporalHorizon
     )
     :
     _hiddenSize(hiddenSize),
-    _scRadius(scRadius),
+    _ffRadius(ffRadius),
     _aRadius(aRadius),
     _temporalHorizon(temporalHorizon)
     {}
@@ -51,7 +51,7 @@ struct PyFirstLayerDesc {
 struct PyHigherLayerDesc {
     PyInt3 _hiddenSize;
 
-    int _scRadius;
+    int _ffRadius;
     int _pRadius;
 
     int _ticksPerUpdate;
@@ -60,7 +60,7 @@ struct PyHigherLayerDesc {
     PyHigherLayerDesc()
     :
     _hiddenSize(4, 4, 16),
-    _scRadius(2),
+    _ffRadius(2),
     _pRadius(2),
     _ticksPerUpdate(2),
     _temporalHorizon(2)
@@ -68,15 +68,15 @@ struct PyHigherLayerDesc {
 
     PyHigherLayerDesc(
         const PyInt3 &hiddenSize,
-        int scRadius,
-        int aRadius,
+        int ffRadius,
+        int pRadius,
         int ticksPerUpdate,
         int temporalHorizon
     )
     :
     _hiddenSize(hiddenSize),
-    _scRadius(scRadius),
-    _pRadius(aRadius),
+    _ffadius(ffcRadius),
+    _pRadius(pRadius),
     _ticksPerUpdate(ticksPerUpdate),
     _temporalHorizon(temporalHorizon)
     {}
