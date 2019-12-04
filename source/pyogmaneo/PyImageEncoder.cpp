@@ -28,6 +28,7 @@ PyImageEncoder::PyImageEncoder(
     _enc.init(cs._cs, prog._prog, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), clVisibleLayerDescs, cs._rng);
     
     _alpha = _enc._alpha;
+    _minError = _enc._minError;
 }
 
 PyImageEncoder::PyImageEncoder(
@@ -48,6 +49,7 @@ PyImageEncoder::PyImageEncoder(
     }
 
     _alpha = _enc._alpha;
+    _minError = _enc._minError;
 }
 
 void PyImageEncoder::step(
@@ -56,6 +58,7 @@ void PyImageEncoder::step(
     bool learnEnabled
 ) {
     _enc._alpha = _alpha;
+    _enc._minError = _minError;
 
     std::vector<cl::Buffer> clVisibleActivations(visibleActivations.size());
 

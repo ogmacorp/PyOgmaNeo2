@@ -45,6 +45,7 @@ private:
 
 public:
     float _alpha;
+    float _minError;
     
     PyImageEncoder(
         PyComputeSystem &cs,
