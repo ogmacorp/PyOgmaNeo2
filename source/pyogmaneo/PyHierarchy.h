@@ -86,28 +86,20 @@ namespace pyogmaneo {
             return _h.getPLayer(l)[v] != nullptr;
         }
 
-        void setSCAlpha(int l, float alpha) {
-            _h.getSCLayer(l)._alpha = alpha;
-        }
-
-        float getSCAlpha(int l) const {
-            return _h.getSCLayer(l)._alpha;
-        }
-
-        // void setSCBeta(int l, float beta) {
-        //     _h.getSCLayer(l)._beta = beta;
-        // }
-
-        // float getSCBeta(int l) const {
-        //     return _h.getSCLayer(l)._beta;
-        // }
-
         void setSCExplainIters(int l, int explainIters) {
             _h.getSCLayer(l)._explainIters = explainIters;
         }
 
         int getSCExplainIters(int l) const {
             return _h.getSCLayer(l)._explainIters;
+        }
+
+        void setSCAlpha(int l, float alpha) {
+            _h.getSCLayer(l)._alpha = alpha;
+        }
+
+        float getSCAlpha(int l) const {
+            return _h.getSCLayer(l)._alpha;
         }
 
         void setPAlpha(int l, int v, float alpha) {
