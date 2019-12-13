@@ -94,21 +94,13 @@ namespace pyogmaneo {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setSCThresh(int l, float thresh) {
-            _h.getSCLayer(l)._thresh = thresh;
+        void setSCBeta(int l, float beta) {
+            _h.getSCLayer(l)._beta = beta;
         }
 
-        float getSCThresh(int l) const {
-            return _h.getSCLayer(l)._thresh;
+        float getSCBeta(int l) const {
+            return _h.getSCLayer(l)._beta;
         }
-
-        // void setSCBeta(int l, float beta) {
-        //     _h.getSCLayer(l)._beta = beta;
-        // }
-
-        // float getSCBeta(int l) const {
-        //     return _h.getSCLayer(l)._beta;
-        // }
 
         // void setSCExplainIters(int l, int explainIters) {
         //     _h.getSCLayer(l)._explainIters = explainIters;
