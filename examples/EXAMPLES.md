@@ -1,0 +1,29 @@
+<!---
+  PyOgmaNeo
+  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+
+  This copy of OgmaNeo is licensed to you under the terms described
+  in the PYOGMANEO_LICENSE.md file included in this distribution.
+--->
+
+# Examples
+
+## The EnvRunner
+
+The EnvRunner is a simple way to automatically create OgmaNeo2 systems for Gym tasks. It will automatically create the hierarchy and appropriate encoders. This is good enough for initial experimentation, but further control requires manual usage.
+
+## CartPole example
+
+The CartPole example is a simple test on the Gym CartPole environment. It uses EnvRunner.
+
+## TMaze example
+
+The TMaze example is the classic T-Maze test from reinforcement learning literation. It does not use EnvRunner, so this example shows how to use the hierarchy manually.
+
+## License and Copyright
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />The work in this repository is licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. See the  [PYOGMANEO_LICENSE.md](./PYOGMANEO_LICENSE.md) and [LICENSE.md](./LICENSE.md) file for further information.
+
+Contact Ogma via licenses@ogmacorp.com to discuss commercial use and licensing options.
+
+OgmaNeo Copyright (c) 2016-2019 [Ogma Intelligent Systems Corp](https://ogmacorp.com). All rights reserved.
