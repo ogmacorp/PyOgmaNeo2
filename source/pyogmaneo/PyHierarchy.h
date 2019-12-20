@@ -18,41 +18,72 @@ namespace pyogmaneo {
 const int _inputTypeNone = 0;
 const int _inputTypeAct = 1;
 
-struct PyLayerDesc {
+struct PyFirstLayerDesc {
     PyInt3 _hiddenSize;
 
-    int _scRadius;
+    int _ffRadius;
     int _aRadius;
 
-    int _ticksPerUpdate;
     int _temporalHorizon;
 
     int _historyCapacity;
 
-    PyLayerDesc()
+    PyFirstLayerDesc()
     :
     _hiddenSize(4, 4, 16),
-    _scRadius(2),
+    _ffRadius(2),
     _aRadius(2),
-    _ticksPerUpdate(2),
     _temporalHorizon(2),
-    _historyCapacity(8)
+    _historyCapacity(32)
     {}
 
-    PyLayerDesc(
+    PyFirstLayerDesc(
         const PyInt3 &hiddenSize,
-        int scRadius,
+        int ffRadius,
         int aRadius,
-        int ticksPerUpdate,
         int temporalHorizon,
-        int historyCapacity)
+        int historyCapacity
+    )
     :
     _hiddenSize(hiddenSize),
-    _scRadius(scRadius),
+    _ffRadius(ffRadius),
     _aRadius(aRadius),
-    _ticksPerUpdate(ticksPerUpdate),
     _temporalHorizon(temporalHorizon),
     _historyCapacity(historyCapacity)
+    {}
+};
+
+struct PyHigherLayerDesc {
+    PyInt3 _hiddenSize;
+
+    int _ffRadius;
+    int _pRadius;
+
+    int _ticksPerUpdate;
+    int _temporalHorizon;
+
+    PyHigherLayerDesc()
+    :
+    _hiddenSize(4, 4, 16),
+    _ffRadius(2),
+    _pRadius(2),
+    _ticksPerUpdate(2),
+    _temporalHorizon(2)
+    {}
+
+    PyHigherLayerDesc(
+        const PyInt3 &hiddenSize,
+        int ffRadius,
+        int pRadius,
+        int ticksPerUpdate,
+        int temporalHorizon
+    )
+    :
+    _hiddenSize(hiddenSize),
+    _ffRadius(ffRadius),
+    _pRadius(pRadius),
+    _ticksPerUpdate(ticksPerUpdate),
+    _temporalHorizon(temporalHorizon)
     {}
 };
 
@@ -68,7 +99,8 @@ public:
         PyComputeProgram &prog,
         const std::vector<PyInt3> &inputSizes,
         const std::vector<int> &inputTypes,
-        const std::vector<PyLayerDesc> &layerDescs
+        const PyFirstLayerDesc &firstLayerDesc,
+        const std::vector<PyHigherLayerDesc> &higherLayerDescs
     );
 
     PyHierarchy(
@@ -96,11 +128,11 @@ public:
     }
 
     PyIntBuffer getActionCs(
-        int i
+        int a
     ) const {
         PyIntBuffer buf;
-        buf._size = _inputSizes[i].x * _inputSizes[i].y;
-        buf._buf = _h.getActionCs(i);
+        buf._size = _inputSizes[a].x * _inputSizes[a].y;
+        buf._buf = _h.getActionCs(a);
 
         return buf;
     }
@@ -139,17 +171,28 @@ public:
         return _h.getTicksPerUpdate(l);
     }
 
-    int getNumVisibleLayers(
+    int getNumALayers(
         int l
     ) {
-        return _h.getALayers(l).size();
+        return _h.getALayers().size();
     }
 
-    bool visibleLayerExists(
-        int l,
-        int v
+    int getNumPLayers(
+        int l
     ) {
-        return _h.getALayers(l)[v] != nullptr;
+        return _h.getPLayers(l).size();
+    }
+
+    int getNumSCVisibleLayers(
+        int l
+    ) const {
+        return _h.getSCLayer(l).getNumVisibleLayers();
+    }
+
+    bool aLayerExists(
+        int a
+    ) {
+        return _h.getALayers()[a] != nullptr;
     }
 
     void setSCAlpha(
@@ -165,80 +208,78 @@ public:
         return _h.getSCLayer(l)._alpha;
     }
 
-    void setAAlpha(
+    void setPAlpha(
         int l,
-        int v,
+        int p,
         float alpha
     ) {
-        assert(_h.getALayers(l)[v] != nullptr);
+        _h.getPLayers(l)[p]._alpha = alpha;
+    }
+
+    float getPAlpha(
+        int l,
+        int p
+    ) const {
+        return _h.getPLayers(l)[p]._alpha;
+    }
+
+    void setAAlpha(
+        int a,
+        float alpha
+    ) {
+        assert(_h.getALayers()[a] != nullptr);
         
-        _h.getALayers(l)[v]->_alpha = alpha;
+        _h.getALayers()[a]->_alpha = alpha;
     }
 
     float getAAlpha(
-        int l,
-        int v
+        int a
     ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
+        assert(_h.getALayers()[a] != nullptr);
         
-        return _h.getALayers(l)[v]->_alpha;
+        return _h.getALayers()[a]->_alpha;
     }
 
     void setABeta(
-        int l,
-        int v,
+        int a,
         float beta
     ) {
-        assert(_h.getALayers(l)[v] != nullptr);
+        assert(_h.getALayers()[a] != nullptr);
         
-        _h.getALayers(l)[v]->_beta = beta;
+        _h.getALayers()[a]->_beta = beta;
     }
 
     float getABeta(
-        int l,
-        int v
+        int a
     ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
+        assert(_h.getALayers()[a] != nullptr);
         
-        return _h.getALayers(l)[v]->_beta;
+        return _h.getALayers()[a]->_beta;
     }
 
     void setAGamma(
-        int l,
-        int v,
+        int a,
         float gamma
     ) {
-        assert(_h.getALayers(l)[v] != nullptr);
+        assert(_h.getALayers()[a] != nullptr);
         
-        _h.getALayers(l)[v]->_gamma = gamma;
+        _h.getALayers()[a]->_gamma = gamma;
     }
 
     float getAGamma(
-        int l,
-        int v
+        int a
     ) const {
-        assert(_h.getALayers(l)[v] != nullptr);
+        assert(_h.getALayers()[a] != nullptr);
         
-        return _h.getALayers(l)[v]->_gamma;
+        return _h.getALayers()[a]->_gamma;
     }
 
-    // void setAEpsilon(
-    //     int l,
-    //     int v,
-    //     float epsilon
-    // ) {
-    //     assert(_h.getALayers(l)[v] != nullptr);
-        
-    //     _h.getALayers(l)[v]->_epsilon = epsilon;
-    // }
-
-    // float getAEpsilon(
-    //     int l,
-    //     int v
-    // ) const {
-    //     assert(_h.getALayers(l)[v] != nullptr);
-        
-    //     return _h.getALayers(l)[v]->_epsilon;
-    // }
+    std::vector<float> getSCReceptiveField(
+        PyComputeSystem &cs,
+        int l,
+        int i,
+        const PyInt3 &hiddenPosition,
+        PyInt3 &size
+    ) const;
 };
 } // namespace pyogmaneo

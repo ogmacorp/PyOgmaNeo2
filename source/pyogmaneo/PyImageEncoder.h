@@ -44,6 +44,9 @@ private:
     ogmaneo::ImageEncoder _enc;
 
 public:
+    float _alpha;
+    float _gamma;
+    
     PyImageEncoder(
         PyComputeSystem &cs,
         PyComputeProgram &prog,
@@ -59,7 +62,8 @@ public:
 
     void step(
         PyComputeSystem &cs,
-        const std::vector<PyFloatBuffer> &visibleActivations
+        const std::vector<PyFloatBuffer> &visibleActivations,
+        bool learnEnabled
     );
 
     void save(
@@ -95,5 +99,12 @@ public:
 
         return PyInt3(size.x, size.y, size.z);
     }
+
+    std::vector<float> getReceptiveField(
+        PyComputeSystem &cs,
+        int i,
+        const PyInt3 &hiddenPosition,
+        PyInt3 &size
+    ) const;
 };
 } // namespace pyogmaneo
