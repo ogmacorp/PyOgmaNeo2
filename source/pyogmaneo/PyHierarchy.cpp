@@ -32,8 +32,11 @@ PyHierarchy::PyHierarchy(
         case _inputTypeNone:
             clInputTypes[i] = ogmaneo::_none;
             break;
-        case _inputTypeAct:
-            clInputTypes[i] = ogmaneo::_act;
+        case _inputTypePrediction:
+            clInputTypes[i] = ogmaneo::_prediction;
+            break;
+        case _inputTypeAction:
+            clInputTypes[i] = ogmaneo::_action;
             break;
         }
     }
@@ -42,6 +45,7 @@ PyHierarchy::PyHierarchy(
 
     clFirstLayerDesc._hiddenSize = ogmaneo::Int3(firstLayerDesc._hiddenSize.x, firstLayerDesc._hiddenSize.y, firstLayerDesc._hiddenSize.z);
     clFirstLayerDesc._ffRadius = firstLayerDesc._ffRadius;
+    clFirstLayerDesc._pRadius = firstLayerDesc._pRadius;
     clFirstLayerDesc._aRadius = firstLayerDesc._aRadius;
     clFirstLayerDesc._temporalHorizon = firstLayerDesc._temporalHorizon;
     clFirstLayerDesc._historyCapacity = firstLayerDesc._historyCapacity;

@@ -16,12 +16,14 @@
 
 namespace pyogmaneo {
 const int _inputTypeNone = 0;
-const int _inputTypeAct = 1;
+const int _inputTypePrediction = 1;
+const int _inputTypeAction = 2;
 
 struct PyFirstLayerDesc {
     PyInt3 _hiddenSize;
 
     int _ffRadius;
+    int _pRadius;
     int _aRadius;
 
     int _temporalHorizon;
@@ -32,6 +34,7 @@ struct PyFirstLayerDesc {
     :
     _hiddenSize(4, 4, 16),
     _ffRadius(2),
+    _pRadius(2),
     _aRadius(2),
     _temporalHorizon(2),
     _historyCapacity(32)
@@ -40,6 +43,7 @@ struct PyFirstLayerDesc {
     PyFirstLayerDesc(
         const PyInt3 &hiddenSize,
         int ffRadius,
+        int pRadius,
         int aRadius,
         int temporalHorizon,
         int historyCapacity
@@ -47,6 +51,7 @@ struct PyFirstLayerDesc {
     :
     _hiddenSize(hiddenSize),
     _ffRadius(ffRadius),
+    _pRadius(pRadius),
     _aRadius(aRadius),
     _temporalHorizon(temporalHorizon),
     _historyCapacity(historyCapacity)
@@ -127,12 +132,22 @@ public:
         return _h.getNumLayers();
     }
 
-    PyIntBuffer getActionCs(
-        int a
+    PyIntBuffer getPredictionCs(
+        int i
     ) const {
         PyIntBuffer buf;
-        buf._size = _inputSizes[a].x * _inputSizes[a].y;
-        buf._buf = _h.getActionCs(a);
+        buf._size = _inputSizes[i].x * _inputSizes[i].y;
+        buf._buf = _h.getPredictionCs(i);
+
+        return buf;
+    }
+
+    PyIntBuffer getActionCs(
+        int i
+    ) const {
+        PyIntBuffer buf;
+        buf._size = _inputSizes[i].x * _inputSizes[i].y;
+        buf._buf = _h.getActionCs(i);
 
         return buf;
     }
@@ -171,10 +186,10 @@ public:
         return _h.getTicksPerUpdate(l);
     }
 
-    int getNumALayers(
+    int getNumInputLayers(
         int l
     ) {
-        return _h.getALayers().size();
+        return _h.getInputSizes().size();
     }
 
     int getNumPLayers(
@@ -189,10 +204,16 @@ public:
         return _h.getSCLayer(l).getNumVisibleLayers();
     }
 
-    bool aLayerExists(
-        int a
+    bool pLayerExists(
+        int i
     ) {
-        return _h.getALayers()[a] != nullptr;
+        return _h.getBPLayers()[i] != nullptr;
+    }
+
+    bool aLayerExists(
+        int i
+    ) {
+        return _h.getBALayers()[i] != nullptr;
     }
 
     void setSCAlpha(
@@ -223,55 +244,72 @@ public:
         return _h.getPLayers(l)[p]._alpha;
     }
 
-    void setAAlpha(
-        int a,
+    void setBPAlpha(
+        int i,
         float alpha
     ) {
-        assert(_h.getALayers()[a] != nullptr);
+        assert(_h.getBPLayers()[i] != nullptr);
         
-        _h.getALayers()[a]->_alpha = alpha;
+        _h.getBPLayers()[i]->_alpha = alpha;
     }
 
-    float getAAlpha(
-        int a
+    float getBPAlpha(
+        int i
     ) const {
-        assert(_h.getALayers()[a] != nullptr);
+        assert(_h.getBPLayers()[i] != nullptr);
         
-        return _h.getALayers()[a]->_alpha;
+        return _h.getBPLayers()[i]->_alpha;
     }
 
-    void setABeta(
-        int a,
+    void setBAAlpha(
+        int i,
+        float alpha
+    ) {
+        assert(_h.getBALayers()[i] != nullptr);
+        
+        _h.getBALayers()[i]->_alpha = alpha;
+    }
+
+    float getBAAlpha(
+        int i
+    ) const {
+        assert(_h.getBALayers()[i] != nullptr);
+        
+        return _h.getBALayers()[i]->_alpha;
+    }
+
+    void setBABeta(
+        int i,
         float beta
     ) {
-        assert(_h.getALayers()[a] != nullptr);
+        assert(_h.getALayers()[i] != nullptr);
         
-        _h.getALayers()[a]->_beta = beta;
+        _h.getBALayers()[i]->_beta = beta;
     }
 
-    float getABeta(
-        int a
+    float getBABeta(
+        int i
     ) const {
-        assert(_h.getALayers()[a] != nullptr);
+        assert(_h.getBALayers()[i] != nullptr);
         
-        return _h.getALayers()[a]->_beta;
+        return _h.getBALayers()[i]->_beta;
     }
 
-    void setAGamma(
-        int a,
+    void setBAGamma(
+        int i,
         float gamma
     ) {
-        assert(_h.getALayers()[a] != nullptr);
+        assert(_h.getBALayers()[i] != nullptr);
         
-        _h.getALayers()[a]->_gamma = gamma;
+        _h.getBALayers()[i]->_gamma = gamma;
     }
 
-    float getAGamma(
-        int a
+    float getBAGamma(
+        int i
     ) const {
-        assert(_h.getALayers()[a] != nullptr);
+        assert(_h.getBALayers()[i] != nullptr);
         
-        return _h.getALayers()[a]->_gamma;
+        return _h.getBALayers()[i]->_gamma;
     }
 
     std::vector<float> getSCReceptiveField(
