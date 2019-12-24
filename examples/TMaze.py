@@ -26,7 +26,7 @@ fld = pyogmaneo.PyFirstLayerDesc()
 fld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
 fld._ffRadius = 4 # Feed forward radius
 fld._aRadius = 4 # Radius of action layers
-fld._temporalHorizon = 4 # 4 timestep memory window. _ticksPerUpdate is always 1 for the first layer, so it is not set here
+fld._temporalHorizon = 2 # 2 timestep memory window. _ticksPerUpdate is always 1 for the first layer, so it is not set here
 fld._historyCapacity = 32 # Reward backup horizon
 
 # Other (higher) layer descriptions
@@ -35,7 +35,7 @@ for i in range(3): # 3 layers gives us 2^3=8 timesteps of memory
     ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
     ld._ffRadius = 4 # Feed forward radius
     ld._pRadius = 4 # Prediction radius
-    ld._temporalHorizon = 4 # 4 timestep memory window
+    ld._temporalHorizon = 2 # 2 timestep memory window
     ld._ticksPerUpdate = 2 # 2 timestep striding (doubling time window every layer)
 
     hlds.append(ld)
@@ -47,9 +47,9 @@ inBuf = pyogmaneo.PyIntBuffer(cs, 1)
 aBuf = pyogmaneo.PyIntBuffer(cs, 1)
 
 # Configure action layer
-h.setAAlpha(1, 0.05) # Value learning rate
-h.setABeta(1, 0.1) # Action learning rate
-h.setAGamma(1, 0.95) # Discount factor
+h.setBAAlpha(1, 0.05) # Value learning rate
+h.setBABeta(1, 0.1) # Action learning rate
+h.setBAGamma(1, 0.95) # Discount factor
 
 reward = 0.0
 
