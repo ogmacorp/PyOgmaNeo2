@@ -17,7 +17,7 @@ cs = pyogmaneo.PyComputeSystem("cpu", 1234, 0) # Set device here. Optional overl
 
 # Load the kernels (compute program)
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
-prog = pyogmaneo.PyComputeProgram(cs, "../OgmaNeo2/resources/neoKernels.cl")
+prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 64
