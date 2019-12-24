@@ -117,8 +117,8 @@ public:
     void step(
         PyComputeSystem &cs,
         const std::vector<PyIntBuffer> &inputCs,
-        float reward,
-        bool learn = true);
+        bool learnEnabled = true,
+        float reward = 0.0f);
 
     void save(
         PyComputeSystem &cs,

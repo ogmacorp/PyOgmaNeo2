@@ -80,15 +80,15 @@ PyHierarchy::PyHierarchy(
 void PyHierarchy::step(
     PyComputeSystem &cs,
     const std::vector<PyIntBuffer> &inputCs,
-    float reward,
-    bool learn
+    bool learnEnabled,
+    float reward
 ) {
     std::vector<cl::Buffer> clInputCs(inputCs.size());
 
     for (int i = 0; i < inputCs.size(); i++)
         clInputCs[i] = inputCs[i]._buf;
 
-    _h.step(cs._cs, clInputCs, cs._rng, reward, learn);
+    _h.step(cs._cs, clInputCs, cs._rng, learnEnabled, reward);
 }
 
 std::vector<float> PyHierarchy::getSCReceptiveField(
