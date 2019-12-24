@@ -13,11 +13,11 @@ import pyogmaneo
 import matplotlib.pyplot as plt
 
 # Create the compute system using a device
-cs = pyogmaneo.PyComputeSystem("cpu", 1234, 0) # Set device here. Optional overload: device type string, random seed, platform index, device index
+cs = pyogmaneo.ComputeSystem("cpu", 1234, 0) # Set device here. Optional overload: device type string, random seed, platform index, device index
 
 # Load the kernels (compute program)
 # NOTE: Copy neoKernels.cl from your OgmaNeo2 repository to this directory!
-prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
+prog = pyogmaneo.ComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 64
@@ -26,8 +26,8 @@ inputColumnSize = 64
 bounds = (-1.0, 1.0)
 
 # First layer descriptor
-fld = pyogmaneo.PyFirstLayerDesc()
-fld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+fld = pyogmaneo.FirstLayerDesc()
+fld._hiddenSize = pyogmaneo.Int3(4, 4, 16)
 
 fld._ffRadius = 2 # Sparse coder radius onto visible layers
 fld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
@@ -39,10 +39,10 @@ fld._temporalHorizon = 2 # Memory horizon of the layer. Must be greater or equal
 hlds = []
 
 for i in range(5): # Layers with exponential memory
-    hld = pyogmaneo.PyHigherLayerDesc()
+    hld = pyogmaneo.HigherLayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
-    hld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+    hld._hiddenSize = pyogmaneo.Int3(4, 4, 16)
 
     hld._ffRadius = 2 # Sparse coder radius onto visible layers
     hld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
@@ -53,10 +53,10 @@ for i in range(5): # Layers with exponential memory
     hlds.append(hld)
 
 # Create the hierarchy: Provided with input layer sizes (a single column in this case), and input types (a single predicted layer)
-h = pyogmaneo.PyHierarchy(cs, prog, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePrediction ], fld, hlds)
+h = pyogmaneo.Hierarchy(cs, prog, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePrediction ], fld, hlds)
 
 # Create a buffer to place input into (a single integer, since our input is 1x1 columns, and 1 integer represents the index into a column)
-inBuf = pyogmaneo.PyIntBuffer(cs, 1)
+inBuf = pyogmaneo.IntBuffer(cs, 1)
 
 # Present the wave sequence for some timesteps
 iters = 4000

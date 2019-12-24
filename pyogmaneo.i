@@ -46,6 +46,8 @@
 
 %template(StdVecImVisibleLayerDesc) std::vector<pyogmaneo::PyImVisibleLayerDesc>;
 
+%rename("%(strip:[Py])s") ""; // Remove Py prefix that was added to avoid naming collisions
+
 %include "PyConstructs.h"
 %include "PyComputeSystem.h"
 %include "PyComputeProgram.h"

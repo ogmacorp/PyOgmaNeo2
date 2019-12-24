@@ -9,21 +9,21 @@
 # -*- coding: utf-8 -*-
 
 import pyogmaneo
-from pyogmaneo import PyInt3
+from pyogmaneo import Int3
 import numpy as np
 
 # T-Maze example
 # Simple prints the result of a simple T-Maze memory test environment. The more it prints just "Correct", the better it is doing.
 
-cs = pyogmaneo.PyComputeSystem("cpu", 1234, 0) # First CPU device
-prog = pyogmaneo.PyComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
+cs = pyogmaneo.ComputeSystem("cpu", 1234, 0) # First CPU device
+prog = pyogmaneo.ComputeProgram(cs, "../../OgmaNeo2/resources/neoKernels.cl")
 
 hlds = []
 
 # First layer description
-fld = pyogmaneo.PyFirstLayerDesc()
+fld = pyogmaneo.FirstLayerDesc()
 
-fld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+fld._hiddenSize = pyogmaneo.Int3(4, 4, 16)
 fld._ffRadius = 4 # Feed forward radius
 fld._aRadius = 4 # Radius of action layers
 fld._temporalHorizon = 2 # 2 timestep memory window. _ticksPerUpdate is always 1 for the first layer, so it is not set here
@@ -31,8 +31,8 @@ fld._historyCapacity = 32 # Reward backup horizon
 
 # Other (higher) layer descriptions
 for i in range(3): # 3 layers gives us 2^3=8 timesteps of memory
-    ld = pyogmaneo.PyHigherLayerDesc()
-    ld._hiddenSize = pyogmaneo.PyInt3(4, 4, 16)
+    ld = pyogmaneo.HigherLayerDesc()
+    ld._hiddenSize = pyogmaneo.Int3(4, 4, 16)
     ld._ffRadius = 4 # Feed forward radius
     ld._pRadius = 4 # Prediction radius
     ld._temporalHorizon = 2 # 2 timestep memory window
@@ -40,11 +40,11 @@ for i in range(3): # 3 layers gives us 2^3=8 timesteps of memory
 
     hlds.append(ld)
 
-h = pyogmaneo.PyHierarchy(cs, prog, [ PyInt3(1, 1, 4), PyInt3(1, 1, 3) ], [ pyogmaneo._inputTypeNone, pyogmaneo._inputTypeAction ], fld, hlds)
+h = pyogmaneo.Hierarchy(cs, prog, [ Int3(1, 1, 4), Int3(1, 1, 3) ], [ pyogmaneo._inputTypeNone, pyogmaneo._inputTypeAction ], fld, hlds)
 
 # Buffers for holding inputs and actions
-inBuf = pyogmaneo.PyIntBuffer(cs, 1)
-aBuf = pyogmaneo.PyIntBuffer(cs, 1)
+inBuf = pyogmaneo.IntBuffer(cs, 1)
+aBuf = pyogmaneo.IntBuffer(cs, 1)
 
 # Configure action layer
 h.setBAAlpha(1, 0.05) # Value learning rate

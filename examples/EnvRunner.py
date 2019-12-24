@@ -10,7 +10,7 @@
 # -*- coding: utf-8 -*-
 
 import pyogmaneo
-from pyogmaneo import PyInt3
+from pyogmaneo import Int3
 import numpy as np
 import gym
 import cv2
@@ -21,11 +21,11 @@ def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
 
 class EnvRunner:
-    def __init__(self, env, layerSizes=2 * [ PyInt3(4, 4, 16) ], layerRadius=4, hiddenSize=PyInt3(8, 8, 16), imageRadius=9, imageScale=1.0, obsResolution=32, actionResolution=16, rewardScale=1.0, terminalReward=0.0, infSensitivity=1.0, kernelPath="../OgmaNeo2/resources/neoKernels.cl", loadName=None):
+    def __init__(self, env, layerSizes=2 * [ Int3(4, 4, 16) ], layerRadius=4, hiddenSize=Int3(8, 8, 16), imageRadius=9, imageScale=1.0, obsResolution=32, actionResolution=16, rewardScale=1.0, terminalReward=0.0, infSensitivity=1.0, kernelPath="../OgmaNeo2/resources/neoKernels.cl", loadName=None):
         self.env = env
 
-        self.cs = pyogmaneo.PyComputeSystem("cpu", 1234, 0)
-        self.prog = pyogmaneo.PyComputeProgram(self.cs, kernelPath)
+        self.cs = pyogmaneo.ComputeSystem("cpu", 1234, 0)
+        self.prog = pyogmaneo.ComputeProgram(self.cs, kernelPath)
 
         self.imEnc = None
         self.imEncIndex = -1
@@ -45,7 +45,7 @@ class EnvRunner:
         self.infSensitivity = infSensitivity
 
         if type(self.env.observation_space) is gym.spaces.Discrete:
-            self.inputSizes.append(PyInt3(1, 1, self.env.observation_space.n))
+            self.inputSizes.append(Int3(1, 1, self.env.observation_space.n))
             self.inputTypes.append(pyogmaneo._inputTypeNone)
             self.inputLows.append([ 0.0 ])
             self.inputHighs.append([ 0.0 ])
@@ -53,7 +53,7 @@ class EnvRunner:
             if len(self.env.observation_space.shape) == 1 or len(self.env.observation_space.shape) == 0:
                 squareSize = int(np.ceil(np.sqrt(len(self.env.observation_space.low))))
                 squareTotal = squareSize * squareSize
-                self.inputSizes.append(PyInt3(squareSize, squareSize, obsResolution))
+                self.inputSizes.append(Int3(squareSize, squareSize, obsResolution))
                 self.inputTypes.append(pyogmaneo._inputTypeNone)
                 lows = list(self.env.observation_space.low)
                 highs = list(self.env.observation_space.high)
@@ -84,17 +84,17 @@ class EnvRunner:
             vlds = []
 
             for i in range(len(self.imageSizes)):
-                vld = pyogmaneo.PyImVisibleLayerDesc(PyInt3(self.imageSizes[i][0], self.imageSizes[i][1], self.imageSizes[i][2]), imageRadius)
+                vld = pyogmaneo.ImVisibleLayerDesc(Int3(self.imageSizes[i][0], self.imageSizes[i][1], self.imageSizes[i][2]), imageRadius)
 
                 vlds.append(vld)
 
-                imBuf = pyogmaneo.PyFloatBuffer(self.cs, self.imageSizes[i][0] * self.imageSizes[i][1] * self.imageSizes[i][2])
+                imBuf = pyogmaneo.FloatBuffer(self.cs, self.imageSizes[i][0] * self.imageSizes[i][1] * self.imageSizes[i][2])
 
                 self.imageBufs.append(imBuf)
 
                 self.imgsPrev.append(np.zeros(self.imageSizes[i]))
 
-            self.imEnc = pyogmaneo.PyImageEncoder(self.cs, self.prog, hiddenSize, vlds)
+            self.imEnc = pyogmaneo.ImageEncoder(self.cs, self.prog, hiddenSize, vlds)
 
             self.imEncIndex = len(self.inputSizes)
             self.inputSizes.append(hiddenSize)
@@ -105,7 +105,7 @@ class EnvRunner:
         # Actions
         if type(self.env.action_space) is gym.spaces.Discrete:
             self.actionIndices.append(len(self.inputSizes))
-            self.inputSizes.append(PyInt3(1, 1, self.env.action_space.n))
+            self.inputSizes.append(Int3(1, 1, self.env.action_space.n))
             self.inputTypes.append(pyogmaneo._inputTypeAction)
             self.inputLows.append([ 0.0 ])
             self.inputHighs.append([ 0.0 ])
@@ -113,7 +113,7 @@ class EnvRunner:
             if len(self.env.action_space.shape) < 3:
                 if len(self.env.action_space.shape) == 2:
                     self.actionIndices.append(len(self.inputSizes))
-                    self.inputSizes.append(PyInt3(self.env.action_space.shape[0], self.env.action_space.shape[1], actionResolution))
+                    self.inputSizes.append(Int3(self.env.action_space.shape[0], self.env.action_space.shape[1], actionResolution))
                     self.inputTypes.append(pyogmaneo._inputTypeAction)
                     lows = list(self.env.action_space.low)
                     highs = list(self.env.action_space.high)
@@ -124,7 +124,7 @@ class EnvRunner:
                     squareSize = int(np.ceil(np.sqrt(len(self.env.action_space.low))))
                     squareTotal = squareSize * squareSize
                     self.actionIndices.append(len(self.inputSizes))
-                    self.inputSizes.append(PyInt3(squareSize, squareSize, actionResolution))
+                    self.inputSizes.append(Int3(squareSize, squareSize, actionResolution))
                     self.inputTypes.append(pyogmaneo._inputTypeAction)
                     lows = list(self.env.action_space.low)
                     highs = list(self.env.action_space.high)
@@ -136,7 +136,7 @@ class EnvRunner:
         else:
             raise Exception("Unsupported action type " + str(type(self.env.action_space)))
 
-        fld = pyogmaneo.PyFirstLayerDesc()
+        fld = pyogmaneo.FirstLayerDesc()
 
         fld._hiddenSize = layerSizes[0]
         fld._scRadius = layerRadius
@@ -147,7 +147,7 @@ class EnvRunner:
         hlds = []
 
         for i in range(len(layerSizes) - 1):
-            ld = pyogmaneo.PyHigherLayerDesc()
+            ld = pyogmaneo.HigherLayerDesc()
             ld._hiddenSize = layerSizes[i + 1]
             ld._ffRadius = layerRadius
             ld._lRadius = layerRadius
@@ -156,9 +156,9 @@ class EnvRunner:
             hlds.append(ld)
 
         if loadName is None:
-            self.h = pyogmaneo.PyHierarchy(self.cs, self.prog, self.inputSizes, self.inputTypes, fld, hlds)
+            self.h = pyogmaneo.Hierarchy(self.cs, self.prog, self.inputSizes, self.inputTypes, fld, hlds)
         else:
-            self.h = pyogmaneo.PyHierarchy(self.cs, self.prog, loadName)
+            self.h = pyogmaneo.Hierarchy(self.cs, self.prog, loadName)
 
         self.bufs = []
 
@@ -166,7 +166,7 @@ class EnvRunner:
             if i == self.imEncIndex:
                 self.bufs.append(None)
             else:
-                buf = pyogmaneo.PyIntBuffer(self.cs, self.inputSizes[i].x * self.inputSizes[i].y)
+                buf = pyogmaneo.IntBuffer(self.cs, self.inputSizes[i].x * self.inputSizes[i].y)
                 self.bufs.append(buf)
 
         self.actions = []
