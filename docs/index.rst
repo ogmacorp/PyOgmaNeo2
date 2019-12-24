@@ -1,4 +1,4 @@
-Welcome to PyOgmaNeo2's documentation!
+Index
 ======================================
 
 PyOgmaNeo2 is a Python wrapper of OgmaNeo2, an implementation of Sparse Predictive Hierarchies (SPH).
@@ -7,6 +7,9 @@ PyOgmaNeo2 is a Python wrapper of OgmaNeo2, an implementation of Sparse Predicti
     :maxdepth: 2
     :caption: Contents:
 
+    overview
+    installation
+    examples
     int3
     intbuffer
     floatbuffer
@@ -18,9 +21,7 @@ PyOgmaNeo2 is a Python wrapper of OgmaNeo2, an implementation of Sparse Predicti
     imvisiblelayerdesc
     imageencoder
 
-Indices and tables
+Search
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
