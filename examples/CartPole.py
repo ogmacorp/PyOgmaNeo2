@@ -1,3 +1,13 @@
+# ----------------------------------------------------------------------------
+#  PyOgmaNeo
+#  Copyright(c) 2019 Ogma Intelligent Systems Corp. All rights reserved.
+#
+#  This copy of EOgmaNeo is licensed to you under the terms described
+#  in the PYEOGMANEO_LICENSE.md file included in this distribution.
+# ----------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+
 import pyogmaneo
 
 import gym

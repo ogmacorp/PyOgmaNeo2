@@ -1,3 +1,13 @@
+# ----------------------------------------------------------------------------
+#  PyOgmaNeo
+#  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+#
+#  This copy of EOgmaNeo is licensed to you under the terms described
+#  in the PYEOGMANEO_LICENSE.md file included in this distribution.
+# ----------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+
 import pyogmaneo
 from pyogmaneo import PyInt3
 import numpy as np
@@ -30,7 +40,7 @@ for i in range(3): # 3 layers gives us 2^3=8 timesteps of memory
 
     hlds.append(ld)
 
-h = pyogmaneo.PyHierarchy(cs, prog, [ PyInt3(1, 1, 4), PyInt3(1, 1, 3) ], [ pyogmaneo._inputTypeNone, pyogmaneo._inputTypeAct ], fld, hlds)
+h = pyogmaneo.PyHierarchy(cs, prog, [ PyInt3(1, 1, 4), PyInt3(1, 1, 3) ], [ pyogmaneo._inputTypeNone, pyogmaneo._inputTypeAction ], fld, hlds)
 
 # Buffers for holding inputs and actions
 inBuf = pyogmaneo.PyIntBuffer(cs, 1)
@@ -54,7 +64,7 @@ for i_episode in range(10000):
     inBuf.write(cs, [ side ])
     aBuf.write(cs, [ act ])
 
-    h.step(cs, [ inBuf, aBuf ], reward, True)
+    h.step(cs, [ inBuf, aBuf ], True, reward)
 
     act = h.getActionCs(1).read(cs)[0] # Retrieve action
 
@@ -76,7 +86,7 @@ for i_episode in range(10000):
         inBuf.write(cs, [ see ])
         aBuf.write(cs, [ act ])
 
-        h.step(cs, [ inBuf, aBuf ], reward, True)
+        h.step(cs, [ inBuf, aBuf ], True, reward)
 
         act = h.getActionCs(1).read(cs)[0] # Retrieve action
 

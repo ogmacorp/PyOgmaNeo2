@@ -1,4 +1,14 @@
  
+# ----------------------------------------------------------------------------
+#  PyOgmaNeo
+#  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+#
+#  This copy of EOgmaNeo is licensed to you under the terms described
+#  in the PYEOGMANEO_LICENSE.md file included in this distribution.
+# ----------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+
 import pyogmaneo
 from pyogmaneo import PyInt3
 import numpy as np
@@ -96,7 +106,7 @@ class EnvRunner:
         if type(self.env.action_space) is gym.spaces.Discrete:
             self.actionIndices.append(len(self.inputSizes))
             self.inputSizes.append(PyInt3(1, 1, self.env.action_space.n))
-            self.inputTypes.append(pyogmaneo._inputTypeAct)
+            self.inputTypes.append(pyogmaneo._inputTypeAction)
             self.inputLows.append([ 0.0 ])
             self.inputHighs.append([ 0.0 ])
         elif type(self.env.action_space) is gym.spaces.Box:
@@ -104,7 +114,7 @@ class EnvRunner:
                 if len(self.env.action_space.shape) == 2:
                     self.actionIndices.append(len(self.inputSizes))
                     self.inputSizes.append(PyInt3(self.env.action_space.shape[0], self.env.action_space.shape[1], actionResolution))
-                    self.inputTypes.append(pyogmaneo._inputTypeAct)
+                    self.inputTypes.append(pyogmaneo._inputTypeAction)
                     lows = list(self.env.action_space.low)
                     highs = list(self.env.action_space.high)
 
@@ -115,7 +125,7 @@ class EnvRunner:
                     squareTotal = squareSize * squareSize
                     self.actionIndices.append(len(self.inputSizes))
                     self.inputSizes.append(PyInt3(squareSize, squareSize, actionResolution))
-                    self.inputTypes.append(pyogmaneo._inputTypeAct)
+                    self.inputTypes.append(pyogmaneo._inputTypeAction)
                     lows = list(self.env.action_space.low)
                     highs = list(self.env.action_space.high)
 
@@ -181,7 +191,7 @@ class EnvRunner:
         for i in range(len(self.inputSizes)):
             buf = self.bufs[i]
 
-            if self.inputTypes[i] == pyogmaneo._inputTypeAct:
+            if self.inputTypes[i] == pyogmaneo._inputTypeAction:
                 buf.write(self.cs, self.actions[actionIndex])
 
                 actionIndex += 1
@@ -234,7 +244,7 @@ class EnvRunner:
         for i in range(len(self.actionIndices)):
             index = self.actionIndices[i]
 
-            assert(self.inputTypes[index] is pyogmaneo._inputTypeAct)
+            assert(self.inputTypes[index] is pyogmaneo._inputTypeAction)
 
             if self.inputLows[index][0] < self.inputHighs[index][0]:
                 feedAction = []
@@ -269,13 +279,13 @@ class EnvRunner:
 
         r = reward * self.rewardScale + float(done) * self.terminalReward
         
-        self.h.step(self.cs, self.inputs, r, True)
+        self.h.step(self.cs, self.inputs, True, r)
 
         # Retrieve actions
         for i in range(len(self.actionIndices)):
             index = self.actionIndices[i]
 
-            assert(self.inputTypes[index] is pyogmaneo._inputTypeAct)
+            assert(self.inputTypes[index] is pyogmaneo._inputTypeAction)
 
             self.actions[i] = list(self.h.getActionCs(index).read(self.cs))
         

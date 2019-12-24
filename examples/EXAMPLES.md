@@ -20,6 +20,10 @@ The CartPole example is a simple test on the Gym CartPole environment. It uses E
 
 The TMaze example is the classic T-Maze test from reinforcement learning literation. It does not use EnvRunner, so this example shows how to use the hierarchy manually.
 
+## WaveLinePrediction example
+
+The WaveLinePrediction example shows how to use a SPH for prediction of a simple waveform. Requires matplotlib.
+
 ## License and Copyright
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />The work in this repository is licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. See the  [PYOGMANEO_LICENSE.md](./PYOGMANEO_LICENSE.md) and [LICENSE.md](./LICENSE.md) file for further information.
