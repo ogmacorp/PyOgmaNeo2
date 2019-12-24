@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -10,61 +10,158 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
-    std::vector<ogmaneo::Int3> cInputSizes(inputSizes.size());
-
-    for (int i = 0; i < inputSizes.size(); i++)
-        cInputSizes[i] = ogmaneo::Int3(inputSizes[i].x, inputSizes[i].y, inputSizes[i].z);
+PyHierarchy::PyHierarchy(
+    PyComputeSystem &cs,
+    PyComputeProgram &prog,
+    const std::vector<PyInt3> &inputSizes,
+    const std::vector<int> &inputTypes,
+    const PyFirstLayerDesc &firstLayerDesc,
+    const std::vector<PyHigherLayerDesc> &higherLayerDescs
+) {
+    _inputSizes = inputSizes;
     
-    std::vector<ogmaneo::InputType> cInputTypes(inputTypes.size());
+    std::vector<ogmaneo::Int3> clInputSizes(inputSizes.size());
+    
+    for (int i = 0; i < inputSizes.size(); i++)
+        clInputSizes[i] = ogmaneo::Int3(inputSizes[i].x, inputSizes[i].y, inputSizes[i].z);
+
+    std::vector<ogmaneo::InputType> clInputTypes(inputTypes.size());
 
     for (int i = 0; i < inputTypes.size(); i++) {
         switch(inputTypes[i]) {
         case _inputTypeNone:
-            cInputTypes[i] = ogmaneo::_none;
+            clInputTypes[i] = ogmaneo::_none;
             break;
-        case _inputTypePred:
-            cInputTypes[i] = ogmaneo::_predict;
+        case _inputTypePrediction:
+            clInputTypes[i] = ogmaneo::_prediction;
+            break;
+        case _inputTypeAction:
+            clInputTypes[i] = ogmaneo::_action;
             break;
         }
     }
 
-    std::vector<ogmaneo::Hierarchy::LayerDesc> cLayerDescs(layerDescs.size());
+    ogmaneo::Hierarchy::FirstLayerDesc clFirstLayerDesc;
 
-    for (int l = 0; l < layerDescs.size(); l++) {
-        cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
-        cLayerDescs[l]._ffRadius = layerDescs[l]._ffRadius;
-        cLayerDescs[l]._rRadius = layerDescs[l]._rRadius;
-        cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
-        cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
-        cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
+    clFirstLayerDesc._hiddenSize = ogmaneo::Int3(firstLayerDesc._hiddenSize.x, firstLayerDesc._hiddenSize.y, firstLayerDesc._hiddenSize.z);
+    clFirstLayerDesc._ffRadius = firstLayerDesc._ffRadius;
+    clFirstLayerDesc._pRadius = firstLayerDesc._pRadius;
+    clFirstLayerDesc._aRadius = firstLayerDesc._aRadius;
+    clFirstLayerDesc._temporalHorizon = firstLayerDesc._temporalHorizon;
+    clFirstLayerDesc._historyCapacity = firstLayerDesc._historyCapacity;
+
+    std::vector<ogmaneo::Hierarchy::HigherLayerDesc> clHigherLayerDescs(higherLayerDescs.size());
+
+    for (int l = 0; l < higherLayerDescs.size(); l++) {
+        clHigherLayerDescs[l]._hiddenSize = ogmaneo::Int3(higherLayerDescs[l]._hiddenSize.x, higherLayerDescs[l]._hiddenSize.y, higherLayerDescs[l]._hiddenSize.z);
+        clHigherLayerDescs[l]._ffRadius = higherLayerDescs[l]._ffRadius;
+        clHigherLayerDescs[l]._pRadius = higherLayerDescs[l]._pRadius;
+        clHigherLayerDescs[l]._temporalHorizon = higherLayerDescs[l]._temporalHorizon;
+        clHigherLayerDescs[l]._ticksPerUpdate = higherLayerDescs[l]._ticksPerUpdate;
     }
 
-    _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
+    _h.init(cs._cs, prog._prog, clInputSizes, clInputTypes, clFirstLayerDesc, clHigherLayerDescs, cs._rng);
 }
 
-PyHierarchy::PyHierarchy(const std::string &fileName) {
-    std::ifstream is(fileName, std::ios::binary);
-    
-    _h.readFromStream(is);
+PyHierarchy::PyHierarchy(
+    PyComputeSystem &cs,
+    PyComputeProgram &prog,
+    const std::string &name
+) {
+    std::ifstream is(name, std::ios::binary);
+    _h.readFromStream(cs._cs, prog._prog, is);
+
+    _inputSizes.resize(_h.getInputSizes().size());
+
+    for (int i = 0; i < _inputSizes.size(); i++)
+        _inputSizes[i] = PyInt3(_h.getInputSizes()[i].x, _h.getInputSizes()[i].y, _h.getInputSizes()[i].z);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learnEnabled) {
-    assert(inputCs.size() == _h.getInputSizes().size());
+void PyHierarchy::step(
+    PyComputeSystem &cs,
+    const std::vector<PyIntBuffer> &inputCs,
+    bool learnEnabled,
+    float reward
+) {
+    std::vector<cl::Buffer> clInputCs(inputCs.size());
 
-    std::vector<const std::vector<int>*> cInputCs(inputCs.size());
+    for (int i = 0; i < inputCs.size(); i++)
+        clInputCs[i] = inputCs[i]._buf;
 
-    for (int i = 0; i < inputCs.size(); i++) {
-        assert(inputCs[i].size() == _h.getInputSizes()[i].x * _h.getInputSizes()[i].y);
+    _h.step(cs._cs, clInputCs, cs._rng, learnEnabled, reward);
+}
 
-        cInputCs[i] = &inputCs[i];
+std::vector<float> PyHierarchy::getSCReceptiveField(
+    PyComputeSystem &cs,
+    int l,
+    int i,
+    const PyInt3 &hiddenPosition,
+    PyInt3 &size
+) const {
+    // Determine bounds
+    ogmaneo::Int3 minPos(999999, 999999, 999999);
+    ogmaneo::Int3 maxPos(0, 0, 0);
+
+    const ogmaneo::SparseMatrix &sm = _h.getSCLayer(l).getVisibleLayer(i)._weights;
+
+    int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), _h.getSCLayer(l).getHiddenSize());
+    //int nextIndex = row + 1;
+
+    std::vector<cl_int> js(2);
+    cs._cs.getQueue().enqueueReadBuffer(sm._rowRanges, CL_TRUE, row * sizeof(cl_int), 2 * sizeof(cl_int), js.data());
+
+    int numValues = js[1] - js[0];
+
+    if (numValues == 0)
+        return {};
+  
+    std::vector<cl_int> columnIndices(numValues);
+    cs._cs.getQueue().enqueueReadBuffer(sm._columnIndices, CL_TRUE, js[0] * sizeof(cl_int), numValues * sizeof(cl_int), columnIndices.data());
+
+	std::vector<cl_float> nonZeroValues(numValues);
+    cs._cs.getQueue().enqueueReadBuffer(sm._nonZeroValues, CL_TRUE, js[0] * sizeof(cl_int), numValues * sizeof(cl_float), nonZeroValues.data());
+
+	for (int j = js[0]; j < js[1]; j++) {
+        int index = columnIndices[j - js[0]];
+
+        int inZ = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+
+        int inY = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+
+        int inX = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.x;
+
+		minPos.x = std::min(minPos.x, inX);
+		minPos.y = std::min(minPos.y, inY);
+		minPos.z = std::min(minPos.z, inZ);
+
+        maxPos.x = std::max(maxPos.x, inX + 1);
+		maxPos.y = std::max(maxPos.y, inY + 1);
+		maxPos.z = std::max(maxPos.z, inZ + 1);
     }
+
+    size.x = maxPos.x - minPos.x;
+    size.y = maxPos.y - minPos.y;
+    size.z = maxPos.z - minPos.z;
+
+    int totalSize = size.x * size.y * size.z;
     
-    _h.step(cs._cs, cInputCs, learnEnabled);
-}
+    std::vector<float> field(totalSize, 0.0f);
 
-void PyHierarchy::save(const std::string &fileName) const {
-    std::ofstream os(fileName, std::ios::binary);
+    for (int j = js[0]; j < js[1]; j++) {
+        int index = columnIndices[j - js[0]];
 
-    _h.writeToStream(os);
+        int inZ = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+
+        int inY = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+
+        int inX = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.x;
+
+		field[ogmaneo::address3(ogmaneo::Int3(inX - minPos.x, inY - minPos.y, inZ - minPos.z), ogmaneo::Int3(size.x, size.y, size.z))] = nonZeroValues[j - js[0]];
+    }
+
+    return field;
 }

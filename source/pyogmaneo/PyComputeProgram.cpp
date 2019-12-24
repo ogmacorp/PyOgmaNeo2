@@ -6,20 +6,13 @@
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
 // ----------------------------------------------------------------------------
 
-#pragma once
+#include "PyComputeProgram.h"
 
-namespace pyogmaneo {
-class PyInt3 {
-private:
-public:
-    int x, y, z;
+using namespace pyogmaneo;
 
-    PyInt3() 
-    : x(0), y(0), z(0)
-    {}
-
-    PyInt3(int X, int Y, int Z)
-    : x(X), y(Y), z(Z)
-    {}
-};
-} // namespace pyogmaneo
+PyComputeProgram::PyComputeProgram(
+    PyComputeSystem &cs,
+    const std::string &name
+) {
+    _prog.loadFromFile(cs._cs, name);
+}

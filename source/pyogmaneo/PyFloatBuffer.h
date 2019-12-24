@@ -8,33 +8,47 @@
 
 #pragma once
 
-#include <ogmaneo/ComputeSystem.h>
-#include <random>
-#include <iostream>
+#include "PyComputeSystem.h"
 
 namespace pyogmaneo {
-class PyComputeSystem {
+class PyFloatBuffer {
 private:
-    ogmaneo::ComputeSystem _cs;
-    std::mt19937 _rng;
+    cl::Buffer _buf;
+
+    int _size;
 
 public:
-    PyComputeSystem(
-        const std::string &type = "gpu",
-        unsigned long seed = 1234,
-        int platformIndex = -1,
-        int deviceIndex = -1
+    PyFloatBuffer() {}
+
+    PyFloatBuffer(
+        PyComputeSystem &cs,
+        int size
+    ) {
+        create(cs, size);
+    }
+
+    void create(
+        PyComputeSystem &cs,
+        int size
     );
 
-    friend class PyComputeProgram;
-    friend class PyIntBuffer;
-    friend class PyFloatBuffer;
+    void write(
+        PyComputeSystem &cs,
+        const std::vector<float> &data
+    );
+
+    std::vector<float> read(
+        PyComputeSystem &cs
+    ) const;
+
+    int getSize() const {
+        return _size;
+    }
 
     friend class PySparseCoder;
     friend class PyPredictor;
     friend class PyActor;
     friend class PyHierarchy;
-
     friend class PyImageEncoder;
 };
 } // namespace pyogmaneo

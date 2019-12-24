@@ -1,6 +1,6 @@
 <!---
   PyOgmaNeo
-  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
 
   This copy of OgmaNeo is licensed to you under the terms described
   in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -14,17 +14,19 @@
 
 Welcome to the [Ogma](https://ogmacorp.com) PyOgmaNeo2 library, which contains Python bindings to the [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2) library.
 
-There is a [deprecated version](https://github.com/ogmacorp/OgmaNeo) of OgmaNeo2 that contains an outdated implementation of SPH. Please use OgmaNeo2 (which this repository provides Python bindings for) if possible.
+Note that there are two libraries implementing SPH: [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2), and an embedded (CPU only) version [EOgmaNeo](https://github.com/ogmacorp/EOgmaNeo).
+
+There is also a [deprecated version](https://github.com/ogmacorp/OgmaNeo) of OgmaNeo2 that contains an outdated implementation of SPH. Please use OgmaNeo2 (which this repository provides Python bindings for) or EOgmaNeo if possible.
 
 ## Requirements
 
-An install of [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2) is required before installing the bindings. Make sure to build with `-DBUILD_SHARED_LIBS=On`.
+An install of [OgmaNeo2](https://github.com/ogmacorp/OgmaNeo2) is required before installing the bindings.
 
 Additionally this binding requires an installation of [SWIG](http://www.swig.org/) v3+
 
 #### [SWIG](http://www.swig.org/)
 
-- Linux requires SWIG installed via, for example ```sudo apt-get install swig3.0``` command (or via ```yum```).
+- Linux requires SWIG installed via for example ```sudo apt-get install swig3.0``` (Debian).
 - Windows requires installation of SWIG (v3). With the SourceForge Zip expanded, and the PATH environment variable updating to include the SWIG installation binary directory (for example `C:\Program Files (x86)\swigwin-3.0.8`).
 - Mac OSX can use Homebrew to install the latest SWIG (for example, see .travis/install_swig.sh Bash script).
 
@@ -37,9 +39,7 @@ The following example can be used to build the Python package:
 or create a wheel file for installation via pip:
 
 > python3 setup.py bdist_wheel  
-> pip3 install dist/*.whl --user
-
-Installation may fail if an old build directory still exists from a previous build. Make sure to remove such directories before rebuilding.
+> pip3 install dist/*.whl --user  
 
 ## Importing and Setup
 
@@ -49,7 +49,7 @@ The PyOgmaNeo2 module can be imported using:
 import pyogmaneo
 ```
 
-Refer to the `sineWaveExample.py` example for further details.
+Refer to the `examples` directory for further details.
 
 ## Contributions
 
@@ -61,4 +61,4 @@ Refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file for information on making
 
 Contact Ogma via licenses@ogmacorp.com to discuss commercial use and licensing options.
 
-OgmaNeo Copyright (c) 2016-2018 [Ogma Intelligent Systems Corp](https://ogmacorp.com). All rights reserved.
+OgmaNeo Copyright (c) 2016-2019 [Ogma Intelligent Systems Corp](https://ogmacorp.com). All rights reserved.

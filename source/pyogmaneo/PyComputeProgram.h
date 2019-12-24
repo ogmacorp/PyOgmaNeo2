@@ -8,18 +8,25 @@
 
 #pragma once
 
+#include <ogmaneo/ComputeProgram.h>
+#include "PyComputeSystem.h"
+
 namespace pyogmaneo {
-class PyInt3 {
+class PyComputeProgram {
 private:
+    ogmaneo::ComputeProgram _prog;
+
 public:
-    int x, y, z;
+    PyComputeProgram(
+        PyComputeSystem &cs,
+        const std::string &name
+    );
 
-    PyInt3() 
-    : x(0), y(0), z(0)
-    {}
+    friend class PySparseCoder;
+    friend class PyPredictor;
+    friend class PyActor;
+    friend class PyHierarchy;
 
-    PyInt3(int X, int Y, int Z)
-    : x(X), y(Y), z(Z)
-    {}
+    friend class PyImageEncoder;
 };
 } // namespace pyogmaneo
