@@ -31,8 +31,8 @@ Describes the first (bottom-most) layer of the hierarchy during initialization
 
 .. function:: FirstLayerDesc.__init__(self)
 
-   Initialize to sensible defaults
+    Initialize to sensible defaults
 
 .. function:: FirstLayerDesc.__init__(self, hiddenSize, ffRadius, pRadius, aRadius, temporalHorizon, historyCapacity)
 
-   Initialize to given values
+    Initialize to given values

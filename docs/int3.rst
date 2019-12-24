@@ -19,12 +19,12 @@ Simple 3-component integer vector type use typically to define sizes of various 
 
 .. function:: Int3.__init__(self)
 
-   Default initialize to x=0, y=0, z=0
+    Default initialize to x=0, y=0, z=0
 
 .. function:: Int3.__init__(self, X, Y, Z)
 
-   Initialize from components
+    Initialize from components
 
-   :param X: (int32) x to initialize to
-   :param Y: (int32) y to initialize to
-   :param Z: (int32) z to initialize to
+    :param X: (int32) x to initialize to
+    :param Y: (int32) y to initialize to
+    :param Z: (int32) z to initialize to

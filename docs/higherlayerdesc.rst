@@ -27,8 +27,8 @@ Describes the higher (all but bottom-most) layers of the hierarchy during initia
 
 .. function:: HigherLayerDesc.__init__(self)
 
-   Initialize to sensible defaults
+   	Initialize to sensible defaults
 
 .. function:: HigherLayerDesc.__init__(self, hiddenSize, ffRadius, pRadius, ticksPerUpdate, temporalHorizon)
 
-   Initialize to given values
+   	Initialize to given values
