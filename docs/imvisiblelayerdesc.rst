@@ -13,10 +13,10 @@ Describes the first (bottom-most) layer of the hierarchy during initialization
 
     Radius onto input. Must be 0 or greater
 
-.. function:: FirstLayerDesc.__init__(self)
+.. function:: ImVisibleLayerDesc.__init__(self)
 
     Initialize to sensible defaults
 
-.. function:: FirstLayerDesc.__init__(self, size, radius)
+.. function:: ImVisibleLayerDesc.__init__(self, size, radius)
 
     Initialize to given values
