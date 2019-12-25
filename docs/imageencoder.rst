@@ -5,6 +5,14 @@ Image Encoder
 
 The ImageEncoder is a pre-encoder used to convert images to CSDRs.
 
+.. attribute:: (float32) ImageEncoder._alpha
+
+    Learning rate
+
+.. attribute:: (float32) ImageEncoder._gamma
+
+    SOM falloff
+
 .. function:: ImageEncoder.__init__(self, cs, prog, hiddenSize, visibleLayerDescs)
 
     Initialize an image encoder of given structure.
