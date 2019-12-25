@@ -54,6 +54,7 @@ Refer to the `examples` directory for further details.
 ## Documentation
 
 Documentation is [available here](https://ogmacorp.github.io/PyOgmaNeo2-Docs/overview.html).
+The sources of the documentation are also included in this repository.
 
 ## Contributions
 
