@@ -51,6 +51,10 @@ import pyogmaneo
 
 Refer to the `examples` directory for further details.
 
+## Documentation
+
+Documentation is [available here](https://ogmacorp.github.io/PyOgmaNeo2-Docs/overview.html).
+
 ## Contributions
 
 Refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file for information on making contributions to PyOgmaNeo2.
