@@ -86,5 +86,12 @@ namespace pyogmaneo {
 
             return PyInt3(size.x, size.y, size.z);
         }
+
+        std::vector<float> getReceptiveField(
+            PyComputeSystem &cs,
+            int i,
+            const PyInt3 &hiddenPosition,
+            PyInt3 &size
+        ) const;
     };
 }

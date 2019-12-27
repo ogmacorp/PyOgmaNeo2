@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-#  PyOgmaNeo
+#  OgmaNeo
 #  Copyright(c) 2017-2018 Ogma Intelligent Systems Corp. All rights reserved.
 #
 #  This copy of EOgmaNeo is licensed to you under the terms described
@@ -13,7 +13,7 @@ import pyogmaneo
 import matplotlib.pyplot as plt
 
 # Create the compute system using a device
-cs = pyogmaneo.PyComputeSystem(16)
+cs = pyogmaneo.ComputeSystem(16)
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 32
@@ -25,10 +25,10 @@ bounds = (-1.0, 1.0)
 lds = []
 
 for i in range(9): # 5 layers with exponential memory
-    ld = pyogmaneo.PyLayerDesc()
+    ld = pyogmaneo.LayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
-    ld._hiddenSize = pyogmaneo.PyInt3(5, 5, 16)
+    ld._hiddenSize = pyogmaneo.Int3(5, 5, 16)
 
     ld._scRadius = 2 # Sparse coder radius onto visible layers
     ld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
@@ -39,7 +39,7 @@ for i in range(9): # 5 layers with exponential memory
     lds.append(ld)
 
 # Create the hierarchy: Provided with input layer sizes (a single column in this case), and input types (a single predicted layer)
-h = pyogmaneo.PyHierarchy(cs, [ pyogmaneo.PyInt3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePred ], lds)
+h = pyogmaneo.Hierarchy(cs, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePred ], lds)
 
 # After creation, we can set run-time parameters
 for i in range(len(lds)):

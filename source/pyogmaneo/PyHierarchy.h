@@ -130,10 +130,10 @@ namespace pyogmaneo {
             return _h.getTicksPerUpdate(l);
         }
 
-        int getNumPLayers(
+        int getNumSCVisibleLayers(
             int l
         ) {
-            return _h.getPLayers(l).size();
+            return _h.getSCLayer(l).getNumVisibleLayers();
         }
 
         bool pLayerExists(
@@ -227,5 +227,13 @@ namespace pyogmaneo {
             
             return _h.getALayers()[v]->_gamma;
         }
+
+        std::vector<float> getSCReceptiveField(
+            PyComputeSystem &cs,
+            int l,
+            int i,
+            const PyInt3 &hiddenPosition,
+            PyInt3 &size
+        ) const;
     };
 }
