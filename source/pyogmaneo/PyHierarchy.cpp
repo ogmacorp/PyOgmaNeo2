@@ -10,7 +10,12 @@
 
 using namespace pyogmaneo;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs) {
+PyHierarchy::PyHierarchy(
+    PyComputeSystem &cs,
+    const std::vector<PyInt3> &inputSizes,
+    const std::vector<int> &inputTypes,
+    const std::vector<PyLayerDesc> &layerDescs
+) {
     std::vector<ogmaneo::Int3> cInputSizes(inputSizes.size());
 
     for (int i = 0; i < inputSizes.size(); i++)
@@ -23,8 +28,11 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         case _inputTypeNone:
             cInputTypes[i] = ogmaneo::_none;
             break;
-        case _inputTypePred:
-            cInputTypes[i] = ogmaneo::_predict;
+        case _inputTypePrediction:
+            cInputTypes[i] = ogmaneo::_prediction;
+            break;
+        case _inputTypeAction:
+            cInputTypes[i] = ogmaneo::_action;
             break;
         }
     }
@@ -38,18 +46,26 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSi
         cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
+        cLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
     }
 
     _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
 }
 
-PyHierarchy::PyHierarchy(const std::string &fileName) {
+PyHierarchy::PyHierarchy(
+    const std::string &fileName
+) {
     std::ifstream is(fileName, std::ios::binary);
     
     _h.readFromStream(is);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learnEnabled) {
+void PyHierarchy::step(
+    PyComputeSystem &cs,
+    const std::vector<std::vector<int> > &inputCs,
+    bool learnEnabled,
+    float reward
+) {
     assert(inputCs.size() == _h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
@@ -60,10 +76,12 @@ void PyHierarchy::step(PyComputeSystem &cs, const std::vector<std::vector<int> >
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, learnEnabled);
+    _h.step(cs._cs, cInputCs, learnEnabled, reward);
 }
 
-void PyHierarchy::save(const std::string &fileName) const {
+void PyHierarchy::save(
+    const std::string &fileName
+) const {
     std::ofstream os(fileName, std::ios::binary);
 
     _h.writeToStream(os);

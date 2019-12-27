@@ -10,7 +10,11 @@
 
 using namespace pyogmaneo;
 
-PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs) {
+PyImageEncoder::PyImageEncoder(
+    PyComputeSystem &cs,
+    const PyInt3 &hiddenSize,
+    const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs
+) {
     std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> cVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
@@ -24,7 +28,9 @@ PyImageEncoder::PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, co
     _gamma = _enc._gamma;
 }
 
-PyImageEncoder::PyImageEncoder(const std::string &fileName) {
+PyImageEncoder::PyImageEncoder(
+    const std::string &fileName
+) {
     std::ifstream is(fileName, std::ios::binary);
     
     _enc.readFromStream(is);
@@ -33,7 +39,11 @@ PyImageEncoder::PyImageEncoder(const std::string &fileName) {
     _gamma = _enc._gamma;
 }
 
-void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled) {
+void PyImageEncoder::step(
+    PyComputeSystem &cs,
+    const std::vector<std::vector<float> > &visibleActivations,
+    bool learnEnabled
+) {
     _enc._alpha = _alpha;
     _enc._gamma = _gamma;
     
@@ -45,11 +55,16 @@ void PyImageEncoder::step(PyComputeSystem &cs, const std::vector<std::vector<flo
     _enc.step(cs._cs, cVisibleActivations, learnEnabled);
 }
 
-void PyImageEncoder::reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs) {
+void PyImageEncoder::reconstruct(
+    PyComputeSystem &cs,
+    const std::vector<int> &hiddenCs
+) {
     _enc.reconstruct(cs._cs, &hiddenCs);
 }
 
-void PyImageEncoder::save(const std::string &fileName) const {
+void PyImageEncoder::save(
+    const std::string &fileName
+) const {
     std::ofstream os(fileName, std::ios::binary);
 
     _enc.writeToStream(os);

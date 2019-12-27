@@ -20,11 +20,17 @@ namespace pyogmaneo {
         int _radius;
 
         PyImVisibleLayerDesc()
-        : _size(8, 8, 16), _radius(2)
+        :
+        _size(8, 8, 16),
+        _radius(2)
         {}
 
-        PyImVisibleLayerDesc(const PyInt3 &size, int radius)
-        : _size(size), _radius(radius)
+        PyImVisibleLayerDesc(
+            const PyInt3 &size,
+            int radius)
+        : 
+        _size(size),
+        _radius(radius)
         {}
     };
 
@@ -36,20 +42,38 @@ namespace pyogmaneo {
         float _alpha;
         float _gamma;
         
-        PyImageEncoder(PyComputeSystem &cs, const PyInt3 &hiddenSize, const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs);
-        PyImageEncoder(const std::string &fileName);
+        PyImageEncoder(
+            PyComputeSystem &cs,
+            const PyInt3 &hiddenSize,
+            const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs
+        );
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<float> > &visibleActivations, bool learnEnabled);
+        PyImageEncoder(
+            const std::string &fileName
+        );
 
-        void reconstruct(PyComputeSystem &cs, const std::vector<int> &hiddenCs);
+        void step(
+            PyComputeSystem &cs,
+            const std::vector<std::vector<float> > &visibleActivations,
+            bool learnEnabled = true
+        );
 
-        void save(const std::string &fileName) const;
+        void reconstruct(
+            PyComputeSystem &cs,
+            const std::vector<int> &hiddenCs
+        );
+
+        void save(
+            const std::string &fileName
+        ) const;
 
         int getNumVisibleLayers() const {
             return _enc.getNumVisibleLayers();
         }
 
-        const std::vector<float> &getReconstruction(int i) const {
+        const std::vector<float> &getReconstruction(
+            int i
+        ) const {
             return _enc.getVisibleLayer(i)._reconActs;
         }
 

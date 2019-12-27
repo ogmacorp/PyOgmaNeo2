@@ -18,7 +18,10 @@ namespace pyogmaneo {
         ogmaneo::ComputeSystem _cs;
 
     public:
-        PyComputeSystem(size_t numWorkers, unsigned long seed = 1234);
+        PyComputeSystem(
+            size_t numWorkers,
+            unsigned long seed = 1234
+        );
 
         friend class PyHierarchy;
         friend class PyImageEncoder;

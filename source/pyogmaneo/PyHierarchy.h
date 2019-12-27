@@ -15,7 +15,8 @@
 
 namespace pyogmaneo {
     const int _inputTypeNone = 0;
-    const int _inputTypePred = 1;
+    const int _inputTypePrediction = 1;
+    const int _inputTypeAction = 2;
 
     struct PyLayerDesc {
         PyInt3 _hiddenSize;
@@ -27,12 +28,36 @@ namespace pyogmaneo {
         int _ticksPerUpdate;
         int _temporalHorizon;
 
+        int _historyCapacity;
+
         PyLayerDesc()
-        : _hiddenSize(4, 4, 16), _ffRadius(2), _lRadius(2), _pRadius(2), _ticksPerUpdate(2), _temporalHorizon(2)
+        :
+        _hiddenSize(4, 4, 16),
+        _ffRadius(2),
+        _lRadius(2),
+        _pRadius(2),
+        _ticksPerUpdate(2),
+        _temporalHorizon(2),
+        _historyCapacity(32)
         {}
 
-        PyLayerDesc(const PyInt3 &hiddenSize, int ffRadius, int lRadius, int pRadius, int ticksPerUpdate, int temporalHorizon)
-        : _hiddenSize(hiddenSize), _ffRadius(ffRadius), _lRadius(lRadius), _pRadius(pRadius), _ticksPerUpdate(ticksPerUpdate), _temporalHorizon(temporalHorizon)
+        PyLayerDesc(
+            const PyInt3 &hiddenSize,
+            int ffRadius,
+            int lRadius,
+            int pRadius,
+            int ticksPerUpdate,
+            int temporalHorizon,
+            int historyCapacity
+        )
+        :
+        _hiddenSize(hiddenSize),
+        _ffRadius(ffRadius),
+        _lRadius(lRadius),
+        _pRadius(pRadius),
+        _ticksPerUpdate(ticksPerUpdate),
+        _temporalHorizon(temporalHorizon),
+        _historyCapacity(historyCapacity)
         {}
     };
 
@@ -41,77 +66,166 @@ namespace pyogmaneo {
         ogmaneo::Hierarchy _h;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, const std::vector<PyInt3> &inputSizes, const std::vector<int> &inputTypes, const std::vector<PyLayerDesc> &layerDescs);
-        PyHierarchy(const std::string &fileName);
+        PyHierarchy(
+            PyComputeSystem &cs,
+            const std::vector<PyInt3> &inputSizes,
+            const std::vector<int> &inputTypes,
+            const std::vector<PyLayerDesc> &layerDescs
+        );
 
-        void step(PyComputeSystem &cs, const std::vector<std::vector<int> > &inputCs, bool learnEnabled = true);
+        PyHierarchy(
+            const std::string &fileName
+        );
 
-        void save(const std::string &fileName) const;
+        void step(
+            PyComputeSystem &cs,
+            const std::vector<std::vector<int> > &inputCs,
+            bool learnEnabled = true,
+            float reward = 0.0f
+        );
+
+        void save(
+            const std::string &fileName
+        ) const;
 
         int getNumLayers() const {
             return _h.getNumLayers();
         }
 
-        const std::vector<int> &getPredictionCs(int i) const {
+        const std::vector<int> &getPredictionCs(
+            int i
+        ) const {
             return _h.getPredictionCs(i);
         }
 
-        bool getUpdate(int l) const {
+        bool getUpdate(
+            int l
+        ) const {
             return _h.getUpdate(l);
         }
 
-        const std::vector<int> &getHiddenCs(int l) {
+        const std::vector<int> &getHiddenCs(
+            int l
+        ) {
             return _h.getSCLayer(l).getHiddenCs();
         }
 
-        PyInt3 getHiddenSize(int l) {
+        PyInt3 getHiddenSize(
+            int l
+        ) {
             ogmaneo::Int3 size = _h.getSCLayer(l).getHiddenSize();
 
             return { size.x, size.y, size.z };
         }
 
-        int getTicks(int l) const {
+        int getTicks(
+            int l
+        ) const {
             return _h.getTicks(l);
         }
 
-        int getTicksPerUpdate(int l) const {
+        int getTicksPerUpdate(
+            int l
+        ) const {
             return _h.getTicksPerUpdate(l);
         }
 
-        int getNumVisibleLayers(int l) {
-            return _h.getPLayer(l).size();
+        int getNumPLayers(
+            int l
+        ) {
+            return _h.getPLayers(l).size();
         }
 
-        bool visibleLayerExists(int l, int v) {
-            return _h.getPLayer(l)[v] != nullptr;
+        bool pLayerExists(
+            int l,
+            int v
+        ) {
+            return _h.getPLayers(l)[v] != nullptr;
         }
 
-        void setSCExplainIters(int l, int explainIters) {
+        bool aLayerExists(
+            int v
+        ) {
+            return _h.getALayers()[v] != nullptr;
+        }
+
+        void setSCExplainIters(
+            int l,
+            int explainIters
+        ) {
             _h.getSCLayer(l)._explainIters = explainIters;
         }
 
-        int getSCExplainIters(int l) const {
+        int getSCExplainIters(
+            int l
+        ) const {
             return _h.getSCLayer(l)._explainIters;
         }
 
-        void setSCAlpha(int l, float alpha) {
+        void setSCAlpha(
+            int l,
+            float alpha
+        ) {
             _h.getSCLayer(l)._alpha = alpha;
         }
 
-        float getSCAlpha(int l) const {
+        float getSCAlpha(
+            int l
+        ) const {
             return _h.getSCLayer(l)._alpha;
         }
 
-        void setPAlpha(int l, int v, float alpha) {
-            assert(_h.getPLayer(l)[v] != nullptr);
+        void setPAlpha(
+            int l,
+            int v,
+            float alpha
+        ) {
+            assert(_h.getPLayers(l)[v] != nullptr);
             
-            _h.getPLayer(l)[v]->_alpha = alpha;
+            _h.getPLayers(l)[v]->_alpha = alpha;
         }
 
-        float getPAlpha(int l, int v) const {
-            assert(_h.getPLayer(l)[v] != nullptr);
+        float getPAlpha(
+            int l,
+            int v
+        ) const {
+            assert(_h.getPLayers(l)[v] != nullptr);
             
-            return _h.getPLayer(l)[v]->_alpha;
+            return _h.getPLayers(l)[v]->_alpha;
+        }
+
+        void setAAlpha(
+            int v,
+            float alpha
+        ) {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            _h.getALayers()[v]->_alpha = alpha;
+        }
+
+        float getAAlpha(
+            int v
+        ) const {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            return _h.getALayers()[v]->_alpha;
+        }
+
+        void setAGamma(
+            int v,
+            float gamma
+        ) {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            _h.getALayers()[v]->_gamma = gamma;
+        }
+
+        float getAGamma(
+            int v
+        ) const {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            return _h.getALayers()[v]->_gamma;
         }
     };
 }
