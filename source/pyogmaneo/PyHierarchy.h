@@ -28,6 +28,7 @@ namespace pyogmaneo {
         int _ticksPerUpdate;
         int _temporalHorizon;
 
+        int _aRadius;
         int _historyCapacity;
 
         PyLayerDesc()
@@ -38,6 +39,7 @@ namespace pyogmaneo {
         _pRadius(2),
         _ticksPerUpdate(2),
         _temporalHorizon(2),
+        _aRadius(2),
         _historyCapacity(32)
         {}
 
@@ -48,6 +50,7 @@ namespace pyogmaneo {
             int pRadius,
             int ticksPerUpdate,
             int temporalHorizon,
+            int aRadius,
             int historyCapacity
         )
         :
@@ -57,6 +60,7 @@ namespace pyogmaneo {
         _pRadius(pRadius),
         _ticksPerUpdate(ticksPerUpdate),
         _temporalHorizon(temporalHorizon),
+        _aRadius(aRadius),
         _historyCapacity(historyCapacity)
         {}
     };

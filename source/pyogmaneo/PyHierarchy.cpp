@@ -44,6 +44,7 @@ PyHierarchy::PyHierarchy(
         cLayerDescs[l]._ffRadius = layerDescs[l]._ffRadius;
         cLayerDescs[l]._lRadius = layerDescs[l]._lRadius;
         cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
+        cLayerDescs[l]._aRadius = layerDescs[l]._aRadius;
         cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
         cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
         cLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
@@ -119,7 +120,7 @@ std::vector<float> PyHierarchy::getSCReceptiveField(
         columnIndices[i] = sm._columnIndices[js[0] + i];
         nonZeroValues[i] = sm._nonZeroValues[js[0] + i];
     }
-    
+
 	for (int j = js[0]; j < js[1]; j++) {
         int index = columnIndices[j - js[0]];
 
