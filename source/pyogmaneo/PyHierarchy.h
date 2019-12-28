@@ -70,8 +70,8 @@ namespace pyogmaneo {
         void step(
             PyComputeSystem &cs,
             const std::vector<std::vector<int> > &inputCs,
-            bool learnEnabled = true,
-            float reward = 0.0f
+            float reward,
+            bool learnEnabled = true
         );
 
         void save(
