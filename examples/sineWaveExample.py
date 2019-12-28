@@ -39,19 +39,15 @@ for i in range(9): # 5 layers with exponential memory
     lds.append(ld)
 
 # Create the hierarchy: Provided with input layer sizes (a single column in this case), and input types (a single predicted layer)
-h = pyogmaneo.Hierarchy(cs, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePred ], lds)
+h = pyogmaneo.Hierarchy(cs, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePrediction ], lds)
 
 # After creation, we can set run-time parameters
-for i in range(len(lds)):
-    # Encoder alpha
-    h.setSCAlpha(i, 0.1)
-
-    for j in range(h.getNumVisibleLayers(i)):
-        if h.visibleLayerExists(i, j):
-            h.setPAlpha(i, j, 1.0)
+# for i in range(len(lds)):
+#     # Encoder alpha
+#     h.setSCAlpha(i, 0.1)
 
 # Present the wave sequence for some timesteps
-iters = 5000
+iters = 2000
 
 for t in range(iters):
     # The value to encode into the input column
