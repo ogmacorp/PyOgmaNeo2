@@ -38,7 +38,7 @@ namespace pyogmaneo {
         _ticksPerUpdate(2),
         _temporalHorizon(2),
         _aRadius(2),
-        _historyCapacity(32)
+        _historyCapacity(16)
         {}
 
         PyLayerDesc(
@@ -136,6 +136,18 @@ namespace pyogmaneo {
             return _h.getSCLayer(l).getNumVisibleLayers();
         }
 
+        int getNumInputs() const {
+            return _h.getInputSizes().size();
+        }
+
+        PyInt3 getInputSize(
+            int i
+        ) const {
+            ogmaneo::Int3 size = _h.getInputSizes()[i];
+
+            return { size.x, size.y, size.z };
+        }
+
         bool pLayerExists(
             int l,
             int v
@@ -230,6 +242,23 @@ namespace pyogmaneo {
             assert(_h.getALayers()[v] != nullptr);
             
             return _h.getALayers()[v]->_gamma;
+        }
+
+        void setAHistoryIters(
+            int v,
+            int historyIters
+        ) {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            _h.getALayers()[v]->_historyIters = historyIters;
+        }
+
+        int getAHistoryIters(
+            int v
+        ) const {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            return _h.getALayers()[v]->_historyIters;
         }
 
         std::vector<float> getSCReceptiveField(
