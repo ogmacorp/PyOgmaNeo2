@@ -198,6 +198,23 @@ namespace pyogmaneo {
             return _h.getALayers()[v]->_alpha;
         }
 
+        void setABeta(
+            int v,
+            float beta
+        ) {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            _h.getALayers()[v]->_beta = beta;
+        }
+
+        float getABeta(
+            int v
+        ) const {
+            assert(_h.getALayers()[v] != nullptr);
+            
+            return _h.getALayers()[v]->_beta;
+        }
+
         void setAGamma(
             int v,
             float gamma
