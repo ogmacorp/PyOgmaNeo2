@@ -38,7 +38,7 @@ namespace pyogmaneo {
         _ticksPerUpdate(2),
         _temporalHorizon(2),
         _aRadius(2),
-        _historyCapacity(16)
+        _historyCapacity(32)
         {}
 
         PyLayerDesc(
