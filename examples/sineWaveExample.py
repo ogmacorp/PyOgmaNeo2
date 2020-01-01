@@ -13,7 +13,7 @@ import pyogmaneo
 import matplotlib.pyplot as plt
 
 # Create the compute system using a device
-cs = pyogmaneo.ComputeSystem(16)
+cs = pyogmaneo.ComputeSystem(4)
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 32
@@ -28,10 +28,10 @@ for i in range(9): # 5 layers with exponential memory
     ld = pyogmaneo.LayerDesc()
 
     # Set the hidden (encoder) layer size: width x height x columnSize
-    ld._hiddenSize = pyogmaneo.Int3(5, 5, 16)
+    ld._hiddenSize = pyogmaneo.Int3(4, 4, 16)
 
-    ld._scRadius = 2 # Sparse coder radius onto visible layers
-    ld._pRadius = 2 # Predictor radius onto sparse coder hidden layer (and feed back)
+    ld._ffRadius = 4 # Sparse coder radius onto visible layers
+    ld._pRadius = 4 # Predictor radius onto sparse coder hidden layer (and feed back)
 
     ld._ticksPerUpdate = 2 # How many ticks before a layer updates (compared to previous layer) - clock speed for exponential memory
     ld._temporalHorizon = 2 # Memory horizon of the layer. Must be greater or equal to ticksPerUpdate, usually equal (minimum required)
@@ -39,19 +39,19 @@ for i in range(9): # 5 layers with exponential memory
     lds.append(ld)
 
 # Create the hierarchy: Provided with input layer sizes (a single column in this case), and input types (a single predicted layer)
-h = pyogmaneo.Hierarchy(cs, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePred ], lds)
+h = pyogmaneo.Hierarchy(cs, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo._inputTypePrediction ], lds)
 
 # After creation, we can set run-time parameters
-for i in range(len(lds)):
+#for i in range(len(lds)):
     # Encoder alpha
-    h.setSCAlpha(i, 0.1)
+    #h.setSCAlpha(i, 0.1)
 
-    for j in range(h.getNumVisibleLayers(i)):
-        if h.visibleLayerExists(i, j):
-            h.setPAlpha(i, j, 1.0)
+    # for j in range(h.getNumVisibleLayers(i)):
+    #     if h.visibleLayerExists(i, j):
+    #         h.setPAlpha(i, j, 1.0)
 
 # Present the wave sequence for some timesteps
-iters = 5000
+iters = 2500
 
 for t in range(iters):
     # The value to encode into the input column
