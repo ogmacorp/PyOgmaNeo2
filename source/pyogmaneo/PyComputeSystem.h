@@ -13,17 +13,17 @@
 #include <iostream>
 
 namespace pyogmaneo {
-    class PyComputeSystem {
-    private:
-        ogmaneo::ComputeSystem _cs;
+class PyComputeSystem {
+private:
+    ogmaneo::ComputeSystem _cs;
 
-    public:
-        PyComputeSystem(
-            size_t numWorkers,
-            unsigned long seed = 1234
-        );
+public:
+    PyComputeSystem(
+        size_t numWorkers,
+        unsigned long seed = 1234
+    );
 
-        friend class PyHierarchy;
-        friend class PyImageEncoder;
-    };
-}
+    friend class PyHierarchy;
+    friend class PyImageEncoder;
+};
+} // namespace pyogmaneo
