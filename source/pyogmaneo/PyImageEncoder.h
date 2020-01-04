@@ -17,20 +17,24 @@ namespace pyogmaneo {
     struct PyImVisibleLayerDesc {
         PyInt3 _size;
 
-        int _radius;
+        int _encRadius;
+        int _decRadius;
 
         PyImVisibleLayerDesc()
         :
         _size(8, 8, 16),
-        _radius(2)
+        _encRadius(2),
+        _decRadius(2)
         {}
 
         PyImVisibleLayerDesc(
             const PyInt3 &size,
-            int radius)
+            int encRadius,
+            int decRadius)
         : 
         _size(size),
-        _radius(radius)
+        _encRadius(encRadius),
+        _decRadius(decRadius)
         {}
     };
 

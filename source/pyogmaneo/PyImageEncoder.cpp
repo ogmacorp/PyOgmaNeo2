@@ -19,7 +19,8 @@ PyImageEncoder::PyImageEncoder(
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
         cVisibleLayerDescs[v]._size = ogmaneo::Int3(visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z);
-        cVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
+        cVisibleLayerDescs[v]._encRadius = visibleLayerDescs[v]._encRadius;
+        cVisibleLayerDescs[v]._decRadius = visibleLayerDescs[v]._decRadius;
     }
 
     _enc.initRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
