@@ -40,7 +40,7 @@ namespace pyogmaneo {
 
     public:
         float _alpha;
-        float _gamma;
+        float _epsilon;
         
         PyImageEncoder(
             PyComputeSystem &cs,
@@ -52,10 +52,14 @@ namespace pyogmaneo {
             const std::string &fileName
         );
 
-        void step(
+        void activate(
             PyComputeSystem &cs,
-            const std::vector<std::vector<float> > &visibleActivations,
-            bool learnEnabled = true
+            const std::vector<std::vector<float> > &visibleActivations
+        );
+
+        void learn(
+            PyComputeSystem &cs,
+            const std::vector<std::vector<float> > &visibleActivations
         );
 
         void reconstruct(

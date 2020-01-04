@@ -25,7 +25,7 @@ PyImageEncoder::PyImageEncoder(
     _enc.initRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
 
     _alpha = _enc._alpha;
-    _gamma = _enc._gamma;
+    _epsilon = _enc._epsilon;
 }
 
 PyImageEncoder::PyImageEncoder(
@@ -36,23 +36,37 @@ PyImageEncoder::PyImageEncoder(
     _enc.readFromStream(is);
 
     _alpha = _enc._alpha;
-    _gamma = _enc._gamma;
+    _epsilon = _enc._epsilon;
 }
 
-void PyImageEncoder::step(
+void PyImageEncoder::activate(
     PyComputeSystem &cs,
-    const std::vector<std::vector<float> > &visibleActivations,
-    bool learnEnabled
+    const std::vector<std::vector<float> > &visibleActivations
 ) {
     _enc._alpha = _alpha;
-    _enc._gamma = _gamma;
+    _enc._epsilon = _epsilon;
     
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
     for (int i = 0; i < visibleActivations.size(); i++)
         cVisibleActivations[i] = &visibleActivations[i];
 
-    _enc.step(cs._cs, cVisibleActivations, learnEnabled);
+    _enc.activate(cs._cs, cVisibleActivations);
+}
+
+void PyImageEncoder::learn(
+    PyComputeSystem &cs,
+    const std::vector<std::vector<float> > &visibleActivations
+) {
+    _enc._alpha = _alpha;
+    _enc._epsilon = _epsilon;
+    
+    std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
+
+    for (int i = 0; i < visibleActivations.size(); i++)
+        cVisibleActivations[i] = &visibleActivations[i];
+
+    _enc.learn(cs._cs, cVisibleActivations);
 }
 
 void PyImageEncoder::reconstruct(
@@ -80,7 +94,7 @@ std::vector<float> PyImageEncoder::getReceptiveField(
     ogmaneo::Int3 minPos(999999, 999999, 999999);
     ogmaneo::Int3 maxPos(0, 0, 0);
 
-    const ogmaneo::SparseMatrix &sm = _enc.getVisibleLayer(i)._weights;
+    const ogmaneo::SparseMatrix &sm = _enc.getVisibleLayer(i)._decWeights;
 
     int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), _enc.getHiddenSize());
     //int nextIndex = row + 1;
