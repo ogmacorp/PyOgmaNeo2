@@ -19,14 +19,13 @@ PyImageEncoder::PyImageEncoder(
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
         cVisibleLayerDescs[v]._size = ogmaneo::Int3(visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z);
-        cVisibleLayerDescs[v]._encRadius = visibleLayerDescs[v]._encRadius;
-        cVisibleLayerDescs[v]._decRadius = visibleLayerDescs[v]._decRadius;
+        cVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
     }
 
     _enc.initRandom(cs._cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
 
     _alpha = _enc._alpha;
-    _epsilon = _enc._epsilon;
+    _gamma = _enc._gamma;
 }
 
 PyImageEncoder::PyImageEncoder(
@@ -37,37 +36,23 @@ PyImageEncoder::PyImageEncoder(
     _enc.readFromStream(is);
 
     _alpha = _enc._alpha;
-    _epsilon = _enc._epsilon;
+    _gamma = _enc._gamma;
 }
 
-void PyImageEncoder::activate(
+void PyImageEncoder::step(
     PyComputeSystem &cs,
-    const std::vector<std::vector<float> > &visibleActivations
+    const std::vector<std::vector<float> > &visibleActivations,
+    bool learnEnabled
 ) {
     _enc._alpha = _alpha;
-    _enc._epsilon = _epsilon;
+    _enc._gamma = _gamma;
     
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
     for (int i = 0; i < visibleActivations.size(); i++)
         cVisibleActivations[i] = &visibleActivations[i];
 
-    _enc.activate(cs._cs, cVisibleActivations);
-}
-
-void PyImageEncoder::learn(
-    PyComputeSystem &cs,
-    const std::vector<std::vector<float> > &visibleActivations
-) {
-    _enc._alpha = _alpha;
-    _enc._epsilon = _epsilon;
-    
-    std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
-
-    for (int i = 0; i < visibleActivations.size(); i++)
-        cVisibleActivations[i] = &visibleActivations[i];
-
-    _enc.learn(cs._cs, cVisibleActivations);
+    _enc.step(cs._cs, cVisibleActivations, learnEnabled);
 }
 
 void PyImageEncoder::reconstruct(
@@ -95,7 +80,7 @@ std::vector<float> PyImageEncoder::getReceptiveField(
     ogmaneo::Int3 minPos(999999, 999999, 999999);
     ogmaneo::Int3 maxPos(0, 0, 0);
 
-    const ogmaneo::SparseMatrix &sm = _enc.getVisibleLayer(i)._decWeights;
+    const ogmaneo::SparseMatrix &sm = _enc.getVisibleLayer(i)._weights;
 
     int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), _enc.getHiddenSize());
     //int nextIndex = row + 1;
