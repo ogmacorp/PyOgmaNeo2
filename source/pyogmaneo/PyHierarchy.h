@@ -21,7 +21,6 @@ struct PyLayerDesc {
     PyInt3 _hiddenSize;
 
     int _ffRadius;
-    int _lRadius;
     int _rRadius;
 
     int _ticksPerUpdate;
@@ -31,7 +30,6 @@ struct PyLayerDesc {
     :
     _hiddenSize(4, 4, 16),
     _ffRadius(2),
-    _lRadius(2),
     _rRadius(2),
     _ticksPerUpdate(2),
     _temporalHorizon(2)
@@ -40,7 +38,6 @@ struct PyLayerDesc {
     PyLayerDesc(
         const PyInt3 &hiddenSize,
         int ffRadius,
-        int lRadius,
         int rRadius,
         int ticksPerUpdate,
         int temporalHorizon
@@ -48,7 +45,6 @@ struct PyLayerDesc {
     :
     _hiddenSize(hiddenSize),
     _ffRadius(ffRadius),
-    _lRadius(lRadius),
     _rRadius(rRadius),
     _ticksPerUpdate(ticksPerUpdate),
     _temporalHorizon(temporalHorizon)
@@ -142,19 +138,6 @@ public:
         return { size.x, size.y, size.z };
     }
 
-    void setSCExplainIters(
-        int l,
-        int explainIters
-    ) {
-        _h.getSCLayer(l)._explainIters = explainIters;
-    }
-
-    int getSCExplainIters(
-        int l
-    ) const {
-        return _h.getSCLayer(l)._explainIters;
-    }
-
     void setSCAlpha(
         int l,
         float alpha
@@ -163,19 +146,6 @@ public:
     }
 
     float getSCAlpha(
-        int l
-    ) const {
-        return _h.getSCLayer(l)._alpha;
-    }
-
-    void setSCBeta(
-        int l,
-        float beta
-    ) {
-        _h.getSCLayer(l)._beta = beta;
-    }
-
-    float getSCBeta(
         int l
     ) const {
         return _h.getSCLayer(l)._alpha;
