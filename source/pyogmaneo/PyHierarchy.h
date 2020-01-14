@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -14,31 +14,31 @@
 #include <fstream>
 
 namespace pyogmaneo {
-    const int _inputTypeNone = 0;
-    const int _inputTypePrediction = 1;
-    const int _inputTypeAction = 2;
+    const int inputTypeNone = 0;
+    const int inputTypePrediction = 1;
+    const int inputTypeAction = 2;
 
     struct PyLayerDesc {
-        PyInt3 _hiddenSize;
+        PyInt3 hiddenSize;
 
-        int _ffRadius;
-        int _pRadius;
+        int ffRadius;
+        int pRadius;
 
-        int _ticksPerUpdate;
-        int _temporalHorizon;
+        int ticksPerUpdate;
+        int temporalHorizon;
 
-        int _aRadius;
-        int _historyCapacity;
+        int aRadius;
+        int historyCapacity;
 
         PyLayerDesc()
         :
-        _hiddenSize(4, 4, 16),
-        _ffRadius(2),
-        _pRadius(2),
-        _ticksPerUpdate(2),
-        _temporalHorizon(2),
-        _aRadius(2),
-        _historyCapacity(32)
+        hiddenSize(4, 4, 16),
+        ffRadius(2),
+        pRadius(2),
+        ticksPerUpdate(2),
+        temporalHorizon(2),
+        aRadius(2),
+        historyCapacity(32)
         {}
 
         PyLayerDesc(
@@ -51,19 +51,19 @@ namespace pyogmaneo {
             int historyCapacity
         )
         :
-        _hiddenSize(hiddenSize),
-        _ffRadius(ffRadius),
-        _pRadius(pRadius),
-        _ticksPerUpdate(ticksPerUpdate),
-        _temporalHorizon(temporalHorizon),
-        _aRadius(aRadius),
-        _historyCapacity(historyCapacity)
+        hiddenSize(hiddenSize),
+        ffRadius(ffRadius),
+        pRadius(pRadius),
+        ticksPerUpdate(ticksPerUpdate),
+        temporalHorizon(temporalHorizon),
+        aRadius(aRadius),
+        historyCapacity(historyCapacity)
         {}
     };
 
     class PyHierarchy {
     private:
-        ogmaneo::Hierarchy _h;
+        ogmaneo::Hierarchy h;
 
     public:
         PyHierarchy(
@@ -89,31 +89,31 @@ namespace pyogmaneo {
         ) const;
 
         int getNumLayers() const {
-            return _h.getNumLayers();
+            return h.getNumLayers();
         }
 
         const std::vector<int> &getPredictionCs(
             int i
         ) const {
-            return _h.getPredictionCs(i);
+            return h.getPredictionCs(i);
         }
 
         bool getUpdate(
             int l
         ) const {
-            return _h.getUpdate(l);
+            return h.getUpdate(l);
         }
 
         const std::vector<int> &getHiddenCs(
             int l
         ) {
-            return _h.getSCLayer(l).getHiddenCs();
+            return h.getSCLayer(l).getHiddenCs();
         }
 
         PyInt3 getHiddenSize(
             int l
         ) {
-            ogmaneo::Int3 size = _h.getSCLayer(l).getHiddenSize();
+            ogmaneo::Int3 size = h.getSCLayer(l).getHiddenSize();
 
             return { size.x, size.y, size.z };
         }
@@ -121,29 +121,29 @@ namespace pyogmaneo {
         int getTicks(
             int l
         ) const {
-            return _h.getTicks(l);
+            return h.getTicks(l);
         }
 
         int getTicksPerUpdate(
             int l
         ) const {
-            return _h.getTicksPerUpdate(l);
+            return h.getTicksPerUpdate(l);
         }
 
         int getNumSCVisibleLayers(
             int l
         ) {
-            return _h.getSCLayer(l).getNumVisibleLayers();
+            return h.getSCLayer(l).getNumVisibleLayers();
         }
 
         int getNumInputs() const {
-            return _h.getInputSizes().size();
+            return h.getInputSizes().size();
         }
 
         PyInt3 getInputSize(
             int i
         ) const {
-            ogmaneo::Int3 size = _h.getInputSizes()[i];
+            ogmaneo::Int3 size = h.getInputSizes()[i];
 
             return { size.x, size.y, size.z };
         }
@@ -152,26 +152,26 @@ namespace pyogmaneo {
             int l,
             int v
         ) {
-            return _h.getPLayers(l)[v] != nullptr;
+            return h.getPLayers(l)[v] != nullptr;
         }
 
         bool aLayerExists(
             int v
         ) {
-            return _h.getALayers()[v] != nullptr;
+            return h.getALayers()[v] != nullptr;
         }
 
         void setSCAlpha(
             int l,
             float alpha
         ) {
-            _h.getSCLayer(l)._alpha = alpha;
+            h.getSCLayer(l).alpha = alpha;
         }
 
         float getSCAlpha(
             int l
         ) const {
-            return _h.getSCLayer(l)._alpha;
+            return h.getSCLayer(l).alpha;
         }
 
         void setPAlpha(
@@ -179,86 +179,86 @@ namespace pyogmaneo {
             int v,
             float alpha
         ) {
-            assert(_h.getPLayers(l)[v] != nullptr);
+            assert(h.getPLayers(l)[v] != nullptr);
             
-            _h.getPLayers(l)[v]->_alpha = alpha;
+            h.getPLayers(l)[v]->alpha = alpha;
         }
 
         float getPAlpha(
             int l,
             int v
         ) const {
-            assert(_h.getPLayers(l)[v] != nullptr);
+            assert(h.getPLayers(l)[v] != nullptr);
             
-            return _h.getPLayers(l)[v]->_alpha;
+            return h.getPLayers(l)[v]->alpha;
         }
 
         void setAAlpha(
             int v,
             float alpha
         ) {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            _h.getALayers()[v]->_alpha = alpha;
+            h.getALayers()[v]->alpha = alpha;
         }
 
         float getAAlpha(
             int v
         ) const {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            return _h.getALayers()[v]->_alpha;
+            return h.getALayers()[v]->alpha;
         }
 
         void setABeta(
             int v,
             float beta
         ) {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            _h.getALayers()[v]->_beta = beta;
+            h.getALayers()[v]->beta = beta;
         }
 
         float getABeta(
             int v
         ) const {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            return _h.getALayers()[v]->_beta;
+            return h.getALayers()[v]->beta;
         }
 
         void setAGamma(
             int v,
             float gamma
         ) {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            _h.getALayers()[v]->_gamma = gamma;
+            h.getALayers()[v]->gamma = gamma;
         }
 
         float getAGamma(
             int v
         ) const {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            return _h.getALayers()[v]->_gamma;
+            return h.getALayers()[v]->gamma;
         }
 
         void setAHistoryIters(
             int v,
             int historyIters
         ) {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            _h.getALayers()[v]->_historyIters = historyIters;
+            h.getALayers()[v]->historyIters = historyIters;
         }
 
         int getAHistoryIters(
             int v
         ) const {
-            assert(_h.getALayers()[v] != nullptr);
+            assert(h.getALayers()[v] != nullptr);
             
-            return _h.getALayers()[v]->_historyIters;
+            return h.getALayers()[v]->historyIters;
         }
 
         std::vector<float> getSCReceptiveField(

@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -25,14 +25,14 @@ PyHierarchy::PyHierarchy(
 
     for (int i = 0; i < inputTypes.size(); i++) {
         switch(inputTypes[i]) {
-        case _inputTypeNone:
-            cInputTypes[i] = ogmaneo::_none;
+        case inputTypeNone:
+            cInputTypes[i] = ogmaneo::none;
             break;
-        case _inputTypePrediction:
-            cInputTypes[i] = ogmaneo::_prediction;
+        case inputTypePrediction:
+            cInputTypes[i] = ogmaneo::prediction;
             break;
-        case _inputTypeAction:
-            cInputTypes[i] = ogmaneo::_action;
+        case inputTypeAction:
+            cInputTypes[i] = ogmaneo::action;
             break;
         }
     }
@@ -40,16 +40,16 @@ PyHierarchy::PyHierarchy(
     std::vector<ogmaneo::Hierarchy::LayerDesc> cLayerDescs(layerDescs.size());
 
     for (int l = 0; l < layerDescs.size(); l++) {
-        cLayerDescs[l]._hiddenSize = ogmaneo::Int3(layerDescs[l]._hiddenSize.x, layerDescs[l]._hiddenSize.y, layerDescs[l]._hiddenSize.z);
-        cLayerDescs[l]._ffRadius = layerDescs[l]._ffRadius;
-        cLayerDescs[l]._pRadius = layerDescs[l]._pRadius;
-        cLayerDescs[l]._aRadius = layerDescs[l]._aRadius;
-        cLayerDescs[l]._temporalHorizon = layerDescs[l]._temporalHorizon;
-        cLayerDescs[l]._ticksPerUpdate = layerDescs[l]._ticksPerUpdate;
-        cLayerDescs[l]._historyCapacity = layerDescs[l]._historyCapacity;
+        cLayerDescs[l].hiddenSize = ogmaneo::Int3(layerDescs[l].hiddenSize.x, layerDescs[l].hiddenSize.y, layerDescs[l].hiddenSize.z);
+        cLayerDescs[l].ffRadius = layerDescs[l].ffRadius;
+        cLayerDescs[l].pRadius = layerDescs[l].pRadius;
+        cLayerDescs[l].aRadius = layerDescs[l].aRadius;
+        cLayerDescs[l].temporalHorizon = layerDescs[l].temporalHorizon;
+        cLayerDescs[l].ticksPerUpdate = layerDescs[l].ticksPerUpdate;
+        cLayerDescs[l].historyCapacity = layerDescs[l].historyCapacity;
     }
 
-    _h.initRandom(cs._cs, cInputSizes, cInputTypes, cLayerDescs);
+    h.initRandom(cs.cs, cInputSizes, cInputTypes, cLayerDescs);
 }
 
 PyHierarchy::PyHierarchy(
@@ -57,7 +57,7 @@ PyHierarchy::PyHierarchy(
 ) {
     std::ifstream is(fileName, std::ios::binary);
     
-    _h.readFromStream(is);
+    h.readFromStream(is);
 }
 
 void PyHierarchy::step(
@@ -66,17 +66,17 @@ void PyHierarchy::step(
     bool learnEnabled,
     float reward
 ) {
-    assert(inputCs.size() == _h.getInputSizes().size());
+    assert(inputCs.size() == h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
 
     for (int i = 0; i < inputCs.size(); i++) {
-        assert(inputCs[i].size() == _h.getInputSizes()[i].x * _h.getInputSizes()[i].y);
+        assert(inputCs[i].size() == h.getInputSizes()[i].x * h.getInputSizes()[i].y);
 
         cInputCs[i] = &inputCs[i];
     }
     
-    _h.step(cs._cs, cInputCs, learnEnabled, reward);
+    h.step(cs.cs, cInputCs, learnEnabled, reward);
 }
 
 void PyHierarchy::save(
@@ -84,7 +84,7 @@ void PyHierarchy::save(
 ) const {
     std::ofstream os(fileName, std::ios::binary);
 
-    _h.writeToStream(os);
+    h.writeToStream(os);
 }
 
 std::vector<float> PyHierarchy::getSCReceptiveField(
@@ -98,14 +98,14 @@ std::vector<float> PyHierarchy::getSCReceptiveField(
     ogmaneo::Int3 minPos(999999, 999999, 999999);
     ogmaneo::Int3 maxPos(0, 0, 0);
 
-    const ogmaneo::SparseMatrix &sm = _h.getSCLayer(l).getVisibleLayer(i)._weights;
+    const ogmaneo::SparseMatrix &sm = h.getSCLayer(l).getVisibleLayer(i).weights;
 
-    int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), _h.getSCLayer(l).getHiddenSize());
+    int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), h.getSCLayer(l).getHiddenSize());
     //int nextIndex = row + 1;
 
     std::vector<int> js(2);
-    js[0] = sm._rowRanges[row];
-    js[1] = sm._rowRanges[row + 1];
+    js[0] = sm.rowRanges[row];
+    js[1] = sm.rowRanges[row + 1];
 
     int numValues = js[1] - js[0];
 
@@ -116,20 +116,20 @@ std::vector<float> PyHierarchy::getSCReceptiveField(
     std::vector<float> nonZeroValues(numValues);
 
     for (int i = 0; i < numValues; i++) {
-        columnIndices[i] = sm._columnIndices[js[0] + i];
-        nonZeroValues[i] = sm._nonZeroValues[js[0] + i];
+        columnIndices[i] = sm.columnIndices[js[0] + i];
+        nonZeroValues[i] = sm.nonZeroValues[js[0] + i];
     }
 
 	for (int j = js[0]; j < js[1]; j++) {
         int index = columnIndices[j - js[0]];
 
-        int inZ = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
-        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+        int inZ = index % h.getSCLayer(l).getVisibleLayerDesc(i).size.z;
+        index /= h.getSCLayer(l).getVisibleLayerDesc(i).size.z;
 
-        int inY = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
-        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+        int inY = index % h.getSCLayer(l).getVisibleLayerDesc(i).size.y;
+        index /= h.getSCLayer(l).getVisibleLayerDesc(i).size.y;
 
-        int inX = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.x;
+        int inX = index % h.getSCLayer(l).getVisibleLayerDesc(i).size.x;
 
 		minPos.x = std::min(minPos.x, inX);
 		minPos.y = std::min(minPos.y, inY);
@@ -151,13 +151,13 @@ std::vector<float> PyHierarchy::getSCReceptiveField(
     for (int j = js[0]; j < js[1]; j++) {
         int index = columnIndices[j - js[0]];
 
-        int inZ = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
-        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.z;
+        int inZ = index % h.getSCLayer(l).getVisibleLayerDesc(i).size.z;
+        index /= h.getSCLayer(l).getVisibleLayerDesc(i).size.z;
 
-        int inY = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
-        index /= _h.getSCLayer(l).getVisibleLayerDesc(i)._size.y;
+        int inY = index % h.getSCLayer(l).getVisibleLayerDesc(i).size.y;
+        index /= h.getSCLayer(l).getVisibleLayerDesc(i).size.y;
 
-        int inX = index % _h.getSCLayer(l).getVisibleLayerDesc(i)._size.x;
+        int inX = index % h.getSCLayer(l).getVisibleLayerDesc(i).size.x;
 
 		field[ogmaneo::address3(ogmaneo::Int3(inX - minPos.x, inY - minPos.y, inZ - minPos.z), ogmaneo::Int3(size.x, size.y, size.z))] = nonZeroValues[j - js[0]];
     }

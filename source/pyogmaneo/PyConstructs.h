@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -22,14 +22,14 @@ namespace pyogmaneo {
         {}
 
         PyInt3(
-            int X,
-            int Y,
-            int Z
+            int x,
+            int y,
+            int z
         )
         :
-        x(X),
-        y(Y),
-        z(Z)
+        x(x),
+        y(y),
+        z(z)
         {}
     };
 }
