@@ -22,6 +22,7 @@ namespace pyogmaneo {
         PyInt3 hiddenSize;
 
         int ffRadius;
+        int lRadius;
         int pRadius;
 
         int ticksPerUpdate;
@@ -34,6 +35,7 @@ namespace pyogmaneo {
         :
         hiddenSize(4, 4, 16),
         ffRadius(2),
+        lRadius(2),
         pRadius(2),
         ticksPerUpdate(2),
         temporalHorizon(2),
@@ -44,6 +46,7 @@ namespace pyogmaneo {
         PyLayerDesc(
             const PyInt3 &hiddenSize,
             int ffRadius,
+            int lRadius,
             int pRadius,
             int ticksPerUpdate,
             int temporalHorizon,
@@ -53,6 +56,7 @@ namespace pyogmaneo {
         :
         hiddenSize(hiddenSize),
         ffRadius(ffRadius),
+        lRadius(lRadius),
         pRadius(pRadius),
         ticksPerUpdate(ticksPerUpdate),
         temporalHorizon(temporalHorizon),
@@ -161,6 +165,19 @@ namespace pyogmaneo {
             return h.getALayers()[v] != nullptr;
         }
 
+        void setSCExplainIters(
+            int l,
+            int explainIters
+        ) {
+            h.getSCLayer(l).explainIters = explainIters;
+        }
+
+        int getSCExplainIters(
+            int l
+        ) const {
+            return h.getSCLayer(l).explainIters;
+        }
+
         void setSCAlpha(
             int l,
             float alpha
@@ -172,6 +189,19 @@ namespace pyogmaneo {
             int l
         ) const {
             return h.getSCLayer(l).alpha;
+        }
+
+        void setSCBeta(
+            int l,
+            float beta
+        ) {
+            h.getSCLayer(l).beta = beta;
+        }
+
+        float getSCBeta(
+            int l
+        ) const {
+            return h.getSCLayer(l).beta;
         }
 
         void setPAlpha(
