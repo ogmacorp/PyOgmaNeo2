@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2018 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -14,25 +14,25 @@
 #include <fstream>
 
 namespace pyogmaneo {
-const int _inputTypeNone = 0;
-const int _inputTypeAction = 1;
+const int inputTypeNone = 0;
+const int inputTypeAction = 1;
 
 struct PyLayerDesc {
-    PyInt3 _hiddenSize;
+    PyInt3 hiddenSize;
 
-    int _ffRadius;
-    int _rRadius;
+    int ffRadius;
+    int rRadius;
 
-    int _ticksPerUpdate;
-    int _temporalHorizon;
+    int ticksPerUpdate;
+    int temporalHorizon;
 
     PyLayerDesc()
     :
-    _hiddenSize(4, 4, 16),
-    _ffRadius(2),
-    _rRadius(2),
-    _ticksPerUpdate(2),
-    _temporalHorizon(2)
+    hiddenSize(4, 4, 16),
+    ffRadius(2),
+    rRadius(2),
+    ticksPerUpdate(2),
+    temporalHorizon(2)
     {}
 
     PyLayerDesc(
@@ -43,17 +43,17 @@ struct PyLayerDesc {
         int temporalHorizon
     )
     :
-    _hiddenSize(hiddenSize),
-    _ffRadius(ffRadius),
-    _rRadius(rRadius),
-    _ticksPerUpdate(ticksPerUpdate),
-    _temporalHorizon(temporalHorizon)
+    hiddenSize(hiddenSize),
+    ffRadius(ffRadius),
+    rRadius(rRadius),
+    ticksPerUpdate(ticksPerUpdate),
+    temporalHorizon(temporalHorizon)
     {}
 };
 
 class PyHierarchy {
 private:
-    ogmaneo::Hierarchy _h;
+    ogmaneo::Hierarchy h;
 
 public:
     PyHierarchy(
@@ -79,31 +79,31 @@ public:
     ) const;
 
     int getNumLayers() const {
-        return _h.getNumLayers();
+        return h.getNumLayers();
     }
 
     const std::vector<int> &getActionCs(
         int i
     ) const {
-        return _h.getActionCs(i);
+        return h.getActionCs(i);
     }
 
     bool getUpdate(
         int l
     ) const {
-        return _h.getUpdate(l);
+        return h.getUpdate(l);
     }
 
     const std::vector<int> &getHiddenCs(
         int l
     ) {
-        return _h.getSCLayer(l).getHiddenCs();
+        return h.getSCLayer(l).getHiddenCs();
     }
 
     PyInt3 getHiddenSize(
         int l
     ) {
-        ogmaneo::Int3 size = _h.getSCLayer(l).getHiddenSize();
+        ogmaneo::Int3 size = h.getSCLayer(l).getHiddenSize();
 
         return { size.x, size.y, size.z };
     }
@@ -111,29 +111,29 @@ public:
     int getTicks(
         int l
     ) const {
-        return _h.getTicks(l);
+        return h.getTicks(l);
     }
 
     int getTicksPerUpdate(
         int l
     ) const {
-        return _h.getTicksPerUpdate(l);
+        return h.getTicksPerUpdate(l);
     }
 
     int getNumSCVisibleLayers(
         int l
     ) {
-        return _h.getSCLayer(l).getNumVisibleLayers();
+        return h.getSCLayer(l).getNumVisibleLayers();
     }
 
     int getNumInputs() const {
-        return _h.getInputSizes().size();
+        return h.getInputSizes().size();
     }
 
     PyInt3 getInputSize(
         int i
     ) const {
-        ogmaneo::Int3 size = _h.getInputSizes()[i];
+        ogmaneo::Int3 size = h.getInputSizes()[i];
 
         return { size.x, size.y, size.z };
     }
@@ -142,63 +142,63 @@ public:
         int l,
         float alpha
     ) {
-        _h.getSCLayer(l)._alpha = alpha;
+        h.getSCLayer(l).alpha = alpha;
     }
 
     float getSCAlpha(
         int l
     ) const {
-        return _h.getSCLayer(l)._alpha;
+        return h.getSCLayer(l).alpha;
     }
 
     void setAlpha(
         float alpha
     ) {
-        _h._alpha = alpha;
+        h.alpha = alpha;
     }
 
     float getAlpha() const {
-        return _h._alpha;
+        return h.alpha;
     }
 
     void setBeta(
         float beta
     ) {
-        _h._beta = beta;
+        h.beta = beta;
     }
 
     float getBeta() const {
-        return _h._beta;
+        return h.beta;
     }
 
     void setGamma(
         float gamma
     ) {
-        _h._gamma = gamma;
+        h.gamma = gamma;
     }
 
     float getGamma() const {
-        return _h._gamma;
+        return h.gamma;
     }
 
     void setMaxHistorySamples(
         int maxHistorySamples
     ) {
-        _h._maxHistorySamples = maxHistorySamples;
+        h.maxHistorySamples = maxHistorySamples;
     }
 
     int setMaxHistorySamples() const {
-        return _h._maxHistorySamples;
+        return h.maxHistorySamples;
     }
 
     void setHistoryIters(
         int historyIters
     ) {
-        _h._historyIters = historyIters;
+        h.historyIters = historyIters;
     }
 
     int getHistoryIters() const {
-        return _h._historyIters;
+        return h.historyIters;
     }
 
     std::vector<float> getSCReceptiveField(
