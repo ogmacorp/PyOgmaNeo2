@@ -174,19 +174,6 @@ namespace pyogmaneo {
             return h.getSCLayer(l).alpha;
         }
 
-        void setSCTolerance(
-            int l,
-            float tolerance
-        ) {
-            h.getSCLayer(l).tolerance = tolerance;
-        }
-
-        float getSCTolerance(
-            int l
-        ) const {
-            return h.getSCLayer(l).tolerance;
-        }
-
         void setPAlpha(
             int l,
             int v,
