@@ -223,6 +223,23 @@ namespace pyogmaneo {
             return h.getALayers()[v]->alpha;
         }
 
+        void setABeta(
+            int v,
+            float beta
+        ) {
+            assert(h.getALayers()[v] != nullptr);
+            
+            h.getALayers()[v]->beta = beta;
+        }
+
+        float getABeta(
+            int v
+        ) const {
+            assert(h.getALayers()[v] != nullptr);
+            
+            return h.getALayers()[v]->beta;
+        }
+
         void setAGamma(
             int v,
             float gamma
@@ -240,21 +257,21 @@ namespace pyogmaneo {
             return h.getALayers()[v]->gamma;
         }
 
-        void setATraceDecay(
+        void setAHistoryIters(
             int v,
-            float traceDecay
+            int historyIters
         ) {
             assert(h.getALayers()[v] != nullptr);
             
-            h.getALayers()[v]->traceDecay = traceDecay;
+            h.getALayers()[v]->historyIters = historyIters;
         }
 
-        float getATraceDecay(
+        int getAHistoryIters(
             int v
         ) const {
             assert(h.getALayers()[v] != nullptr);
             
-            return h.getALayers()[v]->traceDecay;
+            return h.getALayers()[v]->historyIters;
         }
 
         std::vector<float> getSCReceptiveField(
