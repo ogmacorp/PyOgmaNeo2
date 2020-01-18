@@ -227,6 +227,23 @@ namespace pyogmaneo {
             return h.getALayers()[v]->gamma;
         }
 
+        void setATraceDecay(
+            int v,
+            float traceDecay
+        ) {
+            assert(h.getALayers()[v] != nullptr);
+            
+            h.getALayers()[v]->traceDecay = traceDecay;
+        }
+
+        float getATraceDecay(
+            int v
+        ) const {
+            assert(h.getALayers()[v] != nullptr);
+            
+            return h.getALayers()[v]->traceDecay;
+        }
+
         std::vector<float> getSCReceptiveField(
             PyComputeSystem &cs,
             int l,
