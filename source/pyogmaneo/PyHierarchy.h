@@ -138,6 +138,19 @@ public:
         return { size.x, size.y, size.z };
     }
 
+    void setSCExplainIters(
+        int l,
+        float explainIters
+    ) {
+        h.getSCLayer(l).explainIters = explainIters;
+    }
+
+    float getSCExplainIters(
+        int l
+    ) const {
+        return h.getSCLayer(l).explainIters;
+    }
+
     void setSCAlpha(
         int l,
         float alpha
