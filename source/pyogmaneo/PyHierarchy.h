@@ -138,30 +138,17 @@ public:
         return { size.x, size.y, size.z };
     }
 
-    void setSCExplainIters(
+    void setSCScale(
         int l,
-        float explainIters
+        float scale
     ) {
-        h.getSCLayer(l).explainIters = explainIters;
+        h.getSCLayer(l).scale = scale;
     }
 
-    float getSCExplainIters(
+    float getSCScale(
         int l
     ) const {
-        return h.getSCLayer(l).explainIters;
-    }
-
-    void setSCAlpha(
-        int l,
-        float alpha
-    ) {
-        h.getSCLayer(l).alpha = alpha;
-    }
-
-    float getSCAlpha(
-        int l
-    ) const {
-        return h.getSCLayer(l).alpha;
+        return h.getSCLayer(l).scale;
     }
 
     void setAlpha(
