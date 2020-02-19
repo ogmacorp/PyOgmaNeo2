@@ -163,12 +163,12 @@ namespace pyogmaneo {
 
         void setSCExplainIters(
             int l,
-            float explainIters
+            int explainIters
         ) {
             h.getSCLayer(l).explainIters = explainIters;
         }
 
-        float getSCExplainIters(
+        int getSCExplainIters(
             int l
         ) const {
             return h.getSCLayer(l).explainIters;
