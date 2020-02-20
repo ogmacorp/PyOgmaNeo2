@@ -99,7 +99,7 @@ std::vector<float> PyHierarchy::getSCReceptiveField(
     ogmaneo::Int3 minPos(999999, 999999, 999999);
     ogmaneo::Int3 maxPos(0, 0, 0);
 
-    const ogmaneo::SparseMatrix &sm = h.getSCLayer(l).getVisibleLayer(i).ffWeights;
+    const ogmaneo::SparseMatrix &sm = h.getSCLayer(l).getVisibleLayer(i).weights;
 
     int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), h.getSCLayer(l).getHiddenSize());
     //int nextIndex = row + 1;
