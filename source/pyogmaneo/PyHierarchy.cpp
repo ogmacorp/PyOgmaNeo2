@@ -42,6 +42,7 @@ PyHierarchy::PyHierarchy(
     for (int l = 0; l < layerDescs.size(); l++) {
         cLayerDescs[l].hiddenSize = ogmaneo::Int3(layerDescs[l].hiddenSize.x, layerDescs[l].hiddenSize.y, layerDescs[l].hiddenSize.z);
         cLayerDescs[l].ffRadius = layerDescs[l].ffRadius;
+        cLayerDescs[l].rRadius = layerDescs[l].rRadius;
         cLayerDescs[l].pRadius = layerDescs[l].pRadius;
         cLayerDescs[l].aRadius = layerDescs[l].aRadius;
         cLayerDescs[l].temporalHorizon = layerDescs[l].temporalHorizon;
@@ -98,7 +99,7 @@ std::vector<float> PyHierarchy::getSCReceptiveField(
     ogmaneo::Int3 minPos(999999, 999999, 999999);
     ogmaneo::Int3 maxPos(0, 0, 0);
 
-    const ogmaneo::SparseMatrix &sm = h.getSCLayer(l).getVisibleLayer(i).weights;
+    const ogmaneo::SparseMatrix &sm = h.getSCLayer(l).getVisibleLayer(i).ffWeights;
 
     int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), h.getSCLayer(l).getHiddenSize());
     //int nextIndex = row + 1;

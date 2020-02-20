@@ -22,6 +22,7 @@ namespace pyogmaneo {
         PyInt3 hiddenSize;
 
         int ffRadius;
+        int rRadius; // Set to -1 to disable
         int pRadius;
 
         int ticksPerUpdate;
@@ -34,9 +35,10 @@ namespace pyogmaneo {
         :
         hiddenSize(4, 4, 16),
         ffRadius(2),
+        rRadius(2),
         pRadius(2),
-        ticksPerUpdate(2),
-        temporalHorizon(2),
+        ticksPerUpdate(1),
+        temporalHorizon(1),
         aRadius(2),
         historyCapacity(64)
         {}
@@ -44,6 +46,7 @@ namespace pyogmaneo {
         PyLayerDesc(
             const PyInt3 &hiddenSize,
             int ffRadius,
+            int rRadius,
             int pRadius,
             int ticksPerUpdate,
             int temporalHorizon,
@@ -53,6 +56,7 @@ namespace pyogmaneo {
         :
         hiddenSize(hiddenSize),
         ffRadius(ffRadius),
+        rRadius(rRadius),
         pRadius(pRadius),
         ticksPerUpdate(ticksPerUpdate),
         temporalHorizon(temporalHorizon),
@@ -161,19 +165,6 @@ namespace pyogmaneo {
             return h.getALayers()[v] != nullptr;
         }
 
-        void setSCExplainIters(
-            int l,
-            int explainIters
-        ) {
-            h.getSCLayer(l).explainIters = explainIters;
-        }
-
-        int getSCExplainIters(
-            int l
-        ) const {
-            return h.getSCLayer(l).explainIters;
-        }
-
         void setSCAlpha(
             int l,
             float alpha
@@ -185,6 +176,32 @@ namespace pyogmaneo {
             int l
         ) const {
             return h.getSCLayer(l).alpha;
+        }
+
+        void setSCBeta(
+            int l,
+            float beta
+        ) {
+            h.getSCLayer(l).beta = beta;
+        }
+
+        float getSCBeta(
+            int l
+        ) const {
+            return h.getSCLayer(l).beta;
+        }
+
+        void setSCGamma(
+            int l,
+            float gamma
+        ) {
+            h.getSCLayer(l).gamma = gamma;
+        }
+
+        float getSCGamma(
+            int l
+        ) const {
+            return h.getSCLayer(l).gamma;
         }
 
         void setPAlpha(
