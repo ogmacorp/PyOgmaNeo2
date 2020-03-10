@@ -11,11 +11,14 @@
 using namespace pyogmaneo;
 
 PyComputeSystem::PyComputeSystem(
-    int numWorkers,
     unsigned long seed
 )
 :
-cs(numWorkers)
+cs()
 {
     cs.rng.seed(seed);
+}
+
+void PyComputeSystem::setNumThreads(int numThreads) {
+    ogmaneo::ComputeSystem::setNumThreads(numThreads);
 }
