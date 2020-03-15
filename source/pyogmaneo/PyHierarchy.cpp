@@ -42,6 +42,7 @@ PyHierarchy::PyHierarchy(
     for (int l = 0; l < layerDescs.size(); l++) {
         cLayerDescs[l].hiddenSize = ogmaneo::Int3(layerDescs[l].hiddenSize.x, layerDescs[l].hiddenSize.y, layerDescs[l].hiddenSize.z);
         cLayerDescs[l].ffRadius = layerDescs[l].ffRadius;
+        cLayerDescs[l].rRadius = layerDescs[l].rRadius;
         cLayerDescs[l].lRadius = layerDescs[l].lRadius;
         cLayerDescs[l].pRadius = layerDescs[l].pRadius;
         cLayerDescs[l].aRadius = layerDescs[l].aRadius;

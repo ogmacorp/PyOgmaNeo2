@@ -22,6 +22,7 @@ struct PyLayerDesc {
     PyInt3 hiddenSize;
 
     int ffRadius;
+    int rRadius;
     int lRadius;
     int pRadius;
 
@@ -35,10 +36,11 @@ struct PyLayerDesc {
     :
     hiddenSize(4, 4, 16),
     ffRadius(2),
+    rRadius(2),
     lRadius(2),
     pRadius(2),
-    ticksPerUpdate(2),
-    temporalHorizon(2),
+    ticksPerUpdate(1),
+    temporalHorizon(1),
     aRadius(2),
     historyCapacity(64)
     {}
@@ -46,6 +48,7 @@ struct PyLayerDesc {
     PyLayerDesc(
         const PyInt3 &hiddenSize,
         int ffRadius,
+        int rRadius,
         int lRadius,
         int pRadius,
         int ticksPerUpdate,
@@ -56,6 +59,7 @@ struct PyLayerDesc {
     :
     hiddenSize(hiddenSize),
     ffRadius(ffRadius),
+    rRadius(rRadius),
     lRadius(lRadius),
     pRadius(pRadius),
     ticksPerUpdate(ticksPerUpdate),
@@ -176,6 +180,19 @@ public:
         int l
     ) const {
         return h.getSCLayer(l).explainIters;
+    }
+
+    void setSCRefractoryTicks(
+        int l,
+        int refractoryTicks
+    ) {
+        h.getSCLayer(l).refractoryTicks = refractoryTicks;
+    }
+
+    int getSCRefractoryTicks(
+        int l
+    ) const {
+        return h.getSCLayer(l).refractoryTicks;
     }
 
     void setSCAlpha(
