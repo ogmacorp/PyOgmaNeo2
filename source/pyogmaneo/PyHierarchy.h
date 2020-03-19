@@ -42,7 +42,7 @@ struct PyLayerDesc {
     ticksPerUpdate(1),
     temporalHorizon(1),
     aRadius(2),
-    historyCapacity(64)
+    historyCapacity(32)
     {}
 
     PyLayerDesc(
