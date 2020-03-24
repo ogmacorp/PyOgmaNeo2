@@ -87,6 +87,14 @@ public:
         return PyInt3(size.x, size.y, size.z);
     }
 
+    PyInt3 getVisibleSize(
+        int i
+    ) const {
+        ogmaneo::Int3 size = enc.getVisibleLayerDesc(i).size;
+
+        return PyInt3(size.x, size.y, size.z);
+    }
+
     std::vector<float> getReceptiveField(
         PyComputeSystem &cs,
         int i,
