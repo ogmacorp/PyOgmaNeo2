@@ -27,6 +27,13 @@ if(PYTHON_VERSION)
     message("Python target version: ${PYTHON_VERSION}")            
 endif()
 
+############################################################################
+# Add the OpenMP library
+
+find_package(OpenMP REQUIRED)
+ 
+include_directories(${OpenMP_CXX_INCLUDE_DIRS})
+
 
 ############################################################################
 # Add the OgmaNeo library
@@ -50,6 +57,7 @@ file(GLOB_RECURSE PYOGMANEO_SRC
 
 add_library(PyOgmaNeo ${PYOGMANEO_SRC})
 
+target_link_libraries(PyOgmaNeo ${OpenMP_CXX_LIBRARIES})
 target_link_libraries(PyOgmaNeo ${OGMANEO_LIBRARIES})
 
 
