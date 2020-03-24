@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -15,26 +15,16 @@
 namespace pyogmaneo {
 class PyComputeSystem {
 private:
-    ogmaneo::ComputeSystem _cs;
-    std::mt19937 _rng;
+    ogmaneo::ComputeSystem cs;
 
 public:
     PyComputeSystem(
-        const std::string &type = "gpu",
-        unsigned long seed = 1234,
-        int platformIndex = -1,
-        int deviceIndex = -1
+        unsigned long seed = 1234
     );
 
-    friend class PyComputeProgram;
-    friend class PyIntBuffer;
-    friend class PyFloatBuffer;
+    static void setNumThreads(int numThreads);
 
-    friend class PySparseCoder;
-    friend class PyPredictor;
-    friend class PyActor;
     friend class PyHierarchy;
-
     friend class PyImageEncoder;
 };
 } // namespace pyogmaneo

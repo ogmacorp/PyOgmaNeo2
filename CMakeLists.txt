@@ -1,13 +1,13 @@
 # ----------------------------------------------------------------------------
 #  PyOgmaNeo
-#  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+#  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 #
 #  This copy of PyOgmaNeo is licensed to you under the terms described
 #  in the PYOGMANEO_LICENSE.md file included in this distribution.
 # ----------------------------------------------------------------------------
 
 # CMake version 3.1+ is required to enable C++14 features cleanly
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(PyOgmaNeo)
 
@@ -27,13 +27,12 @@ if(PYTHON_VERSION)
     message("Python target version: ${PYTHON_VERSION}")            
 endif()
 
-
 ############################################################################
-# Add the OpenCL library
+# Add the OpenMP library
 
-find_package(OpenCL REQUIRED)
-
-include_directories(${OpenCL_INCLUDE_DIR})
+find_package(OpenMP REQUIRED)
+ 
+include_directories(${OpenMP_CXX_INCLUDE_DIRS})
 
 
 ############################################################################
@@ -58,7 +57,8 @@ file(GLOB_RECURSE PYOGMANEO_SRC
 
 add_library(PyOgmaNeo ${PYOGMANEO_SRC})
 
-target_link_libraries(PyOgmaNeo ${OpenCL_LIBRARIES} ${OGMANEO_LIBRARIES})
+target_link_libraries(PyOgmaNeo ${OpenMP_CXX_LIBRARIES})
+target_link_libraries(PyOgmaNeo ${OGMANEO_LIBRARIES})
 
 
 ############################################################################
@@ -92,7 +92,7 @@ endif()
 
 set_source_files_properties(pyogmaneo.i PROPERTIES CPLUSPLUS ON)
 
-swig_add_library(pyogmaneo LANGUAGE Python SOURCES pyogmaneo.i)
+swig_add_module(pyogmaneo python pyogmaneo.i)
 
 swig_link_libraries(pyogmaneo PyOgmaNeo ${PYTHON_LIBRARIES})
 

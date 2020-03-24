@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //  PyOgmaNeo
-//  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+//  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 //
 //  This copy of OgmaNeo is licensed to you under the terms described
 //  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -12,60 +12,62 @@ using namespace pyogmaneo;
 
 PyImageEncoder::PyImageEncoder(
     PyComputeSystem &cs,
-    PyComputeProgram &prog,
     const PyInt3 &hiddenSize,
     const std::vector<PyImVisibleLayerDesc> &visibleLayerDescs
 ) {
-    _visibleLayerDescs = visibleLayerDescs;
-
-    std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> clVisibleLayerDescs(visibleLayerDescs.size());
+    std::vector<ogmaneo::ImageEncoder::VisibleLayerDesc> cVisibleLayerDescs(visibleLayerDescs.size());
 
     for (int v = 0; v < visibleLayerDescs.size(); v++) {
-        clVisibleLayerDescs[v]._size = ogmaneo::Int3(visibleLayerDescs[v]._size.x, visibleLayerDescs[v]._size.y, visibleLayerDescs[v]._size.z);
-        clVisibleLayerDescs[v]._radius = visibleLayerDescs[v]._radius;
+        cVisibleLayerDescs[v].size = ogmaneo::Int3(visibleLayerDescs[v].size.x, visibleLayerDescs[v].size.y, visibleLayerDescs[v].size.z);
+        cVisibleLayerDescs[v].radius = visibleLayerDescs[v].radius;
     }
 
-    _enc.init(cs._cs, prog._prog, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), clVisibleLayerDescs, cs._rng);
-    
-    _alpha = _enc._alpha;
-    _gamma = _enc._gamma;
+    enc.initRandom(cs.cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
+
+    alpha = enc.alpha;
+    gamma = enc.gamma;
 }
 
 PyImageEncoder::PyImageEncoder(
-    PyComputeSystem &cs,
-    PyComputeProgram &prog,
-    const std::string &name
+    const std::string &fileName
 ) {
-    std::ifstream is(name, std::ios::binary);
-    _enc.readFromStream(cs._cs, prog._prog, is);
+    std::ifstream is(fileName, std::ios::binary);
+    
+    enc.readFromStream(is);
 
-    _visibleLayerDescs.resize(_enc.getNumVisibleLayers());
-
-    for (int v = 0; v < _visibleLayerDescs.size(); v++) {
-        const ogmaneo::ImageEncoder::VisibleLayerDesc &vld = _enc.getVisibleLayerDesc(v); 
-        
-        _visibleLayerDescs[v]._size = PyInt3(vld._size.x, vld._size.y, vld._size.z);
-        _visibleLayerDescs[v]._radius = vld._radius;
-    }
-
-    _alpha = _enc._alpha;
-    _gamma = _enc._gamma;
+    alpha = enc.alpha;
+    gamma = enc.gamma;
 }
 
 void PyImageEncoder::step(
     PyComputeSystem &cs,
-    const std::vector<PyFloatBuffer> &visibleActivations,
+    const std::vector<std::vector<float> > &visibleActivations,
     bool learnEnabled
 ) {
-    _enc._alpha = _alpha;
-    _enc._gamma = _gamma;
+    enc.alpha = alpha;
+    enc.gamma = gamma;
+    
+    std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
 
-    std::vector<cl::Buffer> clVisibleActivations(visibleActivations.size());
+    for (int i = 0; i < visibleActivations.size(); i++)
+        cVisibleActivations[i] = &visibleActivations[i];
 
-    for (int v = 0; v < visibleActivations.size(); v++)
-        clVisibleActivations[v] = visibleActivations[v]._buf;
+    enc.step(cs.cs, cVisibleActivations, learnEnabled);
+}
 
-    _enc.step(cs._cs, clVisibleActivations, learnEnabled);
+void PyImageEncoder::reconstruct(
+    PyComputeSystem &cs,
+    const std::vector<int> &hiddenCs
+) {
+    enc.reconstruct(cs.cs, &hiddenCs);
+}
+
+void PyImageEncoder::save(
+    const std::string &fileName
+) const {
+    std::ofstream os(fileName, std::ios::binary);
+
+    enc.writeToStream(os);
 }
 
 std::vector<float> PyImageEncoder::getReceptiveField(
@@ -78,35 +80,38 @@ std::vector<float> PyImageEncoder::getReceptiveField(
     ogmaneo::Int3 minPos(999999, 999999, 999999);
     ogmaneo::Int3 maxPos(0, 0, 0);
 
-    const ogmaneo::SparseMatrix &sm = _enc.getVisibleLayer(i)._weights;
+    const ogmaneo::SparseMatrix &sm = enc.getVisibleLayer(i).weights;
 
-    int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), _enc.getHiddenSize());
+    int row = ogmaneo::address3(ogmaneo::Int3(hiddenPosition.x, hiddenPosition.y, hiddenPosition.z), enc.getHiddenSize());
     //int nextIndex = row + 1;
 
-    std::vector<cl_int> js(2);
-    cs._cs.getQueue().enqueueReadBuffer(sm._rowRanges, CL_TRUE, row * sizeof(cl_int), 2 * sizeof(cl_int), js.data());
+    std::vector<int> js(2);
+    js[0] = sm.rowRanges[row];
+    js[1] = sm.rowRanges[row + 1];
 
     int numValues = js[1] - js[0];
 
     if (numValues == 0)
         return {};
   
-    std::vector<cl_int> columnIndices(numValues);
-    cs._cs.getQueue().enqueueReadBuffer(sm._columnIndices, CL_TRUE, js[0] * sizeof(cl_int), numValues * sizeof(cl_int), columnIndices.data());
+    std::vector<int> columnIndices(numValues);
+    std::vector<float> nonZeroValues(numValues);
 
-	std::vector<cl_float> nonZeroValues(numValues);
-    cs._cs.getQueue().enqueueReadBuffer(sm._nonZeroValues, CL_TRUE, js[0] * sizeof(cl_int), numValues * sizeof(cl_float), nonZeroValues.data());
-
+    for (int i = 0; i < numValues; i++) {
+        columnIndices[i] = sm.columnIndices[js[0] + i];
+        nonZeroValues[i] = sm.nonZeroValues[js[0] + i];
+    }
+    
 	for (int j = js[0]; j < js[1]; j++) {
         int index = columnIndices[j - js[0]];
 
-        int inZ = index % _enc.getVisibleLayerDesc(i)._size.z;
-        index /= _enc.getVisibleLayerDesc(i)._size.z;
+        int inZ = index % enc.getVisibleLayerDesc(i).size.z;
+        index /= enc.getVisibleLayerDesc(i).size.z;
 
-        int inY = index % _enc.getVisibleLayerDesc(i)._size.y;
-        index /= _enc.getVisibleLayerDesc(i)._size.y;
+        int inY = index % enc.getVisibleLayerDesc(i).size.y;
+        index /= enc.getVisibleLayerDesc(i).size.y;
 
-        int inX = index % _enc.getVisibleLayerDesc(i)._size.x;
+        int inX = index % enc.getVisibleLayerDesc(i).size.x;
 
 		minPos.x = std::min(minPos.x, inX);
 		minPos.y = std::min(minPos.y, inY);
@@ -128,13 +133,13 @@ std::vector<float> PyImageEncoder::getReceptiveField(
     for (int j = js[0]; j < js[1]; j++) {
         int index = columnIndices[j - js[0]];
 
-        int inZ = index % _enc.getVisibleLayerDesc(i)._size.z;
-        index /= _enc.getVisibleLayerDesc(i)._size.z;
+        int inZ = index % enc.getVisibleLayerDesc(i).size.z;
+        index /= enc.getVisibleLayerDesc(i).size.z;
 
-        int inY = index % _enc.getVisibleLayerDesc(i)._size.y;
-        index /= _enc.getVisibleLayerDesc(i)._size.y;
+        int inY = index % enc.getVisibleLayerDesc(i).size.y;
+        index /= enc.getVisibleLayerDesc(i).size.y;
 
-        int inX = index % _enc.getVisibleLayerDesc(i)._size.x;
+        int inX = index % enc.getVisibleLayerDesc(i).size.x;
 
 		field[ogmaneo::address3(ogmaneo::Int3(inX - minPos.x, inY - minPos.y, inZ - minPos.z), ogmaneo::Int3(size.x, size.y, size.z))] = nonZeroValues[j - js[0]];
     }

@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 #  PyOgmaNeo
-#  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+#  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 #
 #  This copy of OgmaNeo is licensed to you under the terms described
 #  in the PYOGMANEO_LICENSE.md file included in this distribution.
@@ -181,8 +181,8 @@ extension_mod = Extension(
 setup(
     name="pyogmaneo",
     version="1.0.0",
-    description="Python bindings for the PyOgmaNeo library",
-    long_description='https://github.com/ogmacorp/PyOgmaNeo',
+    description="Python bindings for the OgmaNeo2 library",
+    long_description='https://github.com/ogmacorp/PyOgmaNeo2',
     author='Ogma Intelligent Systems Corp',
     author_email='info@ogmacorp.com',
     url='https://ogmacorp.com/',

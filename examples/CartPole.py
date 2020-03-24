@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 #  PyOgmaNeo
-#  Copyright(c) 2016-2019 Ogma Intelligent Systems Corp. All rights reserved.
+#  Copyright(c) 2016-2020 Ogma Intelligent Systems Corp. All rights reserved.
 #
 #  This copy of EOgmaNeo is licensed to you under the terms described
 #  in the PYEOGMANEO_LICENSE.md file included in this distribution.
@@ -17,7 +17,7 @@ from EnvRunner import EnvRunner # EnvRunner automatically creates an OgmaNeo2 hi
 
 env = gym.make('CartPole-v1')
 
-runner = EnvRunner(env, terminalReward=-1.0, rewardScale=0.0, kernelPath="../../OgmaNeo2/resources/neoKernels.cl") # Cart-Pole environment always returns a reward of 1, so use a custom reward function: -1 if episode ends, 0 otherwise
+runner = EnvRunner(env, terminalReward=-1.0, rewardScale=0.0) # Cart-Pole environment always returns a reward of 1, so use a custom reward function: -1 if episode ends, 0 otherwise
 
 for episode in range(1000):
     env.reset()
