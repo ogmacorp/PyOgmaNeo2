@@ -10,7 +10,7 @@
 
 ## The EnvRunner
 
-The EnvRunner is a simple way to automatically create OgmaNeo2 systems for Gym tasks. It will automatically create the hierarchy and appropriate pre-encoders. This is good enough for initial experimentation, but further control requires manual usage.
+The EnvRunner is a simple way to automatically create OgmaNeo2 systems for [OpenAI Gym](https://gym.openai.com/) tasks. It will automatically create the hierarchy and appropriate pre-encoders, by guessing reasonable settings. This is good enough for initial experimentation, but further control requires manual usage.
 
 ## CartPole example
 

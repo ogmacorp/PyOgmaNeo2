@@ -12,8 +12,11 @@ import numpy as np
 import pyogmaneo
 import matplotlib.pyplot as plt
 
+# Set the number of threads
+pyogmaneo.ComputeSystem.setNumThreads(4)
+
 # Create the compute system
-cs = pyogmaneo.ComputeSystem(4) # Set number of threads, if threading is enabled
+cs = pyogmaneo.ComputeSystem()
 
 # This defines the resolution of the input encoding - we are using a simple single column that represents a bounded scalar through a one-hot encoding. This value is the number of "bins"
 inputColumnSize = 64
@@ -42,7 +45,7 @@ for i in range(5): # Layers with exponential memory
 h = pyogmaneo.Hierarchy(cs, [ pyogmaneo.Int3(1, 1, inputColumnSize) ], [ pyogmaneo.inputTypePrediction ], lds)
 
 # Present the wave sequence for some timesteps
-iters = 4000
+iters = 2000
 
 for t in range(iters):
     # The value to encode into the input column

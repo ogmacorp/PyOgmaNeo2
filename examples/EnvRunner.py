@@ -138,7 +138,7 @@ class EnvRunner:
             ld.hiddenSize = layerSizes[i]
 
             ld.ffRadius = layerRadius
-            ld_pRadius = layerRadius
+            ld.pRadius = layerRadius
             ld.aRadius = layerRadius
 
             lds.append(ld)
@@ -211,7 +211,7 @@ class EnvRunner:
 
                 self.inputs.append(indices)
 
-    def act(self, epsilon=0.02, obsPreprocess=None):
+    def act(self, epsilon=0.0, obsPreprocess=None):
         feedActions = []
 
         for i in range(len(self.actionIndices)):
