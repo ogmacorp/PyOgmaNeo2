@@ -207,7 +207,7 @@ public:
     ) const {
         return h.getSCLayer(l).beta;
     }
-
+    
     void setPAlpha(
         int l,
         int v,
