@@ -79,6 +79,18 @@ void PyHierarchy::step(
     h.step(cs.cs, cInputCs, learnEnabled, reward);
 }
 
+void PyHierarchy::getState(
+    PyState &state
+) const {
+    h.getState(state.state);
+}
+
+void PyHierarchy::setState(
+    const PyState &state
+) {
+    h.setState(state.state);
+}
+
 void PyHierarchy::save(
     const std::string &fileName
 ) const {

@@ -61,6 +61,13 @@ struct PyLayerDesc {
     {}
 };
 
+struct PyState {
+private:
+    ogmaneo::State state;
+
+    friend class PyHierarchy;
+};
+
 class PyHierarchy {
 private:
     ogmaneo::Hierarchy h;
@@ -82,6 +89,14 @@ public:
         const std::vector<std::vector<int> > &inputCs,
         bool learnEnabled = true,
         float reward = 0.0f
+    );
+
+    void getState(
+        PyState &state
+    ) const;
+
+    void setState(
+        const PyState &state
     );
 
     void save(
