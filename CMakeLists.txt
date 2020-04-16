@@ -34,6 +34,8 @@ find_package(OpenMP REQUIRED)
  
 include_directories(${OpenMP_CXX_INCLUDE_DIRS})
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}") # This links -fopenmp
+
 
 ############################################################################
 # Add the OgmaNeo library
@@ -68,7 +70,7 @@ find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC -fopenmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
 endif()
 
 
