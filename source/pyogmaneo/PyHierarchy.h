@@ -38,7 +38,7 @@ struct PyLayerDesc {
     ticksPerUpdate(2),
     temporalHorizon(4),
     aRadius(2),
-    historyCapacity(32)
+    historyCapacity(64)
     {}
 
     PyLayerDesc(
@@ -259,21 +259,21 @@ public:
         return h.getALayers()[v]->gamma;
     }
 
-    void setAMinSteps(
+    void setAQSteps(
         int v,
-        int minSteps
+        int qSteps
     ) {
         assert(h.getALayers()[v] != nullptr);
         
-        h.getALayers()[v]->minSteps = minSteps;
+        h.getALayers()[v]->qSteps = qSteps;
     }
 
-    int getAMinSteps(
+    int getAQSteps(
         int v
     ) const {
         assert(h.getALayers()[v] != nullptr);
         
-        return h.getALayers()[v]->minSteps;
+        return h.getALayers()[v]->qSteps;
     }
 
     void setAHistoryIters(
