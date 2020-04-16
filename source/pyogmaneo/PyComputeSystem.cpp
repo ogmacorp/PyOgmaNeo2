@@ -19,3 +19,7 @@ PyComputeSystem::PyComputeSystem(
 void PyComputeSystem::setNumThreads(int numThreads) {
     ogmaneo::ComputeSystem::setNumThreads(numThreads);
 }
+
+int PyComputeSystem::getNumThreads() {
+    return ogmaneo::ComputeSystem::getNumThreads();
+}

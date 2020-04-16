@@ -23,6 +23,7 @@ public:
     );
 
     static void setNumThreads(int numThreads);
+    static int getNumThreads();
 
     friend class PyHierarchy;
     friend class PyImageEncoder;
