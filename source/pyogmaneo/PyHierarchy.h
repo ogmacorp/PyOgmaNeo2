@@ -88,7 +88,8 @@ public:
         PyComputeSystem &cs,
         const std::vector<std::vector<int> > &inputCs,
         bool learnEnabled = true,
-        float reward = 0.0f
+        float reward = 0.0f,
+        bool mimic = false
     );
 
     void getState(

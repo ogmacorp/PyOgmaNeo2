@@ -64,7 +64,8 @@ void PyHierarchy::step(
     PyComputeSystem &cs,
     const std::vector<std::vector<int> > &inputCs,
     bool learnEnabled,
-    float reward
+    float reward,
+    bool mimic
 ) {
     assert(inputCs.size() == h.getInputSizes().size());
 
@@ -76,7 +77,7 @@ void PyHierarchy::step(
         cInputCs[i] = &inputCs[i];
     }
     
-    h.step(cs.cs, cInputCs, learnEnabled, reward);
+    h.step(cs.cs, cInputCs, learnEnabled, reward, mimic);
 }
 
 void PyHierarchy::getState(
