@@ -87,10 +87,21 @@ public:
     void step(
         PyComputeSystem &cs,
         const std::vector<std::vector<int> > &inputCs,
+        const std::vector<std::vector<int> > &targetCs,
         bool learnEnabled = true,
         float reward = 0.0f,
         bool mimic = false
     );
+
+    void step(
+        PyComputeSystem &cs,
+        const std::vector<std::vector<int> > &inputCs,
+        bool learnEnabled = true,
+        float reward = 0.0f,
+        bool mimic = false
+    ) {
+        step(cs, inputCs, inputCs, learnEnabled, reward, mimic);
+    }
 
     void getState(
         PyState &state
