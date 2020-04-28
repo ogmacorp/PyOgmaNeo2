@@ -63,20 +63,24 @@ PyHierarchy::PyHierarchy(
 void PyHierarchy::step(
     PyComputeSystem &cs,
     const std::vector<std::vector<int> > &inputCs,
+    const std::vector<std::vector<int> > &targetCs,
     bool learnEnabled,
     float reward
 ) {
     assert(inputCs.size() == h.getInputSizes().size());
 
     std::vector<const std::vector<int>*> cInputCs(inputCs.size());
+    std::vector<const std::vector<int>*> cTargetCs(targetCs.size());
 
     for (int i = 0; i < inputCs.size(); i++) {
         assert(inputCs[i].size() == h.getInputSizes()[i].x * h.getInputSizes()[i].y);
+        assert(targetCs[i].size() == h.getInputSizes()[i].x * h.getInputSizes()[i].y);
 
         cInputCs[i] = &inputCs[i];
+        cTargetCs[i] = &targetCs[i];
     }
     
-    h.step(cs.cs, cInputCs, learnEnabled, reward);
+    h.step(cs.cs, cInputCs, cTargetCs, learnEnabled, reward);
 }
 
 void PyHierarchy::getState(

@@ -89,6 +89,16 @@ public:
         const std::vector<std::vector<int> > &inputCs,
         bool learnEnabled = true,
         float reward = 0.0f
+    ) {
+        step(cs, inputCs, inputCs, learnEnabled, reward);
+    }
+
+    void step(
+        PyComputeSystem &cs,
+        const std::vector<std::vector<int> > &inputCs,
+        const std::vector<std::vector<int> > &targetCs,
+        bool learnEnabled = true,
+        float reward = 0.0f
     );
 
     void getState(
