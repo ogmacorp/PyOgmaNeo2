@@ -9,7 +9,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, Extension
-from distutils.command.build import build as build
+from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.command.install import install
 from distutils import sysconfig
@@ -34,7 +34,7 @@ else:
 
 # Subclass the distutils install command
 class install_subclass(install):
-    description = "Building the PyOgmaNeo C++ library, generating SWiG bindings, and installing neo"
+    description = "Building the PyOgmaNeo C++ library, generating SWiG bindings, and installing PyOgmaNeo"
 
     def run(self):
         # Run build_ext first, so that it can generate
@@ -146,17 +146,20 @@ class build_ext_subclass(build_ext):
                 ext_path = os.path.join(build_lib, built_ext)
                 if os.path.exists(ext_path):
                     os.remove(ext_path)
-                self.mkpath(os.path.dirname(ext_path))
+
+                self.mkpath(os.path.dirname(build_lib))
                 print('Moving library', built_ext,
                       'to build path', ext_path)
-                shutil.move(built_ext, ext_path)
+                shutil.copy(built_ext, ext_path)
+                shutil.copy(ext_path, "../../")
                 self._found_names.append("_pyogmaneo")
 
                 built_py = self.get_py_name("pyogmaneo")
                 py_path = os.path.join(build_lib, built_py)
                 print('Moving Py file', built_py,
                       'to build path', py_path)
-                shutil.move(built_py, py_path)
+                shutil.copy(built_py, py_path)
+                shutil.copy(py_path, "../../")
             else:
                 raise RuntimeError('C-extension failed to build:',
                                    os.path.abspath(built_ext))
