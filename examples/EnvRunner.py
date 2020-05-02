@@ -88,7 +88,7 @@ class EnvRunner:
 
                 self.imgsPrev.append(np.zeros(self.imageSizes[i]))
 
-            self.imEnc = pyogmaneo.ImageEncoder(self.cs, self.prog, hiddenSize, vlds)
+            self.imEnc = pyogmaneo.ImageEncoder(self.cs, hiddenSize, vlds)
 
             self.imEncIndex = len(self.inputSizes)
             self.inputSizes.append(hiddenSize)
