@@ -173,8 +173,6 @@ class EnvRunner:
 
                 actionIndex += 1
             elif i == self.imEncIndex:
-                assert(buf is None)
-
                 # Format image
                 img = cv2.resize(obs, ( self.imageSizes[0][0], self.imageSizes[0][1] ))
                 
@@ -263,12 +261,3 @@ class EnvRunner:
             self.actions[i] = list(self.h.getPredictionCs(index))
         
         return done, reward
-
-    
-
-
-
-
-        
-            
-
