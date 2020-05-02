@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 
 # CMake version 3.1+ is required to enable C++14 features cleanly
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.17)
 
 project(PyOgmaNeo)
 
@@ -86,18 +86,18 @@ include_directories(${PYTHON_INCLUDE_DIR})
 # Setup SWIG bindings
 
 set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}")
-#set(CMAKE_SWIG_FLAGS "-I\"${PYTHON_INCLUDE_DIR}\" -I\"${OpenCL_INCLUDE_DIR}\" -I\"${OGMANEO_INCLUDE_DIR}\" -I\"${PYOGMANEO_INCLUDE_DIR}\"")
 
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+set_source_files_properties(pyogmaneo.i PROPERTIES SWIG_MODULE_NAME pyogmaneo)
 set_source_files_properties(pyogmaneo.i PROPERTIES CPLUSPLUS ON)
 
-swig_add_module(pyogmaneo python pyogmaneo.i)
+swig_add_library(pyogmaneo LANGUAGE python SOURCES pyogmaneo.i)
 
-swig_link_libraries(pyogmaneo PyOgmaNeo ${PYTHON_LIBRARIES})
+target_link_libraries(pyogmaneo PyOgmaNeo ${PYTHON_LIBRARIES})
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SWIG_OUTDIR})
-install(TARGETS _pyogmaneo DESTINATION ${CMAKE_SWIG_OUTDIR})
+install(TARGETS pyogmaneo DESTINATION ${CMAKE_SWIG_OUTDIR})
 install(FILES ${CMAKE_BINARY_DIR}/pyogmaneo.py DESTINATION ${CMAKE_SWIG_OUTDIR})
