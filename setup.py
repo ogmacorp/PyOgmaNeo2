@@ -146,12 +146,11 @@ class build_ext_subclass(build_ext):
                 ext_path = os.path.join(build_lib, built_ext)
                 if os.path.exists(ext_path):
                     os.remove(ext_path)
-
-                self.mkpath(os.path.dirname(build_lib))
+                self.mkpath(os.path.dirname(ext_path))
                 print('Moving library', built_ext,
                       'to build path', ext_path)
                 shutil.copy(built_ext, ext_path)
-                shutil.copy(ext_path, "../../")
+                shutil.copy(ext_path, "../..")
                 self._found_names.append("_pyogmaneo")
 
                 built_py = self.get_py_name("pyogmaneo")
@@ -159,7 +158,7 @@ class build_ext_subclass(build_ext):
                 print('Moving Py file', built_py,
                       'to build path', py_path)
                 shutil.copy(built_py, py_path)
-                shutil.copy(py_path, "../../")
+                shutil.copy(py_path, "../..")
             else:
                 raise RuntimeError('C-extension failed to build:',
                                    os.path.abspath(built_ext))
