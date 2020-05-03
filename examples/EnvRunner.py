@@ -88,7 +88,7 @@ class EnvRunner:
 
                 self.imgsPrev.append(np.zeros(self.imageSizes[i]))
 
-            self.imEnc = pyogmaneo.ImageEncoder(self.cs, self.prog, hiddenSize, vlds)
+            self.imEnc = pyogmaneo.ImageEncoder(self.cs, hiddenSize, vlds)
 
             self.imEncIndex = len(self.inputSizes)
             self.inputSizes.append(hiddenSize)
@@ -173,8 +173,6 @@ class EnvRunner:
 
                 actionIndex += 1
             elif i == self.imEncIndex:
-                assert(buf is None)
-
                 # Format image
                 img = cv2.resize(obs, ( self.imageSizes[0][0], self.imageSizes[0][1] ))
                 
