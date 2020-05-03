@@ -46,7 +46,7 @@ include_directories(${OGMANEO_INCLUDE_DIR})
 
 
 ############################################################################
-# Add the PyOgmaNeo library
+# Add the PyOgmaNeoCpp library
 
 set(PYOGMANEO_INCLUDE_DIR "source/pyogmaneo;")
 
@@ -57,10 +57,10 @@ file(GLOB_RECURSE PYOGMANEO_SRC
     "source/pyogmaneo/*.cpp"
 )
 
-add_library(PyOgmaNeo ${PYOGMANEO_SRC})
+add_library(PyOgmaNeoCpp ${PYOGMANEO_SRC})
 
-target_link_libraries(PyOgmaNeo ${OpenMP_CXX_LIBRARIES})
-target_link_libraries(PyOgmaNeo ${OGMANEO_LIBRARIES})
+target_link_libraries(PyOgmaNeoCpp ${OpenMP_CXX_LIBRARIES})
+target_link_libraries(PyOgmaNeoCpp ${OGMANEO_LIBRARIES})
 
 
 ############################################################################
@@ -91,12 +91,12 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-set_source_files_properties(pyogmaneo.i PROPERTIES SWIG_MODULE_NAME pyogmaneo)
+#set_source_files_properties(pyogmaneo.i PROPERTIES SWIG_MODULE_NAME pyogmaneo)
 set_source_files_properties(pyogmaneo.i PROPERTIES CPLUSPLUS ON)
 
 swig_add_library(pyogmaneo LANGUAGE python SOURCES pyogmaneo.i)
 
-target_link_libraries(pyogmaneo PyOgmaNeo ${PYTHON_LIBRARIES})
+target_link_libraries(pyogmaneo PyOgmaNeoCpp ${PYTHON_LIBRARIES})
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SWIG_OUTDIR})
 install(TARGETS pyogmaneo DESTINATION ${CMAKE_SWIG_OUTDIR})
