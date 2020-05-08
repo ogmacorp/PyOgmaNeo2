@@ -6,8 +6,7 @@
 #  in the PYOGMANEO_LICENSE.md file included in this distribution.
 # ----------------------------------------------------------------------------
 
-# CMake version 3.1+ is required to enable C++14 features cleanly
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.13)
 
 project(PyOgmaNeo)
 

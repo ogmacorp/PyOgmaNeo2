@@ -89,16 +89,6 @@ public:
         const std::vector<std::vector<int> > &inputCs,
         bool learnEnabled = true,
         float reward = 0.0f
-    ) {
-        step(cs, inputCs, inputCs, learnEnabled, reward);
-    }
-
-    void step(
-        PyComputeSystem &cs,
-        const std::vector<std::vector<int> > &inputCs,
-        const std::vector<std::vector<int> > &targetCs,
-        bool learnEnabled = true,
-        float reward = 0.0f
     );
 
     void getState(
@@ -197,19 +187,6 @@ public:
         int l
     ) const {
         return h.getSCLayer(l).alpha;
-    }
-
-    void setSCRefractoryTicks(
-        int l,
-        int refractoryTicks
-    ) {
-        h.getSCLayer(l).refractoryTicks = refractoryTicks;
-    }
-
-    int getSCRefractoryTicks(
-        int l
-    ) const {
-        return h.getSCLayer(l).refractoryTicks;
     }
 
     void setPAlpha(
