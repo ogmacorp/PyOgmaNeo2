@@ -225,23 +225,6 @@ public:
         return h.getALayers()[v]->alpha;
     }
 
-    void setABeta(
-        int v,
-        float beta
-    ) {
-        assert(h.getALayers()[v] != nullptr);
-        
-        h.getALayers()[v]->beta = beta;
-    }
-
-    float getABeta(
-        int v
-    ) const {
-        assert(h.getALayers()[v] != nullptr);
-        
-        return h.getALayers()[v]->beta;
-    }
-
     void setAGamma(
         int v,
         float gamma
@@ -259,21 +242,21 @@ public:
         return h.getALayers()[v]->gamma;
     }
 
-    void setAQSteps(
+    void setAMinSteps(
         int v,
-        int qSteps
+        int minSteps
     ) {
         assert(h.getALayers()[v] != nullptr);
         
-        h.getALayers()[v]->qSteps = qSteps;
+        h.getALayers()[v]->minSteps = minSteps;
     }
 
-    int getAQSteps(
+    int getAMinSteps(
         int v
     ) const {
         assert(h.getALayers()[v] != nullptr);
         
-        return h.getALayers()[v]->qSteps;
+        return h.getALayers()[v]->minSteps;
     }
 
     void setAHistoryIters(
