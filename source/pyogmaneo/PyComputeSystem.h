@@ -22,7 +22,10 @@ public:
         unsigned long seed = 1234
     );
 
-    static void setNumThreads(int numThreads);
+    static void setNumThreads(
+        int numThreads
+    );
+    
     static int getNumThreads();
 
     friend class PyHierarchy;

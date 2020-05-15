@@ -16,7 +16,9 @@ PyComputeSystem::PyComputeSystem(
     cs.rng.seed(seed);
 }
 
-void PyComputeSystem::setNumThreads(int numThreads) {
+void PyComputeSystem::setNumThreads(
+    int numThreads
+) {
     ogmaneo::ComputeSystem::setNumThreads(numThreads);
 }
 
