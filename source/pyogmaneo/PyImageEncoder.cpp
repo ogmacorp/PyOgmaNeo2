@@ -25,7 +25,6 @@ PyImageEncoder::PyImageEncoder(
     enc.initRandom(cs.cs, ogmaneo::Int3(hiddenSize.x, hiddenSize.y, hiddenSize.z), cVisibleLayerDescs);
 
     alpha = enc.alpha;
-    beta = enc.beta;
     gamma = enc.gamma;
 }
 
@@ -37,7 +36,6 @@ PyImageEncoder::PyImageEncoder(
     enc.readFromStream(is);
 
     alpha = enc.alpha;
-    beta = enc.beta;
     gamma = enc.gamma;
 }
 
@@ -47,7 +45,6 @@ void PyImageEncoder::step(
     bool learnEnabled
 ) {
     enc.alpha = alpha;
-    enc.beta = beta;
     enc.gamma = gamma;
     
     std::vector<const std::vector<float>*> cVisibleActivations(visibleActivations.size());
