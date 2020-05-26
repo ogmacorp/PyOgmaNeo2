@@ -40,7 +40,6 @@ private:
 
 public:
     float alpha;
-    float beta;
     float gamma;
     
     PyImageEncoder(
