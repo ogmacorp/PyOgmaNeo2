@@ -8,7 +8,7 @@
 
 # PyOgmaNeo, V2
 
-[![Join the chat at https://gitter.im/ogmaneo/Lobby](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/ogmaneo/Lobby) [![Build Status](https://travis-ci.org/ogmacorp/OgmaNeo.svg?branch=master)](https://travis-ci.org/ogmacorp/OgmaNeo)
+[![Join the chat at https://gitter.im/ogmaneo/Lobby](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/ogmaneo/Lobby)
 
 ## Introduction 
 
@@ -26,7 +26,6 @@ Additionally this binding requires an installation of [SWIG](http://www.swig.org
 
 - Linux requires SWIG installed via, for example ```sudo apt-get install swig3.0``` command (or via ```yum```).
 - Windows requires installation of SWIG (v3). With the SourceForge Zip expanded, and the PATH environment variable updating to include the SWIG installation binary directory (for example `C:\Program Files (x86)\swigwin-3.0.8`).
-- Mac OSX can use Homebrew to install the latest SWIG (for example, see .travis/install_swig.sh Bash script).
 
 ## Installation
 
@@ -49,7 +48,7 @@ The PyOgmaNeo2 module can be imported using:
 import pyogmaneo
 ```
 
-Refer to the `sineWaveExample.py` example for further details.
+Refer to the `WavyLinePrediction.py` example for further details.
 
 ## Contributions
 
