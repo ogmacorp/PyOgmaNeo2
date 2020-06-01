@@ -8,12 +8,10 @@
 
 # -*- coding: utf-8 -*-
 
-import pyogmaneo
+# Simple Cart-Pole example using EnvRunner
 
 import gym
 from EnvRunner import EnvRunner # EnvRunner automatically creates an OgmaNeo2 hierarchy and appropriate encoders for most Gym environments
-
-# Simple Cart-Pole example using EnvRunner
 
 env = gym.make('CartPole-v1')
 
