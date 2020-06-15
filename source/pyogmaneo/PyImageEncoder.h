@@ -74,7 +74,7 @@ public:
     const std::vector<float> &getReconstruction(
         int i
     ) const {
-        return enc.getVisibleLayer(i).reconActs;
+        return enc.getVisibleLayer(i).reconstructions;
     }
 
     std::vector<int> getHiddenCs() const {
