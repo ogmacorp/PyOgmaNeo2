@@ -5,7 +5,7 @@
 #  This copy of OgmaNeo is licensed to you under the terms described
 #  in the PYOGMANEO_LICENSE.md file included in this distribution.
 # ----------------------------------------------------------------------------
-
+# This is an amazing project
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, Extension
